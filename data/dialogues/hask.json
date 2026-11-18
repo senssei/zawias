@@ -1,0 +1,50 @@
+{
+  "start": "start",
+  "nodes": {
+    "start": {
+      "speaker": "Hask",
+      "text": "Strażnik w łuskowej zbroi mierzy cię wzrokiem. Na jego napierśniku widnieje wytłoczona pieczęć: dłoń trzymająca pióro. „Nowy? Brama wypluwa takich jak ty co kwadrans. Witaj na Rdzawym Targu. Niczego nie dotykaj, za co nie zapłaciłeś”.",
+      "choices": [
+        {"text": "Gdzie ja właściwie jestem?", "next": "where"},
+        {"text": "Kim są ci z pieczęcią pióra? Zapisani?", "next": "factions"},
+        {"text": "Coś cię gryzie. Widzę to po tobie.", "once": true, "check": {"skill": "insight", "dc": 12, "success": "insight_ok", "fail": "insight_fail"}},
+        {"text": "Jak tu przeżyć pierwszy dzień?", "next": "tips"},
+        {"text": "Bywaj.", "end": true}
+      ]
+    },
+    "where": {
+      "speaker": "Hask",
+      "text": "„W Zawiasie. To miasto-pierścień zawieszone w szczelinie między planami. Każde drzwi mogą stać się bramą, jeśli masz przy sobie właściwy klucz. Może to być przedmiot, słowo, wspomnienie albo żal. Miastem rządzi Kustoszka. Nikt jej nie widział, a kto próbował, ten już nic nie zobaczy”.",
+      "choices": [
+        {"text": "Kustoszka?", "next": "custodian"},
+        {"text": "Mam inne pytania.", "next": "start"}
+      ]
+    },
+    "custodian": {
+      "speaker": "Hask",
+      "text": "Hask ścisza głos. „Nie mówi się o niej głośno. Pilnuje, żeby drzwi otwierały się tylko tym, którym powinny. Kto bawi się kluczami, których nie rozumie, ten po prostu… znika. Nikt go nie zabija. Drzwi go wpuszczają i już nie wypuszczają”.",
+      "choices": [{"text": "Rozumiem. Mam inne pytania.", "next": "start"}]
+    },
+    "factions": {
+      "speaker": "Hask",
+      "text": "„Zapisani. Wierzymy, że rzeczywistość to kontrakt, a każdą rzecz da się wynegocjować, jeśli wystarczająco wielu podpisze się pod umową. Tu wiara ma wagę, przybyszu. Tu przekonania naprawdę zmieniają świat. Są jeszcze Echo, którzy zbierają opowieści, bo tożsamość to tylko historia. I Rozplatacze”. Krzywi się. „Ci wierzą, że wszystko się rozpada i że to dobrze”.",
+      "choices": [{"text": "Ciekawe. Mam inne pytania.", "next": "start"}]
+    },
+    "insight_ok": {
+      "speaker": "Hask",
+      "text": "Hask wzdycha. „Bystry jesteś. Mirelę, kluczarkę z północnej strony targu, okradziono w nocy. Zginęło coś, czego nie powinno było być w żadnej gablocie. Zapisani wolą się nie mieszać, bo to nie nasz kontrakt. Ale jeśli szukasz roboty, idź do niej”.",
+      "effects": [{"set_flag": "heard_rumor"}],
+      "choices": [{"text": "Dzięki za wskazówkę.", "next": "start"}]
+    },
+    "insight_fail": {
+      "speaker": "Hask",
+      "text": "„Gryzie mnie to, że zadajesz za dużo pytań”. Hask poprawia chwyt na włóczni.",
+      "choices": [{"text": "Dobrze, już dobrze.", "next": "start"}]
+    },
+    "tips": {
+      "speaker": "Hask",
+      "text": "„Klikasz, gdzie chcesz iść, i idziesz. Klikasz na kogoś, żeby z nim pogadać. W walce każdy ma swoją kolej: ruch, akcja, akcja dodatkowa, reakcja, jak przy każdym porządnym zabijaniu. Odpoczniesz krótko gdziekolwiek, klawiszem R. Na porządny sen idź do Dorna w gospodzie. I zapisuj swoje losy, F5, bo Zawias nie wybacza”.",
+      "choices": [{"text": "Zapamiętam.", "next": "start"}]
+    }
+  }
+}

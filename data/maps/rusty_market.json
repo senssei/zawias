@@ -1,0 +1,363 @@
+{
+  "name": "Rdzawy Targ",
+  "rows": [
+    "########################################",
+    "#NNNNNN#####MMMMMMMMM######EEEEEEEEEEE##",
+    "#NNNNNN#####MMMMMMMMM######EEEEEEEEEEE##",
+    "#NNNNNN#####MMMMMMMMM######EEEEEEEEEEE##",
+    "#NNNNNN.....MMMMMMMMM......EEEEEEEEEEE##",
+    "#.........................,EEEEEEEEEEE##",
+    "#.............................aaaaaaaa##",
+    "#......=..=..=........=..=....EEEEEEEa##",
+    "........................~~....EEEEEEEa##",
+    "......................~~~.....EEEEEEEa##",
+    "#......=..=.......=.......=...EEEEEEEa##",
+    "#.............................EEEEEEEa##",
+    "#....,,.......................WWWWWWWdW#",
+    "#IIIIII..AAAAAA...............WwwwcwwwW#",
+    "#IIIIII..AAAAAA...............WwwwwwwwW#",
+    "#IIIIII..AAAAAA...............dwwwwwwwW#",
+    "#IIIIII..AAAAAA...............WwcwwwwwW#",
+    "#IIIIII..AAAAAA...............WwwwwwwwW#",
+    "##############################WWWWWWWWW#",
+    "########################################"
+  ],
+  "legend": {
+    "#": {
+      "solid": true,
+      "height": 0.8,
+      "color": "#3a2e2a"
+    },
+    "N": {
+      "solid": true,
+      "height": 1.2,
+      "color": "#4b4f5e",
+      "label": "Kancelaria Zapisanych"
+    },
+    "M": {
+      "solid": true,
+      "height": 1.3,
+      "color": "#6b4a2b",
+      "label": "Kluczarnia Mireli"
+    },
+    "E": {
+      "solid": true,
+      "height": 1.1,
+      "color": "#3d3432"
+    },
+    "I": {
+      "solid": true,
+      "height": 1.2,
+      "color": "#5e3d2c",
+      "label": "Gospoda Pod Krzywym Zawiasem"
+    },
+    "A": {
+      "solid": true,
+      "height": 1.3,
+      "color": "#2f4a4a",
+      "label": "Archiwum Echa"
+    },
+    "W": {
+      "solid": true,
+      "height": 1.2,
+      "color": "#5a3a22",
+      "label": "Stary magazyn", "paint_height": 1.6, "paint_kind": "wall"
+    },
+    "=": {
+      "solid": true,
+      "height": 0.9,
+      "color": "#8a5a2b",
+      "prop": "stall"
+    },
+    "c": {
+      "solid": true,
+      "height": 0.8,
+      "color": "#7a5530",
+      "prop": "crate"
+    },
+    ".": {
+      "color": "#6e5a4a"
+    },
+    ",": {
+      "color": "#5d4c40",
+      "difficult": true,
+      "prop": "rubble"
+    },
+    "~": {
+      "color": "#8c3f1c",
+      "difficult": true,
+      "prop": "rust"
+    },
+    "a": {
+      "color": "#3e3430"
+    },
+    "w": {
+      "color": "#4a3a2c",
+      "indoor": true
+    },
+    "d": {
+      "color": "#2a1e16",
+      "door": true
+    }
+  },
+  "player_start": [
+    1,
+    8
+  ],
+  "locks": [
+    {
+      "cell": [
+        30,
+        15
+      ],
+      "unless_flag": "front_open",
+      "name": "Drzwi magazynu"
+    },
+    {
+      "cell": [
+        37,
+        12
+      ],
+      "unless_flag": "back_open",
+      "name": "Tylne drzwi"
+    }
+  ],
+  "npcs": [
+    {
+      "id": "hask",
+      "name": "Hask",
+      "pos": [
+        3,
+        7
+      ],
+      "color": "#7a8fa6",
+      "dialogue": "hask",
+      "title": "strażnik Zapisanych"
+    },
+    {
+      "id": "kwit",
+      "name": "Kwit",
+      "pos": [
+        4,
+        5
+      ],
+      "color": "#a6a6c8",
+      "dialogue": "kwit",
+      "title": "notariusz"
+    },
+    {
+      "id": "mirela",
+      "name": "Mirela",
+      "pos": [
+        16,
+        5
+      ],
+      "color": "#d9a066",
+      "dialogue": "mirela",
+      "title": "kluczarka"
+    },
+    {
+      "id": "dorn",
+      "name": "Dorn",
+      "pos": [
+        6,
+        11
+      ],
+      "color": "#b8785a",
+      "dialogue": "dorn",
+      "title": "karczmarz"
+    },
+    {
+      "id": "lis",
+      "name": "Lis",
+      "pos": [
+        15,
+        13
+      ],
+      "color": "#6fbfb0",
+      "dialogue": "lis",
+      "title": "archiwistka Echa"
+    },
+    {
+      "id": "pchla",
+      "name": "Pchła",
+      "pos": [
+        26,
+        9
+      ],
+      "color": "#c7b36b",
+      "dialogue": "pchla",
+      "title": "ulicznik"
+    },
+    {
+      "id": "odzwierny",
+      "name": "Odźwierny",
+      "pos": [
+        29,
+        14
+      ],
+      "color": "#9c4a3a",
+      "dialogue": "odzwierny",
+      "title": "Rozplatacz",
+      "monster": "cultist",
+      "encounter": "warehouse"
+    },
+    {
+      "id": "sever",
+      "name": "Sever",
+      "pos": [
+        34,
+        15
+      ],
+      "color": "#c0503a",
+      "dialogue": "sever",
+      "title": "przywódca Rozplataczy",
+      "flees": true,
+      "encounter": "warehouse"
+    },
+    {
+      "id": "kultysta1",
+      "name": "Kultysta",
+      "pos": [
+        32,
+        14
+      ],
+      "color": "#9c4a3a",
+      "monster": "cultist",
+      "encounter": "warehouse"
+    },
+    {
+      "id": "mefit",
+      "name": "Mefit Rdzy",
+      "pos": [
+        36,
+        16
+      ],
+      "color": "#c46a2a",
+      "monster": "rust_mephit",
+      "encounter": "warehouse"
+    }
+  ],
+  "objects": [
+    {
+      "id": "arch",
+      "name": "Łuk bez drzwi",
+      "pos": [
+        16,
+        9
+      ],
+      "dialogue": "arch",
+      "shape": "arch"
+    },
+    {
+      "id": "backdoor",
+      "name": "Tylne drzwi",
+      "pos": [
+        37,
+        12
+      ],
+      "dialogue": "backdoor",
+      "shape": "door",
+      "hide_if": "back_open"
+    },
+    {
+      "id": "chest",
+      "name": "Skrzynia Severa",
+      "pos": [
+        37,
+        13
+      ],
+      "dialogue": "chest",
+      "shape": "chest"
+    }
+  ],
+  "triggers": [
+    {
+      "id": "ambush",
+      "cells": [
+        [
+          30,
+          6
+        ],
+        [
+          31,
+          6
+        ],
+        [
+          32,
+          6
+        ]
+      ],
+      "if": {
+        "flag": "asked_about_key",
+        "not_flag": "ambush_done"
+      },
+      "encounter": "ambush"
+    }
+  ],
+  "decor": [
+    {
+      "id": "barrel",
+      "pos": [
+        1,
+        5
+      ]
+    },
+    {
+      "id": "barrel",
+      "pos": [
+        7,
+        4
+      ]
+    },
+    {
+      "id": "crate",
+      "pos": [
+        11,
+        4
+      ]
+    },
+    {
+      "id": "barrel",
+      "pos": [
+        21,
+        4
+      ]
+    },
+    {
+      "id": "crate",
+      "pos": [
+        26,
+        4
+      ]
+    },
+    {
+      "id": "barrel",
+      "pos": [
+        15,
+        13
+      ]
+    },
+    {
+      "id": "crate",
+      "pos": [
+        29,
+        11
+      ]
+    },
+    {
+      "id": "barrel",
+      "pos": [
+        29,
+        13
+      ]
+    },
+    {
+      "id": "barrel",
+      "pos": [
+        7,
+        17
+      ]
+    }
+  ]
+}

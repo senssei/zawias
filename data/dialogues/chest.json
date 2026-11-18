@@ -1,0 +1,45 @@
+{
+  "start": "start",
+  "starts": [
+    {"if": {"flag": "chest_looted"}, "next": "empty"},
+    {"if": {"flag": "warehouse_cleared"}, "next": "loot"}
+  ],
+  "nodes": {
+    "start": {
+      "speaker": "Skrzynia Severa",
+      "text": "Okuta skrzynia pokryta rdzawym pyłem. Rozplatacze są tuż obok.",
+      "choices": [
+        {"text": "Otwórz ją po cichu.", "if": {"not_flag": "key_obtained"},
+         "check": {"skill": "stealth", "dc": 14, "success": "stolen", "fail": "caught"}},
+        {"text": "[Odejdź]", "end": true}
+      ]
+    },
+    "stolen": {
+      "speaker": "Skrzynia Severa",
+      "text": "Twoje palce znajdują pod szmatami ciepły mosiądz. Nikt nie podniósł głowy.",
+      "effects": [{"give_item": "key_without_door"}, {"set_flag": "key_obtained"}, {"set_flag": "key_stolen"}, {"set_flag": "chest_looted"}, {"quest": ["key", "has_key"]}, {"xp": 150},
+                  {"journal": "Wykradłem klucz ze skrzyni Severa Rozplatacza."}],
+      "choices": [{"text": "[Odejdź]", "end": true}]
+    },
+    "caught": {
+      "speaker": "Skrzynia Severa",
+      "text": "Wieko skrzypi przeraźliwie. Wszystkie głowy w magazynie odwracają się w twoją stronę.",
+      "choices": [{"text": "[Walcz]", "effects": [{"start_combat": "warehouse"}], "end": true}]
+    },
+    "loot": {
+      "speaker": "Skrzynia Severa",
+      "text": "W skrzyni, pod stertą wyprutych nici, leżą: mosiężny klucz, ciepły jak żywa istota, sakiewka i fiolka z czerwonym płynem.",
+      "choices": [
+        {"text": "Zabierz wszystko.", "if": {"not_flag": "key_obtained"}, "end": true,
+         "effects": [{"give_item": "key_without_door"}, {"set_flag": "key_obtained"}, {"set_flag": "chest_looted"}, {"quest": ["key", "has_key"]}, {"gold": 30}, {"give_item": "potion_healing"}, {"xp": 50}]},
+        {"text": "Zabierz złoto i miksturę.", "if": {"flag": "key_obtained"}, "end": true,
+         "effects": [{"set_flag": "chest_looted"}, {"gold": 30}, {"give_item": "potion_healing"}]}
+      ]
+    },
+    "empty": {
+      "speaker": "Skrzynia Severa",
+      "text": "Pusta. Zostały tylko nitki i rdza.",
+      "choices": [{"text": "[Odejdź]", "end": true}]
+    }
+  }
+}

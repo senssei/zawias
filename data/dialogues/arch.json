@@ -1,0 +1,39 @@
+{
+  "start": "start",
+  "starts": [{"if": {"has_item": "key_without_door"}, "next": "with_key"}],
+  "nodes": {
+    "start": {
+      "speaker": "Łuk bez drzwi",
+      "text": "Kamienny łuk, wyższy od dwóch ludzi, stoi pośrodku targu. Pod nim nie ma niczego, tylko targ widziany z drugiej strony. Kupcy omijają go szerokim łukiem, choć nikt nie pamięta dlaczego.",
+      "choices": [
+        {"text": "Przyjrzyj się runom na kamieniu.", "once": true, "check": {"skill": "arcana", "dc": 10, "success": "runes", "fail": "runes_fail"}},
+        {"text": "[Odejdź]", "end": true}
+      ]
+    },
+    "runes": {
+      "speaker": "Łuk bez drzwi",
+      "text": "Runy nie są zapisem, tylko pytaniem. Łuk czeka na odpowiedź, która jeszcze nie istnieje. W samym środku zwornika widać drobne wgłębienie w kształcie dziurki od klucza.",
+      "effects": [{"set_flag": "knows_arch"}],
+      "choices": [{"text": "[Odejdź]", "end": true}]
+    },
+    "runes_fail": {
+      "speaker": "Łuk bez drzwi",
+      "text": "Runy rozmywają się, kiedy próbujesz się na nich skupić. Boli cię od tego głowa.",
+      "choices": [{"text": "[Odejdź]", "end": true}]
+    },
+    "with_key": {
+      "speaker": "Łuk bez drzwi",
+      "text": "Klucz w twojej dłoni robi się gorący. Jego zęby obracają się, nieruchomieją i wskazują na zwornik łuku. Powietrze pod łukiem drży jak tafla wody.",
+      "choices": [
+        {"text": "Unieś klucz i przekręć go w powietrzu pod łukiem.", "next": "portal"},
+        {"text": "Jeszcze nie.", "end": true}
+      ]
+    },
+    "portal": {
+      "speaker": "Łuk bez drzwi",
+      "text": "Klucz obraca się w pustce i coś się zatrzaskuje. Pod łukiem pojawiają się drzwi, które jeszcze przed chwilą nie istniały. Są zrobione z twojej opowieści. Uchylają się, a zza nich wieje wiatr pachnący miejscem, którego nie zna żaden atlas planów.",
+      "effects": [{"quest": ["key", "done_portal"]}, {"xp": 300}, {"journal": "Otworzyłem drzwi, które nie istniały. Zawias nigdy już nie będzie taki sam."}, {"end_game": "portal"}],
+      "choices": [{"text": "[Przekrocz próg]", "end": true}]
+    }
+  }
+}

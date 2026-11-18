@@ -1,0 +1,3 @@
+arch: a free-standing weathered stone arch with no door, faintly glowing violet runes, a planar portal waiting for the right key
+chest: Sever's iron-bound wooden chest with a heavy brass lock and rust stains
+door: a narrow reinforced back door of a warehouse, dark wood with rusty iron bands and a small barred window

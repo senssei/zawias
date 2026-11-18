@@ -1,0 +1,7 @@
+{
+  "leather":        {"name": "Skórzana zbroja",       "type": "light",  "base": 11, "dex_max": -1},
+  "studded_leather":{"name": "Ćwiekowana skórznia",   "type": "light",  "base": 12, "dex_max": -1},
+  "chain_shirt":    {"name": "Koszulka kolcza",       "type": "medium", "base": 13, "dex_max": 2},
+  "scale_mail":     {"name": "Zbroja łuskowa",        "type": "medium", "base": 14, "dex_max": 2, "stealth_disadvantage": true},
+  "chain_mail":     {"name": "Kolczuga",              "type": "heavy",  "base": 16, "dex_max": 0, "str_req": 13, "stealth_disadvantage": true}
+}

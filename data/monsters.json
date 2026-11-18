@@ -1,0 +1,26 @@
+{
+  "bandit":   {"name": "Bandyta", "cr": "1/8", "xp": 25, "ac": 12, "hp": "2d8+2", "speed": 30, "pb": 2,
+               "scores": {"str": 11, "dex": 12, "con": 12, "int": 10, "wis": 10, "cha": 10},
+               "attacks": [
+                 {"name": "Sejmitar", "bonus": 3, "damage": "1d6+1", "type": "slashing", "reach": 1},
+                 {"name": "Lekka kusza", "bonus": 3, "damage": "1d8+1", "type": "piercing", "range": 16, "long_range": 64}
+               ]},
+  "cultist":  {"name": "Kultysta Rozplataczy", "cr": "1/8", "xp": 25, "ac": 12, "hp": "2d8", "speed": 30, "pb": 2,
+               "scores": {"str": 11, "dex": 12, "con": 10, "int": 10, "wis": 11, "cha": 10},
+               "saves": ["wis"],
+               "attacks": [
+                 {"name": "Rytualny sierp", "bonus": 3, "damage": "1d4+1", "type": "slashing", "reach": 1, "extra": "1d4", "extra_type": "necrotic"}
+               ]},
+  "rust_mephit": {"name": "Mefit Rdzy", "cr": "1/2", "xp": 100, "ac": 12, "hp": "5d6", "speed": 30, "pb": 2,
+               "scores": {"str": 5, "dex": 14, "con": 10, "int": 9, "wis": 11, "cha": 10},
+               "vulnerabilities": ["fire"], "immunities": ["poison"], "condition_immunities": ["poisoned"],
+               "tags": ["no_sleep"],
+               "attacks": [
+                 {"name": "Pazur", "bonus": 4, "damage": "1d4+2", "type": "slashing", "reach": 1},
+                 {"name": "Oddech rdzy", "special": "breath", "save": "dex", "dc": 10, "condition": "blinded", "rounds": 1, "recharge": 6, "range": 3,
+                  "damage": "", "desc": "Chmura rdzawego pyłu. Cel, który nie zda rzutu obronnego na Zręczność (ST 10), zostaje oślepiony."}
+               ]},
+  "guard":    {"name": "Strażnik", "cr": "1/8", "xp": 25, "ac": 16, "hp": "2d8+2", "speed": 30, "pb": 2,
+               "scores": {"str": 13, "dex": 12, "con": 12, "int": 10, "wis": 11, "cha": 10},
+               "attacks": [{"name": "Włócznia", "bonus": 3, "damage": "1d6+1", "type": "piercing", "reach": 1}]}
+}

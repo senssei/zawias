@@ -1,0 +1,388 @@
+{
+  "fighter": {
+    "name": "Wojownik",
+    "hit_die": 10,
+    "primary": [
+      "str",
+      "dex"
+    ],
+    "saves": [
+      "str",
+      "con"
+    ],
+    "desc": "Mistrz broni i pancerza. Wytrzymały, z bogatym wyborem taktyk.",
+    "skill_choices": {
+      "count": 2,
+      "from": [
+        "acrobatics",
+        "animal_handling",
+        "athletics",
+        "history",
+        "insight",
+        "intimidation",
+        "persuasion",
+        "perception",
+        "survival"
+      ]
+    },
+    "armor": [
+      "light",
+      "medium",
+      "heavy",
+      "shield"
+    ],
+    "weapons": [
+      "simple",
+      "martial"
+    ],
+    "mastery_count": 3,
+    "starting": {
+      "armor": "chain_mail",
+      "shield": true,
+      "weapons": [
+        "longsword",
+        "light_crossbow",
+        "handaxe"
+      ],
+      "items": [
+        "potion_healing",
+        "potion_healing"
+      ],
+      "gold": 15
+    },
+    "choice": {
+      "id": "fighting_style",
+      "label": "Styl walki",
+      "options": {
+        "defense": {
+          "name": "Obrona",
+          "desc": "+1 KP w zbroi."
+        },
+        "dueling": {
+          "name": "Pojedynek",
+          "desc": "+2 do obrażeń bronią jednoręczną bez drugiej broni."
+        },
+        "archery": {
+          "name": "Łucznictwo",
+          "desc": "+2 do trafienia bronią dystansową."
+        },
+        "great_weapon": {
+          "name": "Broń dwuręczna",
+          "desc": "Wyniki 1-2 na kościach obrażeń liczą się jako 3."
+        }
+      }
+    },
+    "features_by_level": {
+      "1": [
+        "fighting_style",
+        "second_wind",
+        "weapon_mastery"
+      ],
+      "2": [
+        "action_surge",
+        "tactical_mind"
+      ],
+      "3": []
+    },
+    "resources": {
+      "second_wind": {
+        "max": [
+          2,
+          2,
+          2
+        ],
+        "recharge": "long",
+        "short_regain": 1
+      },
+      "action_surge": {
+        "max": [
+          0,
+          1,
+          1
+        ],
+        "recharge": "short"
+      }
+    },
+    "subclass": "champion"
+  },
+  "rogue": {
+    "name": "Łotrzyk",
+    "hit_die": 8,
+    "primary": [
+      "dex"
+    ],
+    "saves": [
+      "dex",
+      "int"
+    ],
+    "desc": "Cień z nożem. Atak z zaskoczenia, ekspertyza i nieuchwytność.",
+    "skill_choices": {
+      "count": 4,
+      "from": [
+        "acrobatics",
+        "athletics",
+        "deception",
+        "insight",
+        "intimidation",
+        "investigation",
+        "perception",
+        "persuasion",
+        "sleight_of_hand",
+        "stealth"
+      ]
+    },
+    "expertise_count": 2,
+    "armor": [
+      "light"
+    ],
+    "weapons": [
+      "simple",
+      "martial_finesse_light"
+    ],
+    "mastery_count": 2,
+    "starting": {
+      "armor": "leather",
+      "shield": false,
+      "weapons": [
+        "shortsword",
+        "shortbow",
+        "dagger"
+      ],
+      "items": [
+        "thieves_tools",
+        "potion_healing",
+        "potion_healing"
+      ],
+      "gold": 18
+    },
+    "features_by_level": {
+      "1": [
+        "expertise",
+        "sneak_attack",
+        "thieves_cant",
+        "weapon_mastery"
+      ],
+      "2": [
+        "cunning_action"
+      ],
+      "3": [
+        "steady_aim"
+      ]
+    },
+    "resources": {},
+    "subclass": "thief"
+  },
+  "wizard": {
+    "name": "Czarodziej",
+    "hit_die": 6,
+    "primary": [
+      "int"
+    ],
+    "saves": [
+      "int",
+      "wis"
+    ],
+    "desc": "Uczony arkanów z księgą zaklęć. Kruchy, ale zmienia przebieg walki.",
+    "skill_choices": {
+      "count": 2,
+      "from": [
+        "arcana",
+        "history",
+        "insight",
+        "investigation",
+        "medicine",
+        "nature",
+        "religion"
+      ]
+    },
+    "armor": [],
+    "weapons": [
+      "simple"
+    ],
+    "mastery_count": 0,
+    "spellcasting": "int",
+    "cantrips": [
+      "fire_bolt",
+      "ray_of_frost",
+      "prestidigitation"
+    ],
+    "spells": [
+      "magic_missile",
+      "shield",
+      "sleep",
+      "burning_hands"
+    ],
+    "starting": {
+      "armor": "",
+      "shield": false,
+      "weapons": [
+        "quarterstaff",
+        "dagger"
+      ],
+      "items": [
+        "potion_healing",
+        "potion_healing"
+      ],
+      "gold": 20
+    },
+    "features_by_level": {
+      "1": [
+        "spellcasting",
+        "ritual_adept",
+        "arcane_recovery"
+      ],
+      "2": [
+        "scholar"
+      ],
+      "3": []
+    },
+    "slots_by_level": {
+      "1": {
+        "1": 2
+      },
+      "2": {
+        "1": 3
+      },
+      "3": {
+        "1": 4,
+        "2": 2
+      }
+    },
+    "resources": {
+      "arcane_recovery": {
+        "max": [
+          1,
+          1,
+          1
+        ],
+        "recharge": "long"
+      }
+    },
+    "subclass": "evoker",
+    "spell_list": [
+      "magic_missile",
+      "shield",
+      "sleep",
+      "burning_hands",
+      "thunderwave",
+      "chromatic_orb",
+      "shatter",
+      "hold_person"
+    ],
+    "spells_per_level": 2
+  },
+  "cleric": {
+    "name": "Kapłan",
+    "hit_die": 8,
+    "primary": [
+      "wis"
+    ],
+    "saves": [
+      "wis",
+      "cha"
+    ],
+    "desc": "Naczynie wiary. W mieście, gdzie przekonania kształtują świat, to potężna broń.",
+    "skill_choices": {
+      "count": 2,
+      "from": [
+        "history",
+        "insight",
+        "medicine",
+        "persuasion",
+        "religion"
+      ]
+    },
+    "armor": [
+      "light",
+      "medium",
+      "shield"
+    ],
+    "weapons": [
+      "simple"
+    ],
+    "mastery_count": 0,
+    "spellcasting": "wis",
+    "cantrips": [
+      "sacred_flame",
+      "thaumaturgy",
+      "light"
+    ],
+    "spells": [
+      "cure_wounds",
+      "guiding_bolt",
+      "healing_word",
+      "bless"
+    ],
+    "starting": {
+      "armor": "scale_mail",
+      "shield": true,
+      "weapons": [
+        "mace",
+        "light_crossbow"
+      ],
+      "items": [
+        "potion_healing",
+        "potion_healing"
+      ],
+      "gold": 12
+    },
+    "choice": {
+      "id": "divine_order",
+      "label": "Boski porządek",
+      "options": {
+        "protector": {
+          "name": "Obrońca",
+          "desc": "Biegłość w ciężkich zbrojach i broni żołnierskiej. Startujesz w kolczudze."
+        },
+        "thaumaturge": {
+          "name": "Cudotwórca",
+          "desc": "Dodatkowa sztuczka. Do testów Wiedzy Tajemnej i Religii dodajesz modyfikator z Mądrości."
+        }
+      }
+    },
+    "features_by_level": {
+      "1": [
+        "spellcasting",
+        "divine_order"
+      ],
+      "2": [
+        "channel_divinity",
+        "divine_spark"
+      ],
+      "3": []
+    },
+    "slots_by_level": {
+      "1": {
+        "1": 2
+      },
+      "2": {
+        "1": 3
+      },
+      "3": {
+        "1": 4,
+        "2": 2
+      }
+    },
+    "resources": {
+      "channel_divinity": {
+        "max": [
+          0,
+          2,
+          2
+        ],
+        "recharge": "long",
+        "short_regain": 1
+      }
+    },
+    "subclass": "life",
+    "spell_list": [
+      "cure_wounds",
+      "guiding_bolt",
+      "healing_word",
+      "bless",
+      "inflict_wounds",
+      "hold_person"
+    ],
+    "spells_per_level": 1
+  }
+}

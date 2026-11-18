@@ -1,0 +1,18 @@
+{
+  "club":          {"name": "Pałka",          "category": "simple",  "damage": "1d4",  "type": "bludgeoning", "properties": ["light"], "mastery": "slow"},
+  "dagger":        {"name": "Sztylet",        "category": "simple",  "damage": "1d4",  "type": "piercing",    "properties": ["finesse", "light", "thrown"], "range": 4, "long_range": 12, "mastery": "nick"},
+  "handaxe":       {"name": "Toporek",        "category": "simple",  "damage": "1d6",  "type": "slashing",    "properties": ["light", "thrown"], "range": 4, "long_range": 12, "mastery": "vex"},
+  "mace":          {"name": "Buzdygan",       "category": "simple",  "damage": "1d6",  "type": "bludgeoning", "properties": [], "mastery": "sap"},
+  "quarterstaff":  {"name": "Kostur",         "category": "simple",  "damage": "1d6",  "type": "bludgeoning", "properties": ["versatile"], "versatile": "1d8", "mastery": "topple"},
+  "sickle":        {"name": "Sierp",          "category": "simple",  "damage": "1d4",  "type": "slashing",    "properties": ["light"], "mastery": "nick"},
+  "spear":         {"name": "Włócznia",       "category": "simple",  "damage": "1d6",  "type": "piercing",    "properties": ["thrown", "versatile"], "versatile": "1d8", "range": 4, "long_range": 12, "mastery": "sap"},
+  "light_crossbow":{"name": "Lekka kusza",    "category": "simple",  "damage": "1d8",  "type": "piercing",    "properties": ["ammunition", "loading", "two_handed", "ranged"], "range": 16, "long_range": 64, "mastery": "slow"},
+  "shortbow":      {"name": "Krótki łuk",     "category": "simple",  "damage": "1d6",  "type": "piercing",    "properties": ["ammunition", "two_handed", "ranged"], "range": 16, "long_range": 64, "mastery": "vex"},
+  "greatsword":    {"name": "Miecz dwuręczny","category": "martial", "damage": "2d6",  "type": "slashing",    "properties": ["heavy", "two_handed"], "mastery": "graze"},
+  "longsword":     {"name": "Długi miecz",    "category": "martial", "damage": "1d8",  "type": "slashing",    "properties": ["versatile"], "versatile": "1d10", "mastery": "sap"},
+  "rapier":        {"name": "Rapier",         "category": "martial", "damage": "1d8",  "type": "piercing",    "properties": ["finesse"], "mastery": "vex"},
+  "scimitar":      {"name": "Sejmitar",       "category": "martial", "damage": "1d6",  "type": "slashing",    "properties": ["finesse", "light"], "mastery": "nick"},
+  "shortsword":    {"name": "Krótki miecz",   "category": "martial", "damage": "1d6",  "type": "piercing",    "properties": ["finesse", "light"], "mastery": "vex"},
+  "warhammer":     {"name": "Młot bojowy",    "category": "martial", "damage": "1d8",  "type": "bludgeoning", "properties": ["versatile"], "versatile": "1d10", "mastery": "push"},
+  "unarmed":       {"name": "Cios bez broni", "category": "simple",  "damage": "1",    "type": "bludgeoning", "properties": [], "mastery": ""}
+}

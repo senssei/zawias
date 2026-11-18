@@ -1,0 +1,5 @@
+# Muzyka Rdzawego Targu. Format: id [sekundy] [loop] bpm=.. key=.. : tagi stylu (ACE-Step 1.5, instrumentalnie)
+explore [150] [loop] bpm=84 key=D minor: dark fantasy RPG exploration theme, mysterious planar city market, hurdy-gurdy, hammered dulcimer, low cello drone, soft frame drum, distant bells, atmospheric, melancholic, slow, instrumental, cinematic game soundtrack
+combat [120] [loop] bpm=132 key=E minor: tense fantasy RPG battle music, taiko drums, low brass stabs, driving staccato strings, dissonant choir pad, metallic percussion, urgent, instrumental, cinematic game soundtrack
+ending [70] bpm=70 key=A minor: bittersweet fantasy RPG ending theme, solo cello melody, harp arpeggios, warm string ensemble, soft choir, hopeful resolution, instrumental, cinematic game soundtrack
+title [90] [loop] bpm=76 key=D minor: epic mysterious fantasy main menu theme, planar city of doors, deep strings, hurdy-gurdy melody, boys choir, slow timpani, awe, instrumental, cinematic game soundtrack

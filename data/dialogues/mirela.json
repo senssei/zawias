@@ -1,0 +1,385 @@
+{
+ "start": "start",
+ "starts": [
+  {
+   "if": {
+    "quest_any": [
+     "key",
+     [
+      "done_returned",
+      "done_portal"
+     ]
+    ]
+   },
+   "next": "done"
+  },
+  {
+   "if": {
+    "flag": "kept_key"
+   },
+   "next": "kept"
+  },
+  {
+   "if": {
+    "has_item": "key_without_door"
+   },
+   "next": "return"
+  },
+  {
+   "if": {
+    "quest_any": [
+     "key",
+     [
+      "started",
+      "lead_warehouse"
+     ]
+    ]
+   },
+   "next": "progress"
+  }
+ ],
+ "nodes": {
+  "start": {
+   "speaker": "Mirela",
+   "text": "Kobieta o palcach poczerniałych od mosiądzu przekłada klucze z kupki na kupkę, jakby chciała się czymś zająć. Na jej szyi wisi ich chyba sto. „Nie kupujesz? To nie zawracaj mi… Zaraz. Masz twarz kogoś, kto nie boi się zaułków”.",
+   "choices": [
+    {
+     "text": "Co się stało?",
+     "next": "theft"
+    },
+    {
+     "text": "Tylko się rozglądam.",
+     "end": true
+    }
+   ]
+  },
+  "theft": {
+   "speaker": "Mirela",
+   "text": "„Ktoś ukradł Klucz bez drzwi. Z mojej gabloty, spod trzech zamków, które sama wykułam! Zostawili tylko rdzawy pył na aksamicie”.",
+   "choices": [
+    {
+     "text": "Klucz bez drzwi? Co to takiego?",
+     "next": "what_key"
+    },
+    {
+     "text": "Pomogę ci go odzyskać.",
+     "next": "accept"
+    },
+    {
+     "text": "A co ja z tego będę miał?",
+     "next": "reward"
+    }
+   ]
+  },
+  "what_key": {
+   "speaker": "Mirela",
+   "text": "„W Zawiasie każdy klucz to obietnica: gdzieś są drzwi, które otworzy. Ten jest obietnicą bez adresu. Nie pasuje do żadnego zamka, jaki znam, a znam wszystkie. Ale żyje. Jest ciepły. Szuka”.",
+   "choices": [
+    {
+     "text": "Pomogę ci.",
+     "next": "accept"
+    },
+    {
+     "text": "A co ja z tego będę miał?",
+     "next": "reward"
+    }
+   ]
+  },
+  "reward": {
+   "speaker": "Mirela",
+   "text": "„Sto sztuk złota. Uczciwie, jak na targ”.",
+   "choices": [
+    {
+     "text": "Umowa stoi.",
+     "next": "accept"
+    },
+    {
+     "text": "Ryzykuję skórę za klucz, który „żyje”. Sto pięćdziesiąt.",
+     "once": true,
+     "check": {
+      "skill": "persuasion",
+      "dc": 14,
+      "success": "reward_plus",
+      "fail": "reward_no"
+     }
+    }
+   ]
+  },
+  "reward_plus": {
+   "speaker": "Mirela",
+   "text": "Mirela zaciska wargi i przez chwilę liczy coś na palcach. „Sto pięćdziesiąt. Ale ani miedziaka więcej”.",
+   "effects": [
+    {
+     "set_flag": "reward_plus"
+    }
+   ],
+   "choices": [
+    {
+     "text": "Biorę się do roboty.",
+     "next": "accept"
+    }
+   ]
+  },
+  "reward_no": {
+   "speaker": "Mirela",
+   "text": "„Sto. Albo znajdę kogoś tańszego, a tacy kręcą się tu na każdym rogu”.",
+   "choices": [
+    {
+     "text": "Dobrze, sto.",
+     "next": "accept"
+    }
+   ]
+  },
+  "accept": {
+   "speaker": "Mirela",
+   "text": "„Weź to”. Wciska ci do ręki fiolkę z czerwonym płynem. „Popytaj na targu. Kwit z Kancelarii wie wszystko, ale każe sobie płacić. Pchła, ten mały spod wschodniego zaułka, widzi wszystko. A Lis z Archiwum Echa zna każdą opowieść o kluczach”.",
+   "effects": [
+    {
+     "quest": [
+      "key",
+      "started"
+     ]
+    },
+    {
+     "give_item": "potion_healing"
+    },
+    {
+     "journal": "Mirela poprosiła mnie o odzyskanie Klucza bez drzwi. Mam popytać Kwita, Pchłę i Lis."
+    }
+   ],
+   "choices": [
+    {
+     "text": "Wrócę z kluczem.",
+     "end": true
+    }
+   ]
+  },
+  "progress": {
+   "speaker": "Mirela",
+   "text": "„I co? Masz go? Nie? To czemu stoisz tu zamiast szukać?”",
+   "choices": [
+    {
+     "text": "Kogo miałem popytać?",
+     "next": "hints"
+    },
+    {
+     "text": "Już idę.",
+     "end": true
+    }
+   ]
+  },
+  "hints": {
+   "speaker": "Mirela",
+   "text": "„Kwita z Kancelarii Zapisanych na zachodzie. Pchłę pod wschodnim zaułkiem. Lis z Archiwum Echa na południu. Rdzawy pył… Ktoś, kto zostawia rdzę, chce, żeby wszystko się rozpadło”.",
+   "choices": [
+    {
+     "text": "Dzięki.",
+     "end": true
+    }
+   ]
+  },
+  "return": {
+   "speaker": "Mirela",
+   "text": "Mirela zamiera, kiedy widzi klucz w twojej dłoni. Jego zęby poruszają się powoli, jakby czegoś szukały. „Masz go… Oddaj. Proszę”.",
+   "choices": [
+    {
+     "text": "Oto twój klucz.",
+     "if": {
+      "not_flag": "reward_plus"
+     },
+     "next": "returned",
+     "effects": [
+      {
+       "take_item": "key_without_door"
+      },
+      {
+       "gold": 100
+      }
+     ]
+    },
+    {
+     "text": "Oto twój klucz. Sto pięćdziesiąt, jak się umawialiśmy.",
+     "if": {
+      "flag": "reward_plus"
+     },
+     "next": "returned",
+     "effects": [
+      {
+       "take_item": "key_without_door"
+      },
+      {
+       "gold": 150
+      }
+     ]
+    },
+    {
+     "text": "Najpierw powiedz mi, co on naprawdę otwiera.",
+     "once": true,
+     "check": {
+      "skill": "arcana",
+      "dc": 14,
+      "adv_if": {
+       "flag": "knows_key_nature"
+      },
+      "success": "truth",
+      "fail": "truth_fail"
+     }
+    },
+    {
+     "text": "Jeszcze go zatrzymam.",
+     "end": true
+    }
+   ]
+  },
+  "truth": {
+   "speaker": "Mirela",
+   "text": "Mirela spuszcza wzrok. „Łuk na środku targu. Ten bez drzwi. Stoi tam od zawsze i nic nie otwiera, bo jego drzwi jeszcze nie istnieją. Ten klucz może je… stworzyć. Miałam go sprzedać temu, kto da najwięcej. Kustoszka by mi tego nie wybaczyła, ale złoto to złoto”.",
+   "effects": [
+    {
+     "set_flag": "knows_arch"
+    }
+   ],
+   "choices": [
+    {
+     "text": "Bierz go. To twój problem.",
+     "if": {
+      "not_flag": "reward_plus"
+     },
+     "next": "returned",
+     "effects": [
+      {
+       "take_item": "key_without_door"
+      },
+      {
+       "gold": 100
+      }
+     ]
+    },
+    {
+     "text": "Bierz go. To twój problem.",
+     "if": {
+      "flag": "reward_plus"
+     },
+     "next": "returned",
+     "effects": [
+      {
+       "take_item": "key_without_door"
+      },
+      {
+       "gold": 150
+      }
+     ]
+    },
+    {
+     "text": "Zatrzymam go. Sam zobaczę, co jest za tymi drzwiami.",
+     "next": "keep"
+    }
+   ]
+  },
+  "truth_fail": {
+   "speaker": "Mirela",
+   "text": "„Otwiera to, co ma otworzyć. Jestem kluczarką, a nie filozofką”. Wyciąga rękę.",
+   "choices": [
+    {
+     "text": "Oto twój klucz.",
+     "if": {
+      "not_flag": "reward_plus"
+     },
+     "next": "returned",
+     "effects": [
+      {
+       "take_item": "key_without_door"
+      },
+      {
+       "gold": 100
+      }
+     ]
+    },
+    {
+     "text": "Oto twój klucz.",
+     "if": {
+      "flag": "reward_plus"
+     },
+     "next": "returned",
+     "effects": [
+      {
+       "take_item": "key_without_door"
+      },
+      {
+       "gold": 150
+      }
+     ]
+    },
+    {
+     "text": "Jeszcze go zatrzymam.",
+     "end": true
+    }
+   ]
+  },
+  "keep": {
+   "speaker": "Mirela",
+   "text": "„Ty złodzieju! Ty… Nie. Wiesz co? Idź. Niech drzwi cię wpuszczą i nie wypuszczą”. Odwraca się plecami.",
+   "effects": [
+    {
+     "set_flag": "kept_key"
+    },
+    {
+     "journal": "Zatrzymałem Klucz bez drzwi. Mirela mówi, że pasuje do Łuku na środku targu."
+    }
+   ],
+   "choices": [
+    {
+     "text": "[Odejdź]",
+     "end": true
+    }
+   ]
+  },
+  "returned": {
+   "speaker": "Mirela",
+   "text": "Mirela przyciska klucz do piersi, jakby trzymała dziecko. „Dziękuję. Zawias zapamięta ci tę przysługę. Ja na pewno”.",
+   "effects": [
+    {
+     "quest": [
+      "key",
+      "done_returned"
+     ]
+    },
+    {
+     "xp": 300
+    },
+    {
+     "journal": "Oddałem klucz Mireli. Coś mi jednak mówi, że to nie koniec tej historii."
+    },
+    {
+     "end_game": "returned"
+    }
+   ],
+   "choices": [
+    {
+     "text": "[Odejdź]",
+     "end": true
+    }
+   ]
+  },
+  "kept": {
+   "speaker": "Mirela",
+   "text": "Mirela nawet na ciebie nie patrzy.",
+   "choices": [
+    {
+     "text": "[Odejdź]",
+     "end": true
+    }
+   ]
+  },
+  "done": {
+   "speaker": "Mirela",
+   "text": "„Wróciłeś? Potrzebujesz klucza? Dla ciebie zniżka. Mała”.",
+   "choices": [
+    {
+     "text": "[Odejdź]",
+     "end": true
+    }
+   ]
+  }
+ }
+}

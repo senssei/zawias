@@ -1,0 +1,11 @@
+.godot/
+export/
+.gutconfig.json
+tools/pipeline/work/
+
+# eksport
+build/
+__pycache__/
+*.pyc
+.godotlauncher
+dist/

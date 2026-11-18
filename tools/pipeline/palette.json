@@ -1,0 +1,18 @@
+{
+  "_opis": "Stała paleta gry (prep_for_rig.py --palette). Kolory sRGB. Tekstury są ściągane w stronę najbliższych barw (odcień i nasycenie mocno, jasność słabo). Skóra i neutralne są w palecie, żeby twarze i dłonie nie dryfowały w rdzę.",
+  "zawias": {
+    "rdza_ciemna": "#6E2C17",
+    "rdza": "#A8481F",
+    "rdza_jasna": "#C9733A",
+    "mosiadz": "#A9843A",
+    "mosiadz_jasny": "#D8C07A",
+    "fiolet_gleboki": "#35193F",
+    "fiolet": "#653C78",
+    "lawenda": "#A08BB3",
+    "sniedz": "#4E8682",
+    "skora_garbowana": "#5A3A28",
+    "skora_ciala": "#C49478",
+    "kosc": "#D6C9AE",
+    "sadza": "#2A2524"
+  }
+}

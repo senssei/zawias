@@ -1,0 +1,50 @@
+{
+  "start": "start",
+  "starts": [{"if": {"flag": "key_obtained"}, "next": "after"}],
+  "nodes": {
+    "start": {
+      "speaker": "Sever",
+      "text": "Na skrzyni siedzi wysoki mężczyzna o twarzy pokrytej siatką drobnych pęknięć, jak stara porcelana. Między palcami przesypuje rdzawy pył. „Przyszedłeś po klucz. Wiesz, czym on jest? Obietnicą. A obietnica to kłamstwo, które jeszcze nie zgniło”.",
+      "choices": [
+        {"text": "Dlaczego chcecie go zniszczyć?", "next": "why"},
+        {"text": "Klucz bez drzwi to możliwość, która może się nigdy nie spełnić. To przecież czysta entropia, rozpad, który już trwa. Zniszczenie go niczego nie rozplata, tylko kończy.", "once": true,
+         "check": {"skill": "persuasion", "dc": 15, "adv_if": {"flag": "knows_key_nature"}, "success": "convinced", "fail": "angry"}},
+        {"text": "Nawet bogowie umierają, Severze. Pozwól, żeby klucz rozpadł się sam, w czyichś rękach. Tak będzie prawdziwiej.", "once": true,
+         "check": {"skill": "religion", "dc": 14, "success": "convinced", "fail": "angry"}},
+        {"text": "Oddaj klucz albo osobiście rozplotę każdy twój pęknięty kawałek.", "once": true,
+         "check": {"skill": "intimidation", "dc": 16, "success": "scared", "fail": "angry"}},
+        {"text": "Dość gadania.", "next": "angry"},
+        {"text": "Wyjdę już.", "end": true}
+      ]
+    },
+    "why": {
+      "speaker": "Sever",
+      "text": "„Wszystko się rozpada: gwiazdy, plany, bogowie. To nie tragedia, to uczciwość wszechświata. Ale ten klucz udaje, że może coś zacząć. Otworzyć drzwi, których nie ma. To kłamstwo, i to najgorsze, bo daje nadzieję. Rozplączemy je”.",
+      "choices": [{"text": "Rozumiem twój punkt widzenia.", "next": "start"}]
+    },
+    "convinced": {
+      "speaker": "Sever",
+      "text": "Sever milknie. Pył przestaje sypać mu się z palców. Potem śmieje się sucho, jakby coś w nim pękło. „Możliwość, która gnije, zanim się narodzi… Masz rację. Niech sam się rozpadnie”. Rzuca ci klucz. „Weź go. Patrz, jak umiera”.",
+      "effects": [{"give_item": "key_without_door"}, {"set_flag": "key_obtained"}, {"set_flag": "sever_convinced"}, {"quest": ["key", "has_key"]}, {"xp": 150},
+                  {"journal": "Przekonałem Severa, a on oddał mi klucz bez walki."}],
+      "choices": [{"text": "[Weź klucz]", "end": true}]
+    },
+    "scared": {
+      "speaker": "Sever",
+      "text": "Pęknięcia na twarzy Severa ciemnieją. „Strach to też rozpad. Interesujące”. Rzuca ci klucz. „Bierz. I tak wróci do pyłu”.",
+      "effects": [{"give_item": "key_without_door"}, {"set_flag": "key_obtained"}, {"quest": ["key", "has_key"]}, {"xp": 150},
+                  {"journal": "Zastraszyłem Severa i oddał mi klucz."}],
+      "choices": [{"text": "[Weź klucz]", "end": true}]
+    },
+    "angry": {
+      "speaker": "Sever",
+      "text": "Sever wstaje. „Słowa też się rozpadają”. Wyciąga dłoń, a powietrze za nim pęka jak szkło. „Rozplećcie go”.",
+      "choices": [{"text": "[Walcz]", "effects": [{"start_combat": "warehouse"}], "end": true}]
+    },
+    "after": {
+      "speaker": "Sever",
+      "text": "„Idź już. Nie przeszkadzaj mi w rozpadaniu się”.",
+      "choices": [{"text": "[Odejdź]", "end": true}]
+    }
+  }
+}

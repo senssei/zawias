@@ -1,0 +1,6 @@
+{
+  "champion": {"name": "Czempion", "class": "fighter", "features_by_level": {"3": ["improved_critical", "remarkable_athlete"]}},
+  "thief":    {"name": "Złodziej", "class": "rogue",   "features_by_level": {"3": ["fast_hands", "second_story_work"]}},
+  "evoker":   {"name": "Ewokator", "class": "wizard",  "features_by_level": {"3": ["evocation_savant", "potent_cantrip"]}},
+  "life":     {"name": "Domena Życia", "class": "cleric", "features_by_level": {"3": ["disciple_of_life", "preserve_life", "life_domain_spells"]}, "domain_spells": ["bless", "cure_wounds"]}
+}

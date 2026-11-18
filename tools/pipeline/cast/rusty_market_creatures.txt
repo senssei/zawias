@@ -1,0 +1,2 @@
+# Stwory bez szkieletu humanoidalnego (model jako rekwizyt, animacja proceduralna w grze). Format jak props: id [wysokość]: opis
+rust_mephit [0.8]: a small rust mephit, an impish flying elemental creature made of flaking orange rust and corroded iron, bat-like tattered metal wings spread wide, hunched body with thin clawed arms and legs tucked in, glowing ember eyes, mischievous grin, small spiky tail

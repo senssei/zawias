@@ -1,0 +1,8 @@
+# Rekwizyty Rdzawego Targu. Format: id [wysokość w m]: opis. Wynik: assets/props/<id>.glb
+stall [2.3]: a small wooden market stall with a slanted striped canvas awning in faded rust red and mustard, a counter stacked with brass keys, locks and trinkets, carved wooden posts
+crate [0.8]: a sturdy wooden shipping crate reinforced with rusty iron bands and corner plates, stencilled faded markings
+lamp [2.6]: a wrought iron street lamp post with an ornate art nouveau brass lantern on top glowing warm orange, rusty patina
+arch [3.2]: a freestanding ancient stone archway with no door, weathered pale stone covered in strange carved runes, a keyhole-shaped recess in the keystone, faint violet glow between the pillars
+chest [0.7]: a heavy iron-bound wooden treasure chest, rust-covered metal bands, a tangle of frayed threads hanging from the lid, closed
+door [2.3]: a rusted iron-reinforced wooden back door set in a narrow stone frame, heavy old padlock, scratches
+barrel [1.0]: an old wooden barrel with rusty iron hoops, slightly dented, stained

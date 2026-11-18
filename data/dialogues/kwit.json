@@ -1,0 +1,64 @@
+{
+  "start": "start",
+  "nodes": {
+    "start": {
+      "speaker": "Kwit",
+      "text": "Chudy mężczyzna w szarym surducie pisze coś bez przerwy, nawet kiedy na ciebie patrzy. Pióro skrzypi. „Kwit, notariusz Zapisanych. Każda rozmowa to umowa, a umowa ma cenę. Czym mogę służyć?”",
+      "choices": [
+        {"text": "Mirelę okradziono. Co o tym wiesz?", "if": {"quest": ["key", "started"]}, "next": "info"},
+        {"text": "Na czym polega wasza filozofia?", "next": "philosophy"},
+        {"text": "Co to za łuk na środku targu?", "next": "arch"},
+        {"text": "Nic. Do widzenia.", "end": true}
+      ]
+    },
+    "info": {
+      "speaker": "Kwit",
+      "text": "„Wiem. Informacja jest towarem, a towar ma cenę. Dziesięć sztuk złota”.",
+      "effects": [{"set_flag": "asked_about_key"}],
+      "choices": [
+        {"text": "Proszę, dziesięć sztuk.", "if": {"gold": 10}, "next": "lead", "effects": [{"gold": -10}]},
+        {"text": "Zaproponuję inną umowę: powiem ci, kto zadaje pytania o ciebie.", "once": true, "check": {"skill": "persuasion", "dc": 13, "success": "lead", "fail": "no_deal"}},
+        {"text": "Przysyła mnie Kustoszka. Nie każ jej czekać.", "once": true, "check": {"skill": "deception", "dc": 15, "success": "lead_scared", "fail": "no_deal"}},
+        {"text": "Może później.", "next": "start"}
+      ]
+    },
+    "lead": {
+      "speaker": "Kwit",
+      "text": "Kwit zapisuje coś, odkłada pióro i po raz pierwszy patrzy ci w oczy. „Rdzawy pył zostawiają Rozplatacze. Siedzą w starym magazynie na wschodnim krańcu targu. Ich przywódca, Sever, gada o „rozplataniu obietnic”. Klucz to obietnica. Resztę sobie dopowiedz”.",
+      "effects": [{"quest": ["key", "lead_warehouse"]}, {"xp": 50}, {"journal": "Kwit twierdzi, że za kradzieżą stoją Rozplatacze z magazynu na wschodzie i ich przywódca Sever."}],
+      "choices": [{"text": "Dziękuję.", "next": "start"}]
+    },
+    "lead_scared": {
+      "speaker": "Kwit",
+      "text": "Pióro wypada mu z palców. „Ja… oczywiście. Rozplatacze. Stary magazyn na wschodzie. Sever. Proszę przekazać Kustoszce, że Zapisani zawsze współpracują”.",
+      "effects": [{"quest": ["key", "lead_warehouse"]}, {"xp": 50}, {"give_item": "kwit_contract"}, {"journal": "Kwit, przekonany, że przysyła mnie Kustoszka, wskazał magazyn Rozplataczy. Dał mi też kontrakt Zapisanych."}],
+      "choices": [{"text": "Przekażę.", "next": "start"}]
+    },
+    "no_deal": {
+      "speaker": "Kwit",
+      "text": "„Nie”. Pióro znów skrzypi. „Dziesięć sztuk albo do widzenia”.",
+      "choices": [
+        {"text": "Proszę, dziesięć sztuk.", "if": {"gold": 10}, "next": "lead", "effects": [{"gold": -10}]},
+        {"text": "Do widzenia.", "end": true}
+      ]
+    },
+    "philosophy": {
+      "speaker": "Kwit",
+      "text": "„Rzeczywistość to kontrakt. Grawitacja działa, bo wszyscy się na nią zgodzili. Kiedy wystarczająco wielu ludzi podpisze się pod jakąś prawdą, staje się prawem. My tylko… prowadzimy rejestr”.",
+      "choices": [
+        {"text": "A jeśli ktoś nie podpisze?", "next": "philosophy2"},
+        {"text": "Rozumiem.", "next": "start"}
+      ]
+    },
+    "philosophy2": {
+      "speaker": "Kwit",
+      "text": "Kwit uśmiecha się wąsko. „Wtedy jego prawda waży mniej. A w Zawiasie to, co waży mniej, łatwo zdmuchnąć”.",
+      "choices": [{"text": "Rozumiem.", "next": "start"}]
+    },
+    "arch": {
+      "speaker": "Kwit",
+      "text": "„Łuk bez drzwi. Najstarsza rzecz na targu, starsza od samego targu. Nie mamy go w rejestrze, bo nikt go nie podpisał. To niepokojące”.",
+      "choices": [{"text": "Rozumiem.", "next": "start"}]
+    }
+  }
+}

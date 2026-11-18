@@ -1,0 +1,44 @@
+{
+  "start": "start",
+  "starts": [{"if": {"flag": "front_open"}, "next": "open"}],
+  "nodes": {
+    "start": {
+      "speaker": "Odźwierny",
+      "text": "Mężczyzna w szacie, z której celowo wyprute są nitki, opiera się o drzwi magazynu. Na jego szyi wisi zardzewiała blaszka. „Wszystko się rozpada, przybyszu. Twoje plany też. Czego chcesz?”",
+      "choices": [
+        {"text": "Przychodzę rozmawiać z Severem. O kluczu.", "if": {"quest_any": ["key", ["started", "lead_warehouse"]]}, "once": true,
+         "check": {"skill": "persuasion", "dc": 13, "success": "let_in", "fail": "refuse"}},
+        {"text": "Mam wiadomość dla Severa od kogoś z góry.", "once": true,
+         "check": {"skill": "deception", "dc": 12, "success": "let_in", "fail": "fight_node"}},
+        {"text": "Pokazuję Żeton Rdzy. „Bracia z zaułka przesyłają pozdrowienia”.", "if": {"has_item": "rust_token"}, "once": true,
+         "check": {"skill": "deception", "dc": 8, "success": "let_in", "fail": "fight_node"}},
+        {"text": "Zejdź mi z drogi albo sam cię rozplotę.", "next": "fight_node"},
+        {"text": "Nic. Już idę.", "end": true}
+      ]
+    },
+    "let_in": {
+      "speaker": "Odźwierny",
+      "text": "Odźwierny przygląda ci się długo, potem odsuwa się od drzwi. „Wejdź. Sever lubi ludzi, którzy rozpadają się z ciekawości”.",
+      "effects": [{"set_flag": "front_open"}],
+      "choices": [{"text": "[Wejdź]", "end": true}]
+    },
+    "refuse": {
+      "speaker": "Odźwierny",
+      "text": "„Sever nie rozmawia z obcymi. Odejdź, póki jesteś w jednym kawałku”.",
+      "choices": [
+        {"text": "W takim razie wejdę bez zaproszenia.", "next": "fight_node"},
+        {"text": "[Odejdź]", "end": true}
+      ]
+    },
+    "fight_node": {
+      "speaker": "Odźwierny",
+      "text": "Odźwierny uśmiecha się szeroko, odsłaniając sczerniałe zęby, i wyciąga sierp. „W końcu coś ciekawego”. Zza drzwi dochodzi szuranie.",
+      "choices": [{"text": "[Walcz]", "effects": [{"start_combat": "warehouse"}], "end": true}]
+    },
+    "open": {
+      "speaker": "Odźwierny",
+      "text": "„Sever czeka w środku”.",
+      "choices": [{"text": "[Odejdź]", "end": true}]
+    }
+  }
+}

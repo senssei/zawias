@@ -1,0 +1,10 @@
+{
+  "acolyte":  {"name": "Akolita",   "abilities": ["int", "wis", "cha"], "feat": "magic_initiate_cleric", "skills": ["insight", "religion"],
+               "desc": "Służyłeś w świątyni, której bóg mógł już dawno umrzeć.", "feat_cantrips": ["sacred_flame"], "feat_ability": "wis", "gold": 8},
+  "criminal": {"name": "Przestępca", "abilities": ["dex", "con", "int"], "feat": "alert", "skills": ["sleight_of_hand", "stealth"],
+               "desc": "Znasz zaułki dziesięciu miast i długi w każdym z nich.", "gold": 16},
+  "sage":     {"name": "Mędrzec",   "abilities": ["con", "int", "wis"], "feat": "magic_initiate_wizard", "skills": ["arcana", "history"],
+               "desc": "Lata spędzone w archiwach nauczyły cię, że każda prawda ma przypis.", "feat_cantrips": ["fire_bolt"], "feat_ability": "int", "gold": 8},
+  "soldier":  {"name": "Żołnierz",  "abilities": ["str", "dex", "con"], "feat": "savage_attacker", "skills": ["athletics", "intimidation"],
+               "desc": "Walczyłeś w wojnie, której sensu nikt już nie pamięta.", "gold": 14}
+}

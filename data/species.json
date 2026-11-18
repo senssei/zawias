@@ -1,0 +1,16 @@
+{
+  "human":    {"name": "Człowiek", "speed": 30, "darkvision": 0, "size": "M",
+               "desc": "Ludzie są w Zawiasie najliczniejsi. Każdy przybył tu z innego świata i nikt nie wie, po co.",
+               "features": ["resourceful", "skillful", "versatile"], "extra_skill": 1},
+  "elf":      {"name": "Elf", "speed": 30, "darkvision": 60, "size": "M",
+               "desc": "Pamiętają plany, które już nie istnieją. Nie śpią, tylko medytują w transie.",
+               "features": ["fey_ancestry", "keen_senses", "trance", "elven_lineage"], "skills": ["perception"],
+               "cantrips": ["prestidigitation"], "cantrip_ability": "int", "tags": ["no_sleep"]},
+  "dwarf":    {"name": "Krasnolud", "speed": 30, "darkvision": 120, "size": "M",
+               "desc": "Kują żelazo, które nie rdzewieje nawet tu, i dobrze na tym zarabiają.",
+               "features": ["dwarven_resilience", "dwarven_toughness", "stonecunning"], "resistances": ["poison"]},
+  "tiefling": {"name": "Diabelstwo", "speed": 30, "darkvision": 60, "size": "M",
+               "desc": "W ich krwi płynie dziedzictwo Planów Niższych. W Zawiasie budzą mniej podejrzeń niż gdzie indziej.",
+               "features": ["fiendish_legacy", "otherworldly_presence"], "resistances": ["fire"],
+               "cantrips": ["fire_bolt", "thaumaturgy"], "cantrip_ability": "cha"}
+}

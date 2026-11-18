@@ -1,0 +1,17 @@
+# Obsada Rdzawego Targu. Format: id: opis (po angielsku, trafia do szablonu FLUX.2).
+# id = nazwa pliku w assets/actors (NPC: id z mapy, wrogowie: id potwora, gracz: pc_<klasa>).
+
+mirela: Mirela, a stern middle-aged human locksmith woman, dark hair pulled back in a low bun, small brass hoop earrings, dark red dress under a worn brown leather apron, many brass keys on chains around her neck, soot-blackened hands, sharp suspicious eyes
+hask: Hask, a weathered middle-aged human city guard of the Inscribed faction, grey-blue scale armor with a stamped seal of a hand holding a quill on the breastplate, open-faced steel helmet, short grey beard, stern but tired face
+kwit: Kwit, a thin pale human notary in a long grey frock coat with many pockets, ink-stained fingers, round spectacles, a quill tucked behind his ear, a leather ledger satchel on a strap, thin lips, calculating look
+dorn: Dorn, a burly bald human innkeeper with a thick braided brown beard, rolled-up linen sleeves, stained leather apron over a mustard waistcoat, friendly but shrewd eyes, broad shoulders
+lis: Lis, a slender woman archivist with long hair the color of old paper, layered teal and parchment-colored robes embroidered with tiny drifting letters, ink-blue fingertips, serene distant expression
+pchla: Pchla, a scrawny street urchin boy about thirteen years old in an oversized patched brown coat with rolled cuffs, flat cap, bare scuffed knees, worn-out boots, mischievous grin
+odzwierny: a gaunt male cultist doorkeeper of the Unravelers, dark rust-colored robe with deliberately unravelled fraying threads hanging everywhere, a rusty tin badge on a cord around his neck, sallow skin, blackened teeth in an unsettling grin
+sever: Sever, a tall gaunt leader of the Unravelers whose face and hands are covered in fine dark cracks like old porcelain, long tattered black and rust robes coming apart into threads, rust dust on his shoulders, calm cold eyes
+cultist: a hooded cultist of the Unravelers in a frayed dark red robe with unravelling hems, rusty knotted cord belt, pale face half in shadow of the hood
+bandit [tris=12000]: a rough alley bandit in a patched leather jerkin, hooded dark cloak, scarf pulled over the lower face, bracers and worn trousers, wary eyes
+pc_fighter [tris=12000]: a human fighter adventurer in a chain mail hauberk with a rust-red tabard, leather belt and boots, short dark hair, determined face
+pc_rogue [tris=12000]: a human rogue adventurer in dark fitted leather armor with many small pouches and straps, hooded short cloak pushed back, sharp watchful face
+pc_wizard [tris=12000]: a human wizard adventurer in layered deep violet and brass-trimmed scholar robes, a satchel of scrolls on a strap, neat beard, curious intelligent eyes
+pc_cleric [tris=12000]: a human cleric adventurer in scale mail over pale robes, a brass sun-and-key holy symbol on the chest, short cropped hair, calm resolute face

@@ -1,0 +1,38 @@
+{
+  "blinded": {
+    "name": "Oślepiony",
+    "desc": "Masz utrudnienie w atakach, a ataki na ciebie mają przewagę."
+  },
+  "prone": {
+    "name": "Powalony",
+    "desc": "Masz utrudnienie w atakach. Ataki wręcz na ciebie mają przewagę, a dystansowe utrudnienie."
+  },
+  "poisoned": {
+    "name": "Zatruty",
+    "desc": "Masz utrudnienie w rzutach ataku i testach cech."
+  },
+  "frightened": {
+    "name": "Przestraszony",
+    "desc": "Masz utrudnienie w atakach i testach."
+  },
+  "restrained": {
+    "name": "Unieruchomiony",
+    "desc": "Szybkość 0. Masz utrudnienie w atakach, a ataki na ciebie mają przewagę."
+  },
+  "grappled": {
+    "name": "Pochwycony",
+    "desc": "Szybkość 0."
+  },
+  "incapacitated": {
+    "name": "Obezwładniony",
+    "desc": "Nie możesz wykonywać akcji ani reakcji."
+  },
+  "unconscious": {
+    "name": "Nieprzytomny",
+    "desc": "Jesteś obezwładniony i powalony. Ataki na ciebie mają przewagę, a trafienie wręcz z bliska jest krytyczne."
+  },
+  "paralyzed": {
+    "name": "Sparaliżowany",
+    "desc": "Jesteś obezwładniony i nie możesz się ruszać ani mówić. Ataki na ciebie mają przewagę, a trafienie wręcz z bliska jest krytyczne. Automatycznie oblewasz rzuty na Siłę i Zręczność."
+  }
+}

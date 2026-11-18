@@ -1,0 +1,45 @@
+{
+  "start": "start",
+  "nodes": {
+    "start": {
+      "speaker": "Lis",
+      "text": "Kobieta o włosach koloru starego papieru siedzi na schodach Archiwum z otwartą księgą na kolanach. Litery na stronach poruszają się jak mrówki. „Każdy, kto tu przychodzi, przynosi opowieść. Jaka jest twoja?”",
+      "choices": [
+        {"text": "Kim jesteście, Echo?", "next": "echo"},
+        {"text": "Szukam skradzionego klucza. Klucza bez drzwi.", "if": {"quest_any": ["key", ["started", "lead_warehouse"]]}, "next": "key"},
+        {"text": "Pozwól mi zajrzeć do zapisów o tym kluczu.", "once": true, "if": {"quest_any": ["key", ["started", "lead_warehouse"]]},
+         "check": {"skill": "arcana", "dc": 12, "success": "arcana_ok", "fail": "arcana_fail"}},
+        {"text": "Chcesz opowieści? Opowiem ci, skąd przybyłem.", "once": true, "next": "story"},
+        {"text": "Do zobaczenia.", "end": true}
+      ]
+    },
+    "echo": {
+      "speaker": "Lis",
+      "text": "„Tożsamość to opowieść, którą o sobie snujesz. Zmień opowieść, a zmienisz siebie. Ukradnij komuś opowieść, a ukradniesz jego samego. My je zbieramy i przechowujemy, żeby nikt ich nie zgubił… i żeby nikt ich nie ukradł”.",
+      "choices": [{"text": "Niepokojące.", "next": "start"}]
+    },
+    "key": {
+      "speaker": "Lis",
+      "text": "„Ach, Klucz bez drzwi. Piękna opowieść, wciąż niedokończona. Rozplatacze chcą ją przerwać. Wierzą, że niespełnione obietnice to najgorszy rodzaj kłamstwa i że trzeba je rozpleść. Ich gniazdo jest w starym magazynie na wschodzie”.",
+      "effects": [{"set_flag": "asked_about_key"}, {"quest": ["key", "lead_warehouse"]}, {"journal": "Lis z Archiwum Echa mówi, że Rozplatacze chcą zniszczyć klucz. Siedzą w starym magazynie."}],
+      "choices": [{"text": "Dziękuję.", "next": "start"}]
+    },
+    "arcana_ok": {
+      "speaker": "Lis",
+      "text": "Litery układają się pod twoim spojrzeniem. „Widzisz? Ten klucz nie ma drzwi, bo jego drzwi jeszcze nie istnieją. Otworzy je ten, kto pierwszy w nie uwierzy. Dla Rozplataczy to bluźnierstwo. Ale jeśli powiesz Severowi, że niespełniona możliwość to czysta entropia, możliwe, że cię wysłucha. Rozpad, który jeszcze się nie zaczął, to wciąż rozpad”.",
+      "effects": [{"set_flag": "knows_key_nature"}, {"set_flag": "asked_about_key"}, {"xp": 50}, {"journal": "Klucz otwiera drzwi, które jeszcze nie istnieją. Lis podsunęła argument dla Severa: niespełniona możliwość to też entropia."}],
+      "choices": [{"text": "Zapamiętam to.", "next": "start"}]
+    },
+    "arcana_fail": {
+      "speaker": "Lis",
+      "text": "Litery uciekają spod twojego wzroku i zbijają się w kącie strony. Lis zamyka księgę. „Nie każda opowieść chce być czytana”.",
+      "choices": [{"text": "Szkoda.", "next": "start"}]
+    },
+    "story": {
+      "speaker": "Lis",
+      "text": "Opowiadasz jej o świecie, z którego przybyłeś. Lis słucha z zamkniętymi oczami, a litery w księdze tańczą. „Dobra opowieść. Masz, to za nią”. Dotyka twojego czoła i czujesz przypływ pewności siebie.",
+      "effects": [{"inspiration": true}],
+      "choices": [{"text": "Dziękuję.", "next": "start"}]
+    }
+  }
+}
