@@ -50,3 +50,19 @@ i dotrzyj do Rozplataczy, frakcji przekonanej, że wszystko się rozpada, i że 
 Cztery klasy na zasadach D&D 2024 (SRD 5.2), turowa walka na siatce, dialogi z testami umiejętności, jeden quest
 z trzema drogami i dwoma zakończeniami, malowane izometryczne tło z postaciami 3D. Gra po polsku i po angielsku.
 Windows i Linux.
+
+## Theme (Edit theme on the game page)
+
+Colors match the in-game UI (`scripts/ui/ui.gd`).
+
+| Field | Value |
+|---|---|
+| Banner | `docs/media/itch/banner_960.png` |
+| Background image | `docs/media/itch/background_1920.jpg`, repeat: none, position: top center |
+| BG color | `#1a1214` |
+| BG2 (inner column) | `#2a1d1c`, opacity ~90% |
+| Text | `#eadbc8` |
+| Link | `#d9a85b` |
+| Button | `#b5532a` |
+| Header font | a serif (Merriweather or Lora), body: Lato |
+| Layout | screenshots in the right sidebar |

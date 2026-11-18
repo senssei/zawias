@@ -1,4 +1,4 @@
-<p align="center"><img src="docs/media/social_1280x640.png" alt="Zawias: Opowieść z Rdzawego Targu" width="100%"></p>
+<p align="center"><img src="docs/media/social_1280x640.jpg" alt="Zawias: Opowieść z Rdzawego Targu" width="100%"></p>
 
 # Zawias: Opowieść z Rdzawego Targu
 
@@ -6,7 +6,7 @@
 Godot 4.7 (GDScript). Malowane tła, postacie 3D z prawdziwymi cieniami, turowa walka na siatce
 i quest, który rozwiążesz słowem, cieniem albo siłą.
 
-[English README](README.md) · [Dokumentacja](docs/README.md) · Pobierz: itch.io *(link po wydaniu)*
+[English README](README.md) · [Dokumentacja](docs/README.md) · Pobierz: [itch.io](https://senssei.itch.io/zawias-a-tale-of-the-rusty-market)
 
 Zawias to miasto-pierścień zawieszone w szczelinie między planami. Każde drzwi mogą stać się bramą, jeśli masz
 właściwy klucz, a wiara ma tu wagę. Ktoś ukradł kluczarce Mireli **Klucz bez drzwi**. Ślady prowadzą przez
@@ -32,7 +32,7 @@ Rdzawy Targ do Rozplataczy, frakcji przekonanej, że wszystko się rozpada, i ż
 
 ## Pobranie i gra
 
-Buildy na Windows i Linux (x86_64) są na itch.io. Rozpakuj i uruchom `zawias.exe` / `zawias.x86_64`.
+Buildy na Windows i Linux (x86_64) są na [itch.io](https://senssei.itch.io/zawias-a-tale-of-the-rusty-market). Rozpakuj i uruchom `zawias.exe` / `zawias.x86_64`.
 Renderer to OpenGL 3.3 (Godot *Compatibility*). Plik dla Windows nie jest podpisany, więc SmartScreen może poprosić
 o potwierdzenie przy pierwszym uruchomieniu („Więcej informacji” → „Uruchom mimo to”).
 

@@ -1,4 +1,4 @@
-<p align="center"><img src="docs/media/social_1280x640.png" alt="Zawias: A Tale of the Rusty Market" width="100%"></p>
+<p align="center"><img src="docs/media/social_1280x640.jpg" alt="Zawias: A Tale of the Rusty Market" width="100%"></p>
 
 # Zawias: A Tale of the Rusty Market
 
@@ -6,7 +6,7 @@
 Built with Godot 4.7 (GDScript). Painted backdrops, 3D characters with real shadows, turn-based grid combat
 and a quest you can finish by word, by stealth or by force.
 
-[Polski README](README.pl.md) · [Documentation](docs/README.md) · Download: itch.io *(link added on release)*
+[Polski README](README.pl.md) · [Documentation](docs/README.md) · Download: [itch.io](https://senssei.itch.io/zawias-a-tale-of-the-rusty-market)
 
 Zawias is a ring-city hanging in the crack between the planes, where every door can become a gate if you carry
 the right key, and where belief has weight. Someone has stolen the **Key Without a Door** from Mirela the keysmith.
@@ -34,7 +34,7 @@ that this is a good thing.
 
 ## Download and play
 
-Builds for Windows and Linux (x86_64) are published on itch.io. Unzip and run `zawias.exe` / `zawias.x86_64`.
+Builds for Windows and Linux (x86_64) are published on [itch.io](https://senssei.itch.io/zawias-a-tale-of-the-rusty-market). Unzip and run `zawias.exe` / `zawias.x86_64`.
 The renderer is OpenGL 3.3 (Godot *Compatibility*), so most GPUs from the last decade work. The Windows build
 is not code-signed, so SmartScreen may ask you to confirm the first launch ("More info" → "Run anyway").
 
