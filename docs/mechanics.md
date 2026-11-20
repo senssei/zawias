@@ -20,6 +20,14 @@ How the game plays, with pointers to the code and data that implement each rule.
 - A natural 1 or 20 shows a badge with the roller's name (`HUD.show_d20`), in dialogue and in combat. With a window
   open (map, journal) the badge moves below or above it.
 
+## Saving: memory anchors
+
+The game is saved by people who remember you ([ADR 0013](decisions/0013-memory-anchors.md), `data/anchors.json`):
+Dorn (every bed), Lis (free, in the Archive or the party), Kwit and Hask (1 gp), Mirela (until you break your word).
+Each anchor has its own slot. An anchor is lost when its `lost_if` holds, for example wary Inscribed or a broken
+promise. Load ("Who remembers you?") lists the anchor saves, the autosave before each fight and a one-time
+suspended game. F5 saves anywhere only with the "Save anywhere" setting.
+
 ## Defeat into the fog
 
 A lost fight no longer ends the game ([ADR 0012](decisions/0012-defeat-into-fog.md)). The party dissolves into the

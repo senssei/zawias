@@ -26,6 +26,7 @@ var _duck: Tween
 var tts_fallback := false              # synteza mowy systemu, gdy węzeł nie ma nagrania (ustawienie)
 var voice_lang := "en"                 # język nagrań głosów; tekst w grze może być w innym (napisy)
 var narrator := true                   # narrator czyta opisy w dialogach (ustawienie)
+var free_save := false                 # zapis w dowolnym miejscu (ułatwienie; domyślnie kotwice pamięci, ADR 0013)
 var control_companions := true         # w walce gracz steruje towarzyszami (ustawienie; wyłączone = AI)
 
 
@@ -423,6 +424,14 @@ func set_control_companions(on: bool) -> void:
 	cfg.save(SETTINGS)
 
 
+func set_free_save(on: bool) -> void:
+	free_save = on
+	var cfg := ConfigFile.new()
+	cfg.load(SETTINGS)
+	cfg.set_value("game", "free_save", on)
+	cfg.save(SETTINGS)
+
+
 func set_difficulty(id_: String) -> void:
 	Difficulty.current = id_
 	var cfg := ConfigFile.new()
@@ -439,6 +448,7 @@ func _load_settings() -> void:
 	voice_lang = str(cfg.get_value("audio", "voice_lang", "en"))
 	narrator = bool(cfg.get_value("audio", "narrator", true))
 	control_companions = bool(cfg.get_value("game", "control_companions", true))
+	free_save = bool(cfg.get_value("game", "free_save", false))
 	for b in DEFAULT_VOLUME.keys():
 		set_volume(b, float(cfg.get_value("audio", b, DEFAULT_VOLUME[b])), false)
 	if cfg.get_value("display", "fullscreen", false) and DisplayServer.get_name() != "headless":

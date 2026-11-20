@@ -36,7 +36,7 @@ func _set_screen(n: Node) -> void:
 func show_menu() -> void:
 	var m := preload("res://scripts/ui/main_menu.gd").new()
 	m.new_game.connect(show_creation)
-	m.load_game.connect(func(): if GameState.load_game("slot1"): start_world())
+	m.load_game.connect(func(slot: String): if GameState.load_game(slot): start_world())
 	_set_screen(m)
 
 
@@ -44,6 +44,7 @@ func show_creation() -> void:
 	var cc := preload("res://scripts/ui/character_creation.gd").new()
 	cc.done.connect(func(pc: Creature):
 		GameState.new_game(pc)
+		GameState.flags["intro_pending"] = true   # cutscenka początkowa (intro.json) tylko po kreatorze
 		start_world())
 	cc.back.connect(show_menu)
 	_set_screen(cc)

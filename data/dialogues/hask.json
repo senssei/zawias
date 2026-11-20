@@ -14,7 +14,8 @@
         {"text": "Czy brama zawsze zostawia taki ślad na dłoni?", "if": {"not_quest": "wanderer", "not_flag": "key_obtained"}, "next": "wanderer_trace"},
         {"text": "[Zapisani są ci przychylni] Kwit mówi, że płacę w terminie. Wyślesz patrol do wschodniego zaułka?", "if": {"reputation": ["inscribed", "friendly"], "flag": "asked_about_key", "not_flag": "ambush_done"}, "next": "patrol_alley"},
         {"text": "Czemu poza targiem wszystko tonie w tej fioletowej mgle?", "next": "fog"},
-        {"text": "Co się dzieje z tymi, których miasto zapomni?", "motivation": "fear:oblivion", "next": "oblivion"}
+        {"text": "Co się dzieje z tymi, których miasto zapomni?", "motivation": "fear:oblivion", "next": "oblivion"},
+        {"text": "Wpiszesz mnie do rejestru bramy? Na wypadek mgły. (1 sz.)", "if": {"gold": 1, "anchor": "hask"}, "effects": [{"gold": -1}, {"remember_me": "hask"}], "next": "registered"}
       ]
     },
     "patrol_alley": {
@@ -33,6 +34,11 @@
       "speaker": "Hask",
       "text": "Hask milknie na chwilę. „Rozpływają się. Najpierw imię, potem twarz, na końcu cień. Widziałem raz, jak ktoś przestał być. Stał przy bramie i pytał, czy ktoś go zna”. Spogląda na twoją dłoń. „Dlatego pilnuję, żeby ludzie się tu zapisywali”.",
       "choices": [{"text": "Zapamiętam to.", "next": "start"}]
+    },
+    "registered": {
+      "speaker": "Hask",
+      "text": "Hask wyciąga z kieszeni pomięty zeszyt i wpisuje twoje imię ołówkiem. „Brama wypluwa ludzi w różnym stanie. Teraz przynajmniej będę wiedział, kogo”.",
+      "choices": [{"text": "Dzięki, Hask.", "next": "start"}]
     },
     "where": {
       "speaker": "Hask",

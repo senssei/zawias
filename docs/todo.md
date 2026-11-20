@@ -58,7 +58,7 @@ Fantasy Flight / Edge. Wdrażamy pod własnymi nazwami (np. „cena” zamiast �
 - [x] Decyzje o 1. poziomie: magazyn jako skrót z ostrzeżeniem, Lis bez zmian, mefit bez zmian ([ADR 0007](decisions/0007-level-one-risks.md))
 - [x] `story report` (karty stanu, decyzje, mapa cieplna balansu, porażki bez wskazówki)
 - [ ] Brief i rozszerzona mapa odkryć dla rozdziału „Kto rozporządza przejściami?”
-- [ ] **Pipeline cutscenek.** Pierwszy krok gotowy: półcutscenki (`scene` w węźle, kadr, najazd, napisy, głos). Scenariusz sceny w danych: ujęcia, kamera, kto mówi i kwestie z dialogów,
+- [ ] **Pipeline cutscenek.** Pierwszy krok gotowy: półcutscenki (`scene` w węźle, kadr, najazd, napisy, głos): mgła po klęsce i wstęp gry. Scenariusz sceny w danych: ujęcia, kamera, kto mówi i kwestie z dialogów,
   ruch aktorów, efekty, muzyka i dźwięk. Z niego powstaje animatik (kadry jak w `storyboard review`, z głosami),
   podgląd do akceptacji i gotowa scena odtwarzana w silniku. Kontrole: odwołania do aktorów, węzłów i nagrań,
   długość względem nagrań, kadry przed i po. Kandydaci: wspomnienie Wędrowca, przejście przez Łuk, finał.

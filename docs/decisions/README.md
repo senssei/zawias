@@ -27,3 +27,4 @@ Template: copy [template.md](template.md).
 | [0010](0010-word-register.md) | Word register: oaths and lies | Accepted |
 | [0011](0011-finale-question.md) | The finale as a question: a conversation with your past self | Accepted |
 | [0012](0012-defeat-into-fog.md) | Defeat into the fog: losing a fight continues the story | Accepted |
+| [0013](0013-memory-anchors.md) | Saving through memory anchors | Accepted |

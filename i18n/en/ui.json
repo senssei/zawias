@@ -439,5 +439,17 @@
 "Miasto pamięta cię słabiej: maksymalne PW −%d (razem −%d).": "The city remembers you less: maximum HP −%d (−%d in total).",
 "Pamiętasz, kim byłeś, i miasto pamięta ciebie: maksymalne PW +%d.": "You remember who you were, and the city remembers you: maximum HP +%d.",
 "Tracisz %d sz.": "You lose %d gp.",
-"BRAMA WYPLUWA CIĘ ZNOWU": "THE GATE SPITS YOU OUT AGAIN"
+"BRAMA WYPLUWA CIĘ ZNOWU": "THE GATE SPITS YOU OUT AGAIN",
+"Chwila przed walką": "The moment before a fight",
+"Zawieszona gra (wraca raz)": "Suspended game (returns once)",
+"Szybki zapis": "Quick save",
+"Dawny zapis": "Old save",
+"Pamięta cię: %s": "Remembered by: %s",
+"Nikt cię jeszcze nie zapamiętał.": "No one has remembered you yet.",
+"Kto cię pamięta?": "Who Remembers You?",
+"Grę zapisują ci, którzy cię pamiętają:": "Your game is saved by those who remember you:",
+"już cię nie pamięta.": "no longer remembers you.",
+"Zawieś grę i wyjdź do menu": "Suspend and quit to menu",
+"Zapis w dowolnym miejscu": "Save anywhere",
+"Wyłączone: grę zapisują ci, którzy cię pamiętają (Dorn, Lis, Kwit, Hask, Mirela). Włączone: F5 zapisuje wszędzie.": "Off: your game is saved by those who remember you (Dorn, Lis, Kwit, Hask, Mirela). On: F5 saves anywhere."
 }

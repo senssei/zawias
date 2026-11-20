@@ -40,7 +40,7 @@ portrait is `assets/portraits/<id>.png` (a node can override it with `"portrait"
 
 All keys must hold: `flag`, `not_flag`, `flags` (all), `not_flags` (none of them), `any_flag`, `class`, `species`, `has_item`, `not_item`,
 `gold` (at least), `quest: [id, stage]`, `quest_any: [id, [stages]]`, `not_quest`, `knows_spell`, `skill_prof`,
-`in_party: "<npc id>"`, `word: [id, state]`, `words_min` / `words_max: [state, n]` (state may be `lie` or `any`), `word_clean: true|false`, `reputation_not: [faction, attitude]`, `near: [x, y, radius]` (the player stands within
+`in_party: "<npc id>"`, `anchor: "<id>"` (the anchor still remembers you), `word: [id, state]`, `words_min` / `words_max: [state, n]` (state may be `lie` or `any`), `word_clean: true|false`, `reputation_not: [faction, attitude]`, `near: [x, y, radius]` (the player stands within
 `radius` cells, e.g. for companion comments).
 
 Faction reputation uses `{"reputation": ["inscribed", "wary"]}` as a condition
@@ -55,7 +55,7 @@ sentence promises the player something.
 
 `set_flag`, `clear_flag`, `gold` (negative pays), `give_item`, `take_item`, `xp`, `heal`, `long_rest`,
 `journal` (adds a journal entry), `quest: [id, stage]`, word register `oath` / `oath_kept` / `oath_broken` / `lie` /
-`lie_exposed: "<id from data/words.json>"`, `forget: n` / `remember: true` (max HP lost in the fog), `gold_fraction: 0.5` ([ADR 0010](decisions/0010-word-register.md)), `join_party` / `leave_party: "<npc id>"` (companions,
+`lie_exposed: "<id from data/words.json>"`, `remember_me: "<anchor>"` (save with a memory anchor, ADR 0013), `forget: n` / `remember: true` (max HP lost in the fog), `gold_fraction: 0.5` ([ADR 0010](decisions/0010-word-register.md)), `join_party` / `leave_party: "<npc id>"` (companions,
 see below), plus world requests `start_combat: "<encounter>"`,
 `end_game: "<ending>"`, `remove_npc: "<id>"`.
 

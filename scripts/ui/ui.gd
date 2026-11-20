@@ -91,6 +91,40 @@ static func button(text: String, cb: Callable = Callable(), min_w := 0) -> Butto
 
 
 ## Ustawienia: głośność szyn i pełny ekran (zapis w user://settings.cfg przez Audio).
+## Lista zapisów „Kto cię pamięta?” (ADR 0013): kotwice, chwila przed walką, zawieszona gra. on_pick(slot).
+static func save_list(on_pick: Callable) -> VBoxContainer:
+	var v := vbox(6)
+	var gs = Engine.get_main_loop().root.get_node_or_null("GameState")
+	var saves: Array = gs.list_saves() if gs else []
+	if saves.is_empty():
+		v.add_child(label_w(Loc.t("Nikt cię jeszcze nie zapamiętał."), 16, MUTED))
+	for info in saves:
+		var who := ""
+		match info.slot:
+			"auto":
+				who = Loc.t("Chwila przed walką")
+			"suspend":
+				who = Loc.t("Zawieszona gra (wraca raz)")
+			"quick":
+				who = Loc.t("Szybki zapis")
+			"slot1":
+				who = Loc.t("Dawny zapis")
+			_:
+				who = Loc.t("Pamięta cię: %s") % DB.table("anchors").get(info.anchor, {}).get("name", info.anchor)
+		var cls: String = DB.entry("classes", info.class_id).get("name", info.class_id)
+		var note: String = info.note
+		if note.length() > 90:
+			note = note.substr(0, 88) + "…"
+		var b := button("%s\n%s, %s %d · %s\n%s" % [who, info.name, cls, info.level, str(info.time).replace("T", " ").substr(0, 16), note])
+		b.alignment = HORIZONTAL_ALIGNMENT_LEFT
+		b.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		b.custom_minimum_size.x = 560
+		var slot: String = info.slot
+		b.pressed.connect(func(): on_pick.call(slot))
+		v.add_child(b)
+	return v
+
+
 static func settings_panel() -> VBoxContainer:
 	var v := vbox(10)
 	var ml := Engine.get_main_loop() as SceneTree
@@ -142,6 +176,12 @@ static func settings_panel() -> VBoxContainer:
 	cc.button_pressed = au.control_companions if au else true
 	cc.toggled.connect(func(on): if au: au.set_control_companions(on))
 	v.add_child(cc)
+	var free_cb := CheckBox.new()
+	free_cb.text = Loc.t("Zapis w dowolnym miejscu")
+	free_cb.tooltip_text = Loc.t("Wyłączone: grę zapisują ci, którzy cię pamiętają (Dorn, Lis, Kwit, Hask, Mirela). Włączone: F5 zapisuje wszędzie.")
+	free_cb.button_pressed = au.free_save if au else false
+	free_cb.toggled.connect(func(on): if au: au.set_free_save(on))
+	v.add_child(free_cb)
 	var lrow := hbox(12)
 	var ll := label(Loc.t("Język") + " / Language", 17)
 	ll.custom_minimum_size.x = 200

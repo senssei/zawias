@@ -14,7 +14,8 @@
         {"text": "Pójdziesz ze mną? Ta opowieść jeszcze się nie skończyła.", "if": {"quest_any": ["key", ["started", "lead_warehouse", "has_key"]]}, "next": "join"},
         {"text": "Do zobaczenia.", "end": true},
         {"text": "Znasz znak z bramy? Mam taki na dłoni.", "if": {"quest_any": ["wanderer", ["", "trace"]], "not_flag": "key_obtained"}, "next": "wanderer_record"},
-        {"text": "Co Echo zapisze o mnie?", "next": "words"}
+        {"text": "Co Echo zapisze o mnie?", "next": "words"},
+        {"text": "Zapisz w Echu, gdzie teraz jest moja opowieść.", "if": {"anchor": "lis"}, "effects": [{"remember_me": "lis"}], "next": "recorded"}
       ]
     },
     "echo": {
@@ -62,7 +63,8 @@
       "text": "Lis idzie obok ciebie i notuje coś w biegu. „Opowieść biegnie dalej. Dokąd teraz?”",
       "choices": [{"text": "Idziemy dalej.", "end": true}, {"text": "Wracaj do Archiwum. Dalej pójdę sam.", "effects": [{"leave_party": "lis"}], "next": "leave"},
         {"text": "Znasz znak z bramy? Mam taki na dłoni.", "if": {"quest_any": ["wanderer", ["", "trace"]], "not_flag": "key_obtained"}, "next": "wanderer_record"},
-        {"text": "Co Echo zapisze o mnie?", "next": "words"}]
+        {"text": "Co Echo zapisze o mnie?", "next": "words"},
+        {"text": "Zapisz w Echu, gdzie teraz jest moja opowieść.", "if": {"anchor": "lis"}, "effects": [{"remember_me": "lis"}], "next": "recorded"}]
     },
     "words": {
       "speaker": "Lis",
@@ -74,6 +76,11 @@
       "speaker": "Lis",
       "text": "Lis długo patrzy w księgę. „Echo zapisuje to, co zostało powiedziane, a nie to, co było prawdą. Twoje kłamstwa też tu są, tak samo wyraźne jak reszta, nawet jeśli nikt ich nie przyłapał”. Zamyka księgę. „Zapisani znają tylko te, które wyszły na jaw. My pamiętamy wszystkie”.",
       "choices": [{"text": "Rozumiem.", "end": true}]
+    },
+    "recorded": {
+      "speaker": "Lis",
+      "text": "Lis zapisuje kilka zdań i dmucha na atrament. „Zapisane. Jeśli mgła cię zabierze, Echo przypomni sobie, gdzie skończyła się twoja opowieść, i zacznie ją od tego miejsca”.",
+      "choices": [{"text": "Dziękuję.", "end": true}]
     },
     "leave": {
       "speaker": "Lis",

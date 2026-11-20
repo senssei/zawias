@@ -14,7 +14,7 @@ END_NODES = {"", "end"}
 ATTITUDES = {"wary", "neutral", "friendly"}
 
 
-CONDITION_KEYS = {"any_flag", "class", "flag", "flags", "gold", "has_item", "in_party", "knows_spell", "motivation",
+CONDITION_KEYS = {"anchor", "any_flag", "class", "flag", "flags", "gold", "has_item", "in_party", "knows_spell", "motivation",
                   "near", "not_flag", "not_flags", "not_item", "not_quest", "quest", "quest_any", "reputation",
                   "reputation_not", "skill_prof", "species", "word", "word_clean", "words_max", "words_min"}
 WORD_STATES = {"oath": ["open", "kept", "broken"], "lie": ["hidden", "exposed"]}
@@ -33,6 +33,7 @@ class StoryCheck:
         self.barks = self.load("data/barks.json")
         self.motivations = self.load("data/motivations.json")
         self.words = self.load("data/words.json")
+        self.anchors = self.load("data/anchors.json")
         self.stages = self.quest_stages()
         self.npcs = {
             npc["id"] for map_data in self.maps.values()
@@ -117,6 +118,8 @@ class StoryCheck:
                 self.reputation(f"{location}/{key}", value[key])
         if "motivation" in value:
             self.motivation(f"{location}/motivation", value["motivation"])
+        if "anchor" in value:
+            self.reference(f"{location}/anchor", value["anchor"], self.anchors, "kotwica pamięci")
         if "word" in value:
             word = value["word"]
             if not isinstance(word, list) or len(word) != 2:
@@ -153,6 +156,7 @@ class StoryCheck:
                 ("start_combat", self.encounters, "identyfikator spotkania"),
                 ("join_party", self.npcs, "NPC"), ("leave_party", self.npcs, "NPC"),
                 ("remove_npc", self.npcs, "NPC"),
+                ("remember_me", self.anchors, "kotwica pamięci z data/anchors.json"),
                 ("oath", self.word_ids("oath"), "obietnica z data/words.json"),
                 ("oath_kept", self.word_ids("oath"), "obietnica z data/words.json"),
                 ("oath_broken", self.word_ids("oath"), "obietnica z data/words.json"),

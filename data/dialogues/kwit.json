@@ -13,7 +13,8 @@
         {"text": "Co to za łuk na środku targu?", "next": "arch"},
         {"text": "Nic. Do widzenia.", "end": true},
         {"text": "Masz na sprzedaż miksturę leczenia?", "if": {"quest_any": ["key", ["started", "lead_warehouse"]], "not_flag": "kwit_sold_potion"}, "next": "supplies"},
-        {"text": "Zapisani prowadzą rejestr wszystkiego. Co w nim jest o mnie?", "next": "ledger"}
+        {"text": "Zapisani prowadzą rejestr wszystkiego. Co w nim jest o mnie?", "next": "ledger"},
+        {"text": "Wpisz mnie do rejestru, gdyby miasto o mnie zapomniało. (1 sz.)", "if": {"gold": 1, "anchor": "kwit"}, "effects": [{"gold": -1}, {"remember_me": "kwit"}], "next": "registered"}
       ]
     },
     "info": {
@@ -81,6 +82,11 @@
       "speaker": "Kwit",
       "text": "Kwit nie musi nawet otwierać rejestru. „Złamane słowo albo kłamstwo, które wyszło na jaw. W rejestrze to dziura w umowie i od razu przez nią wieje”. Pióro skrzypi. „Każde następne twoje słowo będzie ważyło mniej”.",
       "choices": [{"text": "Rozumiem.", "next": "start"}]
+    },
+    "registered": {
+      "speaker": "Kwit",
+      "text": "Kwit wpisuje coś drobnym pismem i posypuje atrament piaskiem. „Wpis tymczasowy, ale ważny. Rejestr pamięta za miasto. Jeśli mgła cię zabierze, wrócisz w tym miejscu, w którym się podpisałeś”.",
+      "choices": [{"text": "Dziękuję.", "next": "start"}]
     },
     "supplies": {
       "speaker": "Kwit",

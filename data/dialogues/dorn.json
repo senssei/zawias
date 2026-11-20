@@ -6,16 +6,16 @@
       "speaker": "Dorn",
       "text": "Barczysty karczmarz wyciera kufel szmatą, która widziała lepsze plany. „Gospoda Pod Krzywym Zawiasem. Łóżko, piwo, ciepła strawa. Jak ktoś chce dużo, to i plotki”.",
       "choices": [
-        {"text": "Potrzebuję łóżka. (2 sz., długi odpoczynek)", "if": {"gold": 2, "not_flag": "dorn_cold"}, "next": "rested", "effects": [{"gold": -2}, {"long_rest": true}]},
+        {"text": "Potrzebuję łóżka. (2 sz., długi odpoczynek)", "if": {"gold": 2, "not_flag": "dorn_cold"}, "next": "rested", "effects": [{"gold": -2}, {"long_rest": true}, {"remember_me": "dorn"}]},
         {"text": "Jakie plotki krążą po targu?", "next": "rumors"},
         {"text": "Bywaj.", "end": true},
-        {"text": "Potrzebuję łóżka. (4 sz., długi odpoczynek, Dorn liczy ci podwójnie)", "if": {"gold": 4, "flag": "dorn_cold"}, "next": "rested", "effects": [{"gold": -4}, {"long_rest": true}]},
+        {"text": "Potrzebuję łóżka. (4 sz., długi odpoczynek, Dorn liczy ci podwójnie)", "if": {"gold": 4, "flag": "dorn_cold"}, "next": "rested", "effects": [{"gold": -4}, {"long_rest": true}, {"remember_me": "dorn"}]},
         {"text": "Dorn, ten strażnik z historii twojej babki… To byłem ja.", "if": {"quest_any": ["wanderer", ["revealed", "done_stayed"]], "flag": "dorn_grudge", "not_flag": "dorn_confessed"}, "next": "confess"}
       ]
     },
     "rested": {
       "speaker": "Dorn",
-      "text": "Śpisz jak kamień. W Zawiasie nie ma dnia ani nocy, jest tylko światło sączące się zza pierścienia. Budzisz się wypoczęty.",
+      "text": "Śpisz jak kamień. W Zawiasie nie ma dnia ani nocy, jest tylko światło sączące się zza pierścienia. Budzisz się wypoczęty. Dorn kiwa ci głową zza lady: zapamiętał twoją twarz.",
       "choices": [{"text": "Dzięki, Dorn.", "next": "start"}]
     },
     "rumors": {

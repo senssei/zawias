@@ -1157,13 +1157,13 @@
   "segments": [
    {
     "who": "narrator",
-    "text": "You sleep like a stone. In Zawias there is no day or night, only the light seeping from beyond the ring. You wake up rested.",
+    "text": "You sleep like a stone. In Zawias there is no day or night, only the light seeping from beyond the ring. You wake up rested. Dorn nods to you from behind the counter: he has remembered your face.",
     "file": "rested_0.ogg",
     "voice": "_narrator",
     "sig": "73acb1c8a904",
-    "seconds": 8.43,
+    "seconds": 13.67,
     "seed": 909,
-    "wer": 0.042
+    "wer": 0.0
    }
   ]
  },
@@ -1525,6 +1525,30 @@
    }
   ]
  },
+ "hask/registered": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Hask pulls a crumpled notebook from his pocket and writes your name in pencil.",
+    "file": "registered_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 5.65,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "The gate spits people out in all kinds of states. Now at least I'll know who.",
+    "file": "registered_1.ogg",
+    "voice": "hask",
+    "sig": "d487def15cf2",
+    "seconds": 3.97,
+    "seed": 202,
+    "wer": 0.0
+   }
+  ]
+ },
  "hask/start": {
   "segments": [
    {
@@ -1710,6 +1734,58 @@
     "voice": "_narrator",
     "sig": "73acb1c8a904",
     "seconds": 13.89,
+    "seed": 909,
+    "wer": 0.0
+   }
+  ]
+ },
+ "intro/gate": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "In the Rusty Market stands a gate older than the market itself. Sometimes it spits out newcomers nobody summoned. Today it spits out you. You don't remember the way. All you hold on to is your own name, as if someone could take it from you.",
+    "file": "gate_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 16.81,
+    "seed": 909,
+    "wer": 0.0
+   }
+  ]
+ },
+ "intro/ring": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Zawias. A ring-city suspended over the void between the planes. It holds together only because someone remembers it: merchants their stalls, wardens their gates, priests their gods. The mist eats the rest.",
+    "file": "ring_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 14.87,
+    "seed": 909,
+    "wer": 0.031
+   }
+  ]
+ },
+ "intro/wake": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The cobbles are cold and wet. Above you stands a guard with the quill of the Inscribed on his chest.",
+    "file": "wake_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 7.1,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Another one. Get up before the mist comes for you. And remember one thing: in Zawias, you live as long as someone remembers you.",
+    "file": "wake_1.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 9.05,
     "seed": 909,
     "wer": 0.0
    }
@@ -2043,6 +2119,30 @@
    }
   ]
  },
+ "kwit/registered": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Kwit writes something in a small hand and sprinkles sand over the ink.",
+    "file": "registered_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 4.96,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "A temporary entry, but valid. The register remembers for the city. If the mist takes you, you'll come back where you signed.",
+    "file": "registered_1.ogg",
+    "voice": "kwit",
+    "sig": "d954463b5e38",
+    "seconds": 6.64,
+    "seed": 303,
+    "wer": 0.0
+   }
+  ]
+ },
  "kwit/start": {
   "segments": [
    {
@@ -2231,6 +2331,30 @@
     "sig": "73acb1c8a904",
     "seconds": 2.36,
     "seed": 909,
+    "wer": 0.0
+   }
+  ]
+ },
+ "lis/recorded": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Lis writes a few sentences and blows on the ink.",
+    "file": "recorded_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 3.42,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Recorded. If the mist takes you, the Echo will remember where your story stopped, and begin it again from there.",
+    "file": "recorded_1.ogg",
+    "voice": "lis",
+    "sig": "c6b6c8a225b5",
+    "seconds": 8.31,
+    "seed": 505,
     "wer": 0.0
    }
   ]
@@ -3092,6 +3216,50 @@
     "voice": "mirela",
     "sig": "fea5d511f18d",
     "seconds": 4.61
+   }
+  ]
+ },
+ "mirela/remember": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Mirela snorts.",
+    "file": "remember_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 1.76,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "You? I'll certainly remember. You owe me a key.",
+    "file": "remember_1.ogg",
+    "voice": "mirela",
+    "sig": "fea5d511f18d",
+    "seconds": 2.78,
+    "seed": 101,
+    "wer": 0.0
+   },
+   {
+    "who": "narrator",
+    "text": "After a moment she adds, more quietly:",
+    "file": "remember_2.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.82,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Come back, you promised.",
+    "file": "remember_3.ogg",
+    "voice": "mirela",
+    "sig": "fea5d511f18d",
+    "seconds": 1.82,
+    "seed": 101,
+    "wer": 0.0
    }
   ]
  },

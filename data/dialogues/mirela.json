@@ -176,9 +176,11 @@
     {
      "text": "Już idę.",
      "end": true
-    }
+    },
+    {"text": "Zapamiętasz mnie, gdyby zabrała mnie mgła?", "if": {"anchor": "mirela"}, "effects": [{"remember_me": "mirela"}], "next": "remember"}
    ]
   },
+  "remember": {"speaker": "Mirela", "text": "Mirela prycha. „Ciebie? Zapamiętam na pewno. Wisisz mi klucz”. Po chwili dodaje ciszej: „Wróć, to obiecałeś”.", "choices": [{"text": "Wrócę.", "next": "progress"}]},
   "hints": {
    "speaker": "Mirela",
    "text": "„Kwita z Kancelarii Zapisanych na zachodzie. Pchłę pod wschodnim zaułkiem. Lis z Archiwum Echa na południu. Rdzawy pył… Ktoś, kto zostawia rdzę, chce, żeby wszystko się rozpadło”.",

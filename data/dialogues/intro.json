@@ -1,0 +1,30 @@
+{
+  "start": "ring",
+  "nodes": {
+    "ring": {
+      "speaker": "Zawias",
+      "scene": "intro_ring",
+      "text": "Zawias. Miasto-pierścień zawieszone nad pustką między planami. Trzyma się w całości tylko dlatego, że ktoś je pamięta: kupcy swoje kramy, strażnicy swoje bramy, kapłani swoich bogów. Resztę zjada mgła.",
+      "effects": [{"clear_flag": "intro_pending"}],
+      "choices": [
+        {"text": "[Dalej]", "next": "gate"},
+        {"text": "[Pomiń wstęp]", "end": true}
+      ]
+    },
+    "gate": {
+      "speaker": "Zawias",
+      "scene": "intro_gate",
+      "text": "Na Rdzawym Targu stoi brama starsza niż sam targ. Czasem wypluwa przybyszów, których nikt nie wzywał. Dziś wypluwa ciebie. Nie pamiętasz drogi. Ściskasz tylko własne imię, jakby ktoś mógł ci je odebrać.",
+      "choices": [
+        {"text": "[Dalej]", "next": "wake"},
+        {"text": "[Pomiń wstęp]", "end": true}
+      ]
+    },
+    "wake": {
+      "speaker": "Zawias",
+      "scene": "intro_wake",
+      "text": "Bruk jest zimny i mokry. Nad tobą stoi strażnik z piórem Zapisanych na piersi. „Kolejny. Wstawaj, zanim mgła się o ciebie upomni. I zapamiętaj jedno: w Zawiasie żyje ten, kogo ktoś pamięta”.",
+      "choices": [{"text": "[Wstań]", "end": true}]
+    }
+  }
+}

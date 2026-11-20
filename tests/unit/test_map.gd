@@ -272,3 +272,71 @@ func test_defeat_leads_into_fog_and_back_to_the_gate():
 	assert_eq(gs.player.max_hp, hp0, "rozmowa z dawnym sobą przywraca PW")
 	assert_eq(gs.forgotten, 0)
 
+
+func test_memory_anchors_save_and_load():
+	var w := _world()
+	await wait_frames(3)
+	var gs := _gs()
+	var saves_dir := ProjectSettings.globalize_path(gs.SAVE_DIR)
+	for slot in ["anchor_kwit", "anchor_dorn", "anchor_mirela", "suspend", "quick"]:
+		DirAccess.remove_absolute(saves_dir.path_join(slot + ".json"))
+	var au = get_tree().root.get_node("Audio")
+	var free0: bool = au.free_save
+	au.free_save = false
+	w._on_menu("save")
+	assert_false(gs.has_save("quick"), "F5 bez kotwicy nie zapisuje")
+	gs.player.gold = 10
+	w._open_dialogue("kwit")
+	for ch in w.dialogue.visible_choices():
+		if "rejestru" in ch.text:
+			w.dialogue.choose(ch.index)
+			break
+	assert_eq(w.dialogue.current_id, "registered")
+	w.dialogue.choose(0)
+	w.dialogue.choose(w.dialogue.visible_choices().filter(func(c): return c.choice.get("end", false))[0].index)
+	await wait_frames(1)
+	assert_true(gs.has_save("anchor_kwit"), "Kwit zapisał grę po rozmowie")
+	assert_eq(gs.last_anchor, "kwit")
+	assert_true(w.actors["kwit"]._mark.visible, "znak trzech kresek nad Kwitem")
+	assert_true(w.actors["dorn"]._mark.visible, "Dorn: przygaszony znak, może zapamiętać")
+	assert_eq(gs.player.gold, 9, "wpis kosztuje 1 sz.")
+	var list: Array = gs.list_saves()
+	assert_true(list.any(func(i): return i.anchor == "kwit"), "lista: Pamięta cię: Kwit")
+	gs.apply_effects([{"set_reputation": ["inscribed", "wary"]}])
+	assert_false(gs.anchor_ok("kwit"), "nieufni Zapisani nie są kotwicą")
+	assert_false(w.actors["kwit"]._mark.visible, "utracona kotwica traci znak")
+	assert_false(gs.check({"anchor": "hask"}))
+	gs.apply_effects([{"oath": "mirela_key"}, {"oath_broken": "mirela_key"}])
+	assert_false(gs.anchor_ok("mirela"), "złamane słowo odbiera kotwicę")
+	w._anchor_save("mirela")
+	assert_false(gs.has_save("anchor_mirela"))
+	assert_true(gs.anchor_ok("dorn"))
+	w._on_end_choice("save_quit")
+	assert_true(gs.has_save("suspend"))
+	assert_true(gs.load_game("suspend"))
+	assert_false(gs.has_save("suspend"), "zawieszona gra wraca tylko raz")
+	assert_true(gs.load_game("anchor_kwit"))
+	assert_eq(gs.player.gold, 9)
+	assert_eq(gs.faction_attitude("inscribed"), "neutral", "wczytany stan sprzed nieufności")
+	au.free_save = free0
+	DirAccess.remove_absolute(saves_dir.path_join("anchor_kwit.json"))
+
+
+func test_intro_cutscene_on_new_game_only():
+	_gs().new_game(CharacterBuilder.build(OPTS))
+	_gs().flags["intro_pending"] = true
+	var w: Node3D = load("res://scripts/world/world.gd").new()
+	add_child_autofree(w)
+	await wait_frames(3)
+	assert_eq(w.mode, "dialogue")
+	assert_eq(w.dialogue.dialogue_id, "intro")
+	assert_true(w.hud.cutscene.visible, "półcutscenka na pełnym ekranie")
+	assert_false(_gs().has_flag("intro_pending"), "wstęp tylko raz")
+	w.dialogue.choose(1)   # [Pomiń wstęp]
+	await wait_frames(1)
+	assert_eq(w.mode, "explore")
+	assert_false(w.hud.cutscene.visible)
+	var w2 := _world()   # zwykły start (wczytanie, szybki start): bez wstępu
+	await wait_frames(3)
+	assert_eq(w2.mode, "explore")
+

@@ -681,11 +681,11 @@ func show_cutscene(scene_id: String, text: String, choices: Array, secs: float) 
 
 
 ## Przejście w mgłę (fade_in) albo z mgły z błyskiem bramy (fade_out); secs = czas trwania.
-func fog_transition(fade_in: bool, secs := 1.2) -> void:
+func fog_transition(fade_in: bool, secs := 1.2, from := Color(0.95, 0.82, 0.55, 1.0)) -> void:
 	var r := ColorRect.new()
 	r.set_anchors_preset(Control.PRESET_FULL_RECT)
 	r.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	r.color = Color(0.38, 0.22, 0.55, 0.0) if fade_in else Color(0.95, 0.82, 0.55, 1.0)
+	r.color = Color(0.38, 0.22, 0.55, 0.0) if fade_in else from
 	root.add_child(r)
 	_fog_layers.append(r)
 	_fog_layers = _fog_layers.filter(func(x): return is_instance_valid(x))
@@ -697,6 +697,28 @@ func fog_transition(fade_in: bool, secs := 1.2) -> void:
 	else:
 		t.tween_property(r, "color:a", 0.0, secs).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
 	t.tween_callback(r.queue_free)
+
+
+## Mgła zaciska się na chwilę wokół ekranu (F5 tam, gdzie nikt cię nie zapamięta; ADR 0013).
+func fog_squeeze() -> void:
+	var r := ColorRect.new()
+	r.set_anchors_preset(Control.PRESET_FULL_RECT)
+	r.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var mat := ShaderMaterial.new()
+	mat.shader = load("res://shaders/rift_fog.gdshader")
+	mat.set_shader_parameter("density", 0.0)
+	mat.set_shader_parameter("vignette", 0.0)
+	r.material = mat
+	root.add_child(r)
+	var t := create_tween()
+	t.tween_method(func(v: float): mat.set_shader_parameter("vignette", v); mat.set_shader_parameter("density", v * 0.25), 0.0, 1.0, 0.35).set_trans(Tween.TRANS_SINE)
+	t.tween_method(func(v: float): mat.set_shader_parameter("vignette", v); mat.set_shader_parameter("density", v * 0.25), 1.0, 0.0, 0.9).set_trans(Tween.TRANS_SINE)
+	t.tween_callback(r.queue_free)
+
+
+## Ktoś cię zapamiętał: miękki mosiężny błysk od krawędzi.
+func memory_pulse() -> void:
+	fog_transition(false, 1.0, Color(0.95, 0.82, 0.55, 0.35))
 
 
 func dialogue_append(text: String, success: bool) -> void:
@@ -929,6 +951,17 @@ func open_level_up(c: Creature) -> void:
 		update.call()
 	window_body.add_child(HSeparator.new())
 	window_body.add_child(confirm)
+
+
+func open_load_list(on_pick: Callable) -> void:
+	_open_window(Loc.t("Kto cię pamięta?"))
+	window_body.add_child(UI.save_list(on_pick))
+	window_body.add_child(HSeparator.new())
+	window_body.add_child(UI.label_w(Loc.t("Grę zapisują ci, którzy cię pamiętają:"), 16, UI.BRASS))
+	var anchors := DB.table("anchors")
+	for id_ in anchors:
+		var ok: bool = GameState.anchor_ok(id_)
+		window_body.add_child(UI.label_w("%s %s: %s" % ["◆" if ok else "✘", anchors[id_].name, anchors[id_].how if ok else Loc.t("już cię nie pamięta.")], 14, UI.TEXT if ok else UI.BAD))
 
 
 func open_settings() -> void:

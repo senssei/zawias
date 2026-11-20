@@ -16,6 +16,8 @@ var _body: MeshInstance3D
 var _ring: MeshInstance3D
 var _label: Label3D
 var _hp_label: Label3D
+var _mark: Label3D        # znak kotwicy pamięci (ADR 0013): trzy kreski jak na dłoni Wędrowca
+var _mark_tween: Tween
 var _mat: StandardMaterial3D
 var _bob_t := randf() * TAU
 var _idle_root: Node3D
@@ -116,6 +118,17 @@ func setup(id_: String, name_: String, color: Color, shape := "humanoid") -> voi
 	_hp_label.no_depth_test = true
 	_hp_label.visible = false
 	add_child(_hp_label)
+	_mark = Label3D.new()
+	_mark.text = "| | |"
+	_mark.billboard = BaseMaterial3D.BILLBOARD_ENABLED
+	_mark.font_size = 46
+	_mark.pixel_size = 0.006
+	_mark.outline_size = 12
+	_mark.outline_modulate = Color(0.12, 0.06, 0.02, 0.9)
+	_mark.position.y = _label.position.y + 0.32
+	_mark.no_depth_test = true
+	_mark.visible = false
+	add_child(_mark)
 	if shape in ["humanoid", "mephit", "chest", "door", "barrel", "crate", "satchel"]:
 		_xray = ShaderMaterial.new()
 		_xray.shader = XRAY_SHADER
@@ -448,6 +461,27 @@ func set_fogged(on: bool) -> void:
 	fogged = on
 	_idle_root.visible = not on
 	_label.visible = not on and not _dead
+
+
+## Znak kotwicy: "" brak (nie pamięta albo przestał), "dim" może cię zapamiętać, "bright" zapamiętał ostatnio.
+## pulse: chwila zapisu, znak rozbłyska.
+func set_anchor_mark(state: String, pulse := false) -> void:
+	if _mark == null:
+		return
+	_mark.visible = state != ""
+	var col := Color("#d9a85b")
+	col.a = 1.0 if state == "bright" else 0.55
+	if _mark_tween:
+		_mark_tween.kill()
+	if pulse:
+		_mark.modulate = Color(1.0, 0.95, 0.75, 1.0)
+		_mark.scale = Vector3.ONE * 1.8
+		_mark_tween = create_tween().set_parallel(true)
+		_mark_tween.tween_property(_mark, "modulate", col, 1.4)
+		_mark_tween.tween_property(_mark, "scale", Vector3.ONE, 1.4).set_trans(Tween.TRANS_ELASTIC).set_ease(Tween.EASE_OUT)
+	else:
+		_mark.modulate = col
+		_mark.scale = Vector3.ONE
 
 
 func set_highlight(on: bool, color := Color.WHITE) -> void:

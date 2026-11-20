@@ -1,0 +1,7 @@
+{
+  "dorn":   {"name": "Dorn",   "how": "Pamięta każdego, kto u niego nocował. Zapis przy noclegu."},
+  "lis":    {"name": "Lis",    "how": "Echo zapisuje twoją opowieść. Za darmo, w Archiwum albo w drużynie.", "lost_if": {"reputation": ["echo", "wary"]}},
+  "kwit":   {"name": "Kwit",   "how": "Rejestr Zapisanych pamięta za miasto. Wpis kosztuje 1 sz.", "lost_if": {"reputation": ["inscribed", "wary"]}},
+  "hask":   {"name": "Hask",   "how": "Rejestr bramy. Wpis kosztuje 1 sz.", "lost_if": {"reputation": ["inscribed", "wary"]}},
+  "mirela": {"name": "Mirela", "how": "Pamięta cię, dopóki nie złamiesz danego jej słowa.", "lost_if": {"word": ["mirela_key", "broken"]}}
+}

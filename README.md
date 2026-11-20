@@ -42,7 +42,7 @@ The renderer is OpenGL 3.3 (Godot *Compatibility*), so most GPUs from the last d
 is not code-signed, so SmartScreen may ask you to confirm the first launch ("More info" → "Run anyway").
 
 **Controls**: left click to move, talk, attack and target; right click cancels. WASD/arrows pan the camera,
-mouse wheel zooms. C character sheet, I inventory, K spellbook, J journal, M map, L level up, R short rest, F5/F9 save and load,
+mouse wheel zooms. C character sheet, I inventory, K spellbook, J journal, M map, L level up, R short rest, F5 save (only with the "Save anywhere" setting; otherwise ask Dorn, Lis, Kwit, Hask or Mirela to remember you), F9 load,
 Space ends your turn, 1–9 pick dialogue choices, Esc closes windows.
 
 ## Run from source

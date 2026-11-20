@@ -73,5 +73,7 @@ The defeat sequence runs like this:
   unknown condition keys (a typo used to make a condition always true).
 - `story paths` does not simulate defeats yet, so it lists the `key_hidden` choices (`backdoor/picked/2`,
   `chest/start/2`) as unseen. To do: a defeat branch in `_fight`.
+- The opening cutscene (`data/dialogues/intro.json`: `intro_ring`, `intro_gate`, `intro_wake`) uses the same
+  presentation. It plays once after character creation (`intro_pending`) and can be skipped.
 - Semi-cutscenes are a first step towards the cutscene pipeline in `docs/todo.md`: still image, pan, subtitle and
   voice. Camera moves on the 3D map and actor movement are not included.

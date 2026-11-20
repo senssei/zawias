@@ -60,6 +60,12 @@ func _ready() -> void:
 	if GameState.journal.size() <= 1 and GameState.quests.is_empty():
 		hud.show_toast(Loc.t("Rdzawy Targ, Zawias"))
 		GameState.add_log(Loc.t("Kliknij Haska przy bramie, żeby porozmawiać. Kluczarnia Mireli stoi po północnej stronie targu. M otwiera mapę."))
+	_update_anchor_marks()
+	if GameState.loaded_from != "":   # powrót z zapisu: miasto przypomina sobie gracza, mgła się rozstępuje
+		GameState.loaded_from = ""
+		hud.fog_transition(false, 1.6, Color(0.38, 0.22, 0.55, 1.0))
+	if GameState.has_flag("intro_pending"):   # nowa gra z kreatora: cutscenka początkowa (półcutscenka, ADR 0012)
+		_open_dialogue.call_deferred("intro")
 
 
 func _exit_tree() -> void:
@@ -905,6 +911,8 @@ func _occupied(except: Actor = null) -> Dictionary:
 
 
 func _on_state_changed() -> void:
+	if actors.size() > 0:
+		_update_anchor_marks()   # utracona kotwica (np. złamane słowo) traci znak od razu
 	for lk in map.get("locks", []):
 		var cell := Vector2i(int(lk.cell[0]), int(lk.cell[1]))
 		grid.set_dynamic_block(cell, not GameState.has_flag(lk.unless_flag))
@@ -1045,14 +1053,17 @@ func _on_menu(id_: String) -> void:
 			if mode != "explore":
 				hud.show_toast(Loc.t("Nie można zapisać w trakcie walki ani rozmowy."), UI.BAD)
 				return
+			if not Audio.free_save:   # kotwice pamięci (ADR 0013): tu nikt cię nie zapamięta, mgła zaciska się na chwilę
+				hud.fog_squeeze()
+				Audio.sfx("portal", -14.0)
+				return
 			GameState.player_pos = player_actor.cell
-			if GameState.save_game("slot1"):
+			if GameState.save_game("quick"):
 				hud.show_toast(Loc.t("Zapisano grę"))
 		"load":
-			if GameState.has_save("slot1"):
-				reload_requested.emit("slot1")
+			hud.open_load_list(func(slot): reload_requested.emit(slot))
 		"menu":
-			hud.open_end_screen(Loc.t("Pauza"), Loc.t("Zawias czeka."), [["continue", Loc.t("Wróć do gry")], ["settings", Loc.t("Ustawienia")], ["save_quit", Loc.t("Zapisz i wyjdź do menu")], ["menu", Loc.t("Wyjdź bez zapisu")]])
+			hud.open_end_screen(Loc.t("Pauza"), Loc.t("Zawias czeka."), [["continue", Loc.t("Wróć do gry")], ["settings", Loc.t("Ustawienia")], ["save_quit", Loc.t("Zawieś grę i wyjdź do menu")], ["menu", Loc.t("Wyjdź bez zapisu")]])
 
 
 func _on_end_choice(id_: String) -> void:
@@ -1063,10 +1074,10 @@ func _on_end_choice(id_: String) -> void:
 				mode = "explore"
 		"settings":
 			hud.open_settings()
-		"save_quit":
+		"save_quit":   # zawieszenie: jeden powrót, potem trzeba znowu kogoś poprosić o pamięć
 			if mode == "explore":
 				GameState.player_pos = player_actor.cell
-				GameState.save_game("slot1")
+				GameState.save_game("suspend")
 			quit_to_menu.emit()
 		"menu":
 			quit_to_menu.emit()
@@ -1410,13 +1421,13 @@ const REVEAL_RADIUS := 8
 
 
 ## Mgła: odkrywa pola w zasięgu wzroku (ulice z linią widzenia, budynki w całości, gdy widać choć ich ścianę).
-func _reveal_around(c: Vector2i) -> void:
+func _reveal_around(c: Vector2i, radius := REVEAL_RADIUS) -> void:
 	var cells := []
 	var seen_chars := {}
-	for y in range(c.y - REVEAL_RADIUS, c.y + REVEAL_RADIUS + 1):
-		for x in range(c.x - REVEAL_RADIUS, c.x + REVEAL_RADIUS + 1):
+	for y in range(c.y - radius, c.y + radius + 1):
+		for x in range(c.x - radius, c.x + radius + 1):
 			var p := Vector2i(x, y)
-			if not grid.in_bounds(p) or Vector2(p - c).length() > REVEAL_RADIUS + 0.5:
+			if not grid.in_bounds(p) or Vector2(p - c).length() > radius + 0.5:
 				continue
 			if grid.has_los(c, p):
 				cells.append(p)
@@ -1430,10 +1441,10 @@ func _reveal_around(c: Vector2i) -> void:
 		known[p] = true
 	for _pass in 2:
 		var add := []
-		for y in range(c.y - REVEAL_RADIUS, c.y + REVEAL_RADIUS + 1):
-			for x in range(c.x - REVEAL_RADIUS, c.x + REVEAL_RADIUS + 1):
+		for y in range(c.y - radius, c.y + radius + 1):
+			for x in range(c.x - radius, c.x + radius + 1):
 				var p := Vector2i(x, y)
-				if known.has(p) or not grid.in_bounds(p) or Vector2(p - c).length() > REVEAL_RADIUS + 0.5:
+				if known.has(p) or not grid.in_bounds(p) or Vector2(p - c).length() > radius + 0.5:
 					continue
 				var n := 0
 				for d in [Vector2i(-1, -1), Vector2i(0, -1), Vector2i(1, -1), Vector2i(-1, 0), Vector2i(1, 0),
@@ -1547,7 +1558,7 @@ func _interact(a: Actor) -> void:
 
 
 ## Dialog -> portret (assets/portraits/<id>.png); domyślnie id dialogu. Węzeł może nadpisać polem "portrait".
-const DIALOGUE_PORTRAITS := {"backdoor": "door", "hidden_door": "door", "memory": "pc", "rift": "pc"}   # hidden_door: tymczasowo, docs/todo.md; pc = twarz gracza
+const DIALOGUE_PORTRAITS := {"backdoor": "door", "hidden_door": "door", "memory": "pc", "rift": "pc", "intro": "arch"}   # hidden_door: tymczasowo, docs/todo.md; pc = twarz gracza
 
 
 func _open_dialogue(id_: String) -> void:
@@ -1649,6 +1660,8 @@ func _on_world_request(e: Dictionary) -> void:
 		return
 	if e.has("start_combat"):
 		start_combat(e.start_combat)
+	elif e.has("remember_me"):
+		_anchor_save(str(e.remember_me))
 	elif e.has("end_game"):
 		_show_ending(e.end_game)
 	elif e.has("remove_npc"):
@@ -2229,6 +2242,32 @@ func _finish_combat(victory: bool, xp: int) -> void:
 	else:
 		_defeat_into_fog(enc)
 	_on_state_changed()
+
+
+## Kotwica pamięci zapisuje grę w swoim slocie (ADR 0013). Pozycja: tam, gdzie stoi gracz.
+func _anchor_save(id_: String) -> void:
+	if not GameState.anchor_ok(id_):
+		return
+	GameState.player_pos = player_actor.cell
+	GameState.last_anchor = id_
+	if GameState.save_game(GameState.ANCHOR_PREFIX + id_):
+		# pokaż, nie mów: znak nad kotwicą rozbłyska, mgła wokół gracza się cofa, mosiężny błysk
+		_update_anchor_marks(id_)
+		_reveal_around(player_actor.cell, REVEAL_RADIUS + 4)
+		hud.memory_pulse()
+		Audio.sfx("coin", -10.0)
+
+
+## Znaki trzech kresek nad kotwicami: przygaszony = może cię zapamiętać, jasny = zapamiętał ostatnio.
+func _update_anchor_marks(pulse_id := "") -> void:
+	for id_ in DB.table("anchors"):
+		var a: Actor = actors.get(id_)
+		if a == null or not is_instance_valid(a):
+			continue
+		var state := ""
+		if GameState.anchor_ok(id_):
+			state = "bright" if GameState.last_anchor == id_ else "dim"
+		a.set_anchor_mark(state, id_ == pulse_id)
 
 
 ## Klęska nie kończy gry (ADR 0012): mgła ze Szczeliny, skutek spotkania, zapomnienie (−1 maks. PW),

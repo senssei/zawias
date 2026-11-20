@@ -21,6 +21,8 @@ var log_lines: Array = []
 var ending := ""
 var explored := {}           # map_id -> String "0"/"1" na pole (wiersz po wierszu); mgła na mapie
 var companions: Array = []   # towarzysze w drużynie (Creature, team "party", sterowani przez AI w walce)
+var last_anchor := ""         # kto zapamiętał cię ostatnio (jasny znak nad głową)
+var loaded_from := ""         # slot ostatniego wczytania (nie w zapisie): świat pokazuje powrót z mgły
 var forgotten := 0           # klęski w mgle (ADR 0012): o tyle mniej maks. PW, do 3; rozmowa z dawnym sobą przywraca
 var words := {}              # rejestr słowa (ADR 0010): id z data/words.json -> stan (open/kept/broken, hidden/exposed)
 
@@ -40,6 +42,8 @@ func new_game(pc: Creature) -> void:
 	companions = []
 	words = {}
 	forgotten = 0
+	last_anchor = ""
+	loaded_from = ""
 	state_changed.emit()
 
 
@@ -153,6 +157,50 @@ static func motivation_name(m: String) -> String:
 ## Stan słowa: "" (nie padło), obietnica open/kept/broken, kłamstwo hidden/exposed.
 const FORGET_CAP := 3
 
+# ------------------------------------------------------------------ kotwice pamięci (ADR 0013)
+# Zapis = ktoś cię zapamiętał. Każda kotwica (data/anchors.json) ma własny slot "anchor_<id>"; traci się ją
+# warunkiem lost_if (np. złamane słowo). Do tego "auto" (przed walką) i "suspend" (zawieś i wyjdź, znika po wczytaniu).
+const ANCHOR_PREFIX := "anchor_"
+const SPECIAL_SLOTS := ["suspend", "auto", "quick", "slot1"]
+
+
+func anchor_ok(id_: String) -> bool:
+	var a: Dictionary = DB.table("anchors").get(id_, {})
+	return not a.is_empty() and not (a.has("lost_if") and check(a.lost_if))
+
+
+## Sloty z zapisem, od najnowszego: [{slot, anchor, name, class_id, level, time, place, note, mtime}].
+func list_saves() -> Array:
+	var out := []
+	var slots: Array = SPECIAL_SLOTS.duplicate()
+	for id_ in DB.table("anchors"):
+		slots.append(ANCHOR_PREFIX + id_)
+	for slot in slots:
+		var info := save_info(slot)
+		if not info.is_empty():
+			out.append(info)
+	out.sort_custom(func(a, b): return a.mtime > b.mtime)
+	return out
+
+
+func save_info(slot: String) -> Dictionary:
+	var path := "%s/%s.json" % [SAVE_DIR, slot]
+	if not FileAccess.file_exists(path):
+		return {}
+	var d = JSON.parse_string(FileAccess.get_file_as_string(path))
+	if not d is Dictionary:
+		return {}
+	var p: Dictionary = d.get("player", {})
+	var j: Array = d.get("journal", [])
+	return {"slot": slot, "anchor": slot.trim_prefix(ANCHOR_PREFIX) if slot.begins_with(ANCHOR_PREFIX) else "",
+		"name": str(p.get("name", "?")), "class_id": str(p.get("class_id", "")), "level": int(p.get("level", 1)),
+		"time": str(d.get("time", "")), "note": str(j[-1]) if not j.is_empty() else "",
+		"mtime": FileAccess.get_modified_time(path)}
+
+
+func has_any_save() -> bool:
+	return not list_saves().is_empty()
+
 
 func word_state(id_: String) -> String:
 	return words.get(id_, "")
@@ -250,6 +298,8 @@ func check(cond) -> bool:
 	if d.has("reputation") and faction_attitude(d.reputation[0]) != d.reputation[1]:
 		return false
 	if d.has("reputation_not") and faction_attitude(d.reputation_not[0]) == d.reputation_not[1]:
+		return false
+	if d.has("anchor") and not anchor_ok(d.anchor):
 		return false
 	if d.has("word") and word_state(d.word[0]) != d.word[1]:
 		return false
@@ -385,7 +435,7 @@ func apply_effect(e: Dictionary) -> void:
 	if e.has("inspiration"):
 		player.heroic_inspiration = true
 		add_log(Loc.t("Otrzymujesz Heroiczną inspirację."))
-	for key in ["start_combat", "end_game", "remove_npc"]:
+	for key in ["start_combat", "end_game", "remove_npc", "remember_me"]:
 		if e.has(key):
 			world_request.emit(e)
 			break
@@ -402,7 +452,7 @@ func to_dict() -> Dictionary:
 		"player_pos": [player_pos.x, player_pos.y],
 		"log": log_lines.slice(-50), "ending": ending, "explored": explored,
 		"companions": companions.map(func(c): return c.to_dict()),
-		"words": words, "forgotten": forgotten,
+		"words": words, "forgotten": forgotten, "last_anchor": last_anchor,
 		"time": Time.get_datetime_string_from_system(),
 	}
 
@@ -423,6 +473,7 @@ func from_dict(d: Dictionary) -> void:
 	companions = d.get("companions", []).map(func(cd): return Creature.from_dict(cd))
 	words = d.get("words", {})
 	forgotten = int(d.get("forgotten", 0))
+	last_anchor = str(d.get("last_anchor", ""))
 	state_changed.emit()
 
 
@@ -432,7 +483,6 @@ func save_game(slot: String = "slot1") -> bool:
 	if f == null:
 		return false
 	f.store_string(JSON.stringify(to_dict(), "  "))
-	add_log(Loc.t("Zapisano grę (%s).") % slot)
 	return true
 
 
@@ -448,5 +498,7 @@ func load_game(slot: String = "slot1") -> bool:
 	if not d is Dictionary:
 		return false
 	from_dict(d)
-	add_log(Loc.t("Wczytano grę (%s).") % slot)
+	if slot == "suspend":   # zawieszona gra wraca tylko raz
+		DirAccess.remove_absolute(ProjectSettings.globalize_path("%s/%s.json" % [SAVE_DIR, slot]))
+	loaded_from = slot   # świat pokaże powrót z mgły zamiast komunikatu
 	return true

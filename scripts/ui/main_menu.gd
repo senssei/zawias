@@ -4,7 +4,7 @@ extends Control
 ## Menu główne.
 
 signal new_game
-signal load_game
+signal load_game(slot: String)
 
 
 func _ready() -> void:
@@ -49,9 +49,9 @@ func _ready() -> void:
 	var b1 := UI.button(Loc.t("Nowa gra"), func(): new_game.emit(), 320)
 	b1.custom_minimum_size.y = 48
 	v.add_child(b1)
-	var b2 := UI.button(Loc.t("Wczytaj grę"), func(): load_game.emit(), 320)
+	var b2 := UI.button(Loc.t("Wczytaj grę"), _open_loads, 320)
 	b2.custom_minimum_size.y = 48
-	b2.disabled = not GameState.has_save("slot1")
+	b2.disabled = not GameState.has_any_save()
 	v.add_child(b2)
 	var bs := UI.button(Loc.t("Ustawienia"), _open_settings, 320)
 	bs.custom_minimum_size.y = 48
@@ -83,6 +83,22 @@ func _ready() -> void:
 
 
 var _settings: PanelContainer
+
+
+## „Kto cię pamięta?”: zapisy u kotwic, przed walką i zawieszona gra (ADR 0013).
+func _open_loads() -> void:
+	if _settings:
+		_settings.queue_free()
+	_settings = UI.panel(Color(UI.PANEL, 0.98))
+	_settings.set_anchors_preset(Control.PRESET_CENTER)
+	_settings.custom_minimum_size = Vector2(620, 0)
+	_settings.position = Vector2(-310, -260)
+	add_child(_settings)
+	var v := UI.vbox(10)
+	_settings.add_child(v)
+	v.add_child(UI.label(Loc.t("Kto cię pamięta?"), 24, UI.BRASS))
+	v.add_child(UI.save_list(func(slot): load_game.emit(slot)))
+	v.add_child(UI.button(Loc.t("Zamknij"), func(): _settings.queue_free(); _settings = null))
 
 
 func _open_settings() -> void:
