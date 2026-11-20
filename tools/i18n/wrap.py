@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 """Opakowuje napisy do tłumaczenia w Loc.t("...") (wykrywanie jak w extract.py).
 Pomija: stałe (także wielowierszowe), linie `func` (argumenty domyślne muszą być stałe), komunikaty debugowe,
 napisy już opakowane. Wypisuje pominięte napisy ze stałych, które trzeba tłumaczyć w miejscu użycia.

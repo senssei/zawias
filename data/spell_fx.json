@@ -1,0 +1,21 @@
+{
+  "fire_bolt":       {"kind": "bolt",   "color": "#ff7433", "seconds": 0.42},
+  "ray_of_frost":    {"kind": "beam",   "color": "#8edaff", "seconds": 0.38},
+  "sacred_flame":    {"kind": "pillar", "color": "#ffdf85", "seconds": 0.55},
+  "prestidigitation":{"kind": "burst",  "color": "#ff97d1", "seconds": 0.48},
+  "thaumaturgy":    {"kind": "aura",   "color": "#f79555", "seconds": 0.56},
+  "light":          {"kind": "pillar", "color": "#fff1aa", "seconds": 0.55},
+  "magic_missile":  {"kind": "volley", "color": "#c293ff", "seconds": 0.58},
+  "shield":         {"kind": "aura",   "color": "#73b9ff", "seconds": 0.40},
+  "sleep":          {"kind": "burst",  "color": "#a789ed", "seconds": 0.70},
+  "burning_hands":  {"kind": "cone",   "color": "#ff7a2a", "seconds": 0.56},
+  "cure_wounds":    {"kind": "aura",   "color": "#7ae6a0", "seconds": 0.52},
+  "healing_word":   {"kind": "aura",   "color": "#a1efa3", "seconds": 0.48},
+  "guiding_bolt":   {"kind": "bolt",   "color": "#ffe383", "seconds": 0.54},
+  "bless":          {"kind": "aura",   "color": "#ffe0a3", "seconds": 0.58},
+  "inflict_wounds": {"kind": "pillar", "color": "#82b882", "seconds": 0.50},
+  "thunderwave":    {"kind": "cone",   "color": "#9dbbff", "seconds": 0.62},
+  "chromatic_orb":  {"kind": "bolt",   "color": "#ef9ee9", "seconds": 0.53},
+  "shatter":        {"kind": "burst",  "color": "#d4e6ff", "seconds": 0.62},
+  "hold_person":    {"kind": "aura",   "color": "#c69def", "seconds": 0.67}
+}

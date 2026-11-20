@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 """Paczki wydania z buildów: dist/zawias-<wersja>-windows.zip i -linux.zip (z plikiem README i licencjami).
 Wersja z project.godot (application/config/version). Użycie: python3 tools/release/package.py [--export]
 --export najpierw eksportuje oba presety Godotem (GODOT, domyślnie ~/.local/bin/godot)."""
@@ -31,10 +33,14 @@ if (ROOT / "LICENSE").exists():
     LICENSES = "== Code ==\n" + (ROOT / "LICENSE").read_text(encoding="utf-8") + "\n\n== Rules ==\n" + LICENSES
 LICENSES += """
 
+== Game assets and content ==
+(c) 2026 Rafal Warzycha, Creative Commons Attribution 4.0 (CC-BY-4.0), except the backdrop depth map
+(made with Depth Anything V2 Large): CC-BY-NC-4.0. SPDX metadata per file: REUSE.toml in the source repository.
+
 == Third-party ==
 Godot Engine (MIT) (c) Godot Engine contributors, Juan Linietsky, Ariel Manzur. Full notices: in-game Credits.
 Quaternius Universal Animation Library (CC0).
-Generated locally: FLUX.2 [klein] 4B (Apache 2.0), TRELLIS.2 (MIT), ACE-Step 1.5 (MIT),
+Generated locally: FLUX.2 [klein] 4B (Apache 2.0), TRELLIS.2 (MIT), ACE-Step 1.5 (MIT), OmniVoice (Apache 2.0),
 Depth Anything V2 Large (CC-BY-NC-4.0, non-commercial use only).
 """
 

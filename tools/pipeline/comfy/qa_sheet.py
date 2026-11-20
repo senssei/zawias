@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 """Skleja klatki kontrolne animacji w jeden arkusz PNG. Użycie: qa_sheet.py <katalog> <wyjście.png>"""
 import glob, os, sys
 from PIL import Image, ImageDraw

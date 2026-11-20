@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2026 Rafal Warzycha
+// SPDX-License-Identifier: MIT
 shader_type spatial;
 // Zrzut głębi makiety: odległość wzdłuż osi kamery zakodowana w R (starszy bajt) i G (młodszy), B=1 to geometria.
 render_mode unshaded, fog_disabled;

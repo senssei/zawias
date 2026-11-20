@@ -22,9 +22,15 @@
       "choices": [{"text": "[Odejdź]", "end": true}]
     },
     "caught": {
+      "redirect": [{"if": {"has_item": "rust_token", "reputation": ["unravelers", "friendly"]}, "next": "brother"}],
       "speaker": "Skrzynia Severa",
       "text": "Wieko skrzypi przeraźliwie. Wszystkie głowy w magazynie odwracają się w twoją stronę.",
       "choices": [{"text": "[Walcz]", "effects": [{"start_combat": "warehouse"}], "end": true}]
+    },
+    "brother": {
+      "speaker": "Kultysta",
+      "text": "Wieko skrzypi i wszystkie głowy odwracają się w twoją stronę. Kultysta sięga po sierp, ale zauważa Żeton Rdzy i opuszcza ostrze. „Swój? To nie kradnij jak obcy. Chcesz klucza, idź z tym do Severa”.",
+      "choices": [{"text": "[Odejdź]", "end": true}]
     },
     "loot": {
       "speaker": "Skrzynia Severa",

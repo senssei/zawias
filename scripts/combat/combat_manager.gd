@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 class_name CombatManager
 extends RefCounted
 ## Turowa walka na siatce: inicjatywa, ekonomia akcji, ataki okazyjne, czary.
@@ -5,6 +7,8 @@ extends RefCounted
 
 signal event(e: Dictionary)
 
+var control_party := false   # towarzysze sterowani przez gracza (ustawienie Audio.control_companions)
+var entropy := false         # spotkanie z "entropy": rozpad na polu walki co rundę (ADR 0006)
 var grid: CombatGrid
 var combatants: Array[Creature] = []
 var order: Array[Creature] = []
@@ -36,6 +40,7 @@ func start(party: Array, enemies: Array, party_surprised := false) -> void:
 		var dis := party_surprised and c.team == "party"
 		var adv := c.has_feature("remarkable_athlete")
 		var r := Dice.d20(Dice.combine_mode(adv, dis))
+		_emit_d20(c, int(r.natural))
 		rolls[c.id] = int(r.natural) + c.initiative_bonus()
 		_log(Loc.t("Inicjatywa %s: %d (k20 %s %s)%s") % [c.name, rolls[c.id], str(r.rolls),
 			Abilities.fmt_mod(c.initiative_bonus()), Loc.t(" — zaskoczenie!") if dis else ""])
@@ -82,6 +87,8 @@ func _advance() -> void:
 			turn_index = 0
 			round_num += 1
 			_log(Loc.t("— Runda %d —") % round_num)
+			if entropy:
+				_entropy_tick()
 		var c := current()
 		if c.dead:
 			continue
@@ -93,7 +100,7 @@ func _advance() -> void:
 		if not c.can_act():
 			_end_turn_cleanup(c)
 			continue
-		if c.is_player or c.team == "party":
+		if is_controlled(c):   # gracz, a z control_party także towarzysze; reszta walczy sama (AIBasic)
 			_emit({"type": "turn", "id": c.id, "round": round_num, "player": true})
 			return
 		_emit({"type": "turn", "id": c.id, "round": round_num, "player": false})
@@ -101,7 +108,37 @@ func _advance() -> void:
 		_end_turn_cleanup(c)
 
 
+## Czy turą tej postaci steruje gracz (gracz zawsze, towarzysze przy control_party).
+func is_controlled(c: Creature) -> bool:
+	return c != null and (c.is_player or (control_party and c.team == "party"))
+
+
+## Entropia Rozplataczy: na początku każdej rundy od drugiej coś się rozpada. k6: 1–2 rdza spowalnia losową
+## postać do końca jej tury, 3–4 losowej postaci zacina się broń (utrudnienie w następnym ataku bronią),
+## 5–6 nic. Dotyka obie strony jednakowo.
+func _entropy_tick() -> void:
+	var alive := combatants.filter(func(x): return x.is_conscious())
+	if alive.is_empty():
+		return
+	var r := Dice.roll_die(6)
+	if r >= 5:
+		_log(Loc.t("Magazyn trzeszczy, ale tym razem wszystko wytrzymuje."))
+		return
+	var who: Creature = alive[Dice.roll_die(alive.size()) - 1]
+	if r <= 2:
+		who.effects["slowed"] = true
+		_log(Loc.t("Rdza pod stopami: %s grzęźnie w pyle (wolniejszy ruch w tej turze).") % who.name)
+		_emit({"type": "entropy", "id": who.id, "kind": "rust"})
+	else:
+		who.effects["jammed"] = true
+		_log(Loc.t("Rozpad: broń %s pokrywa się rdzą (utrudnienie w następnym ataku bronią).") % who.name)
+		_emit({"type": "entropy", "id": who.id, "kind": "jam"})
+
+
 func _start_turn(c: Creature) -> void:
+	for target in combatants:
+		if target.effects.get("helped_by", "") == c.id:
+			target.effects.erase("helped_by")
 	c.effects.erase("dodging")
 	c.effects.erase("shield_spell")
 	c.effects.erase("reaction_used")
@@ -110,6 +147,7 @@ func _start_turn(c: Creature) -> void:
 	# Rzuty przeciw śmierci
 	if c.kind == "pc" and c.hp <= 0 and not c.dead and not c.stable:
 		var r := Dice.roll_die(20)
+		_emit_d20(c, r)
 		if r == 20:
 			c.heal(1)
 			_log(Loc.t("%s: rzut przeciw śmierci 20 — odzyskuje przytomność!") % c.name)
@@ -146,6 +184,7 @@ func _end_turn_cleanup(c: Creature) -> void:
 	if c.effects.has("held") and c.is_alive():
 		var h: Dictionary = c.effects.held
 		var sv := Checks.saving_throw(c, h.save, int(h.dc))
+		_emit_d20(c, int(sv.natural))
 		_log(Loc.t("%s próbuje się uwolnić: %s") % [c.name, sv.text])
 		if sv.success:
 			c.remove_condition(h.condition)
@@ -244,6 +283,8 @@ func adjacent_hostile(c: Creature) -> bool:
 func attack_context(attacker: Creature, target: Creature, ranged: bool, range_n: int, long_range: int) -> Dictionary:
 	var dist := CombatGrid.distance(attacker.grid_pos, target.grid_pos)
 	var ctx := {"distance": dist, "adv": [], "dis": []}
+	if _has_attack_help(attacker, target):
+		ctx.adv.append(Loc.t("pomoc sojusznika"))
 	if ranged:
 		if adjacent_hostile(attacker):
 			ctx.dis.append(Loc.t("wróg obok"))
@@ -256,6 +297,11 @@ func attack_context(attacker: Creature, target: Creature, ranged: bool, range_n:
 	ctx["sneak_ally"] = ally_adj
 	ctx["all"] = combatants
 	return ctx
+
+
+func _has_attack_help(attacker: Creature, target: Creature) -> bool:
+	var helper_id: String = target.effects.get("helped_by", "")
+	return allies_of(attacker).any(func(ally): return ally.id == helper_id)
 
 
 ## Zwraca "" gdy atak możliwy, inaczej powód.
@@ -352,8 +398,14 @@ func attack(c: Creature, opt: Dictionary, target: Creature) -> String:
 
 func _do_attack_resolve(c: Creature, target: Creature, opt: Dictionary) -> void:
 	var ctx := attack_context(c, target, opt.get("ranged", false), int(opt.range), int(opt.long_range))
+	var shield_was_active: bool = target.effects.get("shield_spell", false)
 	var res := Attack.resolve(c, target, opt, ctx, turn if current() == c else {})
+	_emit_d20(c, int(res.get("natural", 0)))
+	if _has_attack_help(c, target):
+		target.effects.erase("helped_by")
 	_emit({"type": "attack", "id": c.id, "target": target.id, "hit": res.hit, "ranged": opt.get("ranged", false)})
+	if not shield_was_active and target.effects.get("shield_spell", false):
+		_emit({"type": "spell", "id": target.id, "spell": "shield", "cell": target.grid_pos})
 	for l in res.lines:
 		_log(l)
 	_after_damage(target, int(res.damage), res.hit)
@@ -396,38 +448,38 @@ func _emit_hp(c: Creature, dealt: int = 0) -> void:
 	_emit({"type": "hp", "id": c.id, "hp": c.hp, "max": c.max_hp, "amount": dealt})
 
 
-## Cele czaru dla wskazanego pola.
+static func spell_area_cells(board: CombatGrid, spell_id: String, origin: Vector2i, aim: Vector2i) -> Array[Vector2i]:
+	var area: Dictionary = Spellcasting.spell(spell_id).get("area", {})
+	var cells: Array[Vector2i] = []
+	if area.is_empty():
+		return cells
+	var cone: bool = area.shape == "cone"
+	var center := origin if cone else aim
+	var radius := int(area.length if cone else area.radius)
+	var direction := Vector2(aim - origin).normalized()
+	for y in range(center.y - radius, center.y + radius + 1):
+		for x in range(center.x - radius, center.x + radius + 1):
+			var cell := Vector2i(x, y)
+			if not board.in_bounds(cell):
+				continue
+			if cone and (cell == origin or direction.dot(Vector2(cell - origin).normalized()) < 0.7 or not board.has_los(origin, cell)):
+				continue
+			cells.append(cell)
+	return cells
+
+
 func spell_targets(c: Creature, spell_id: String, cell: Vector2i) -> Array:
 	var sp := Spellcasting.spell(spell_id)
-	var area: Dictionary = sp.get("area", {})
-	var out := []
-	if area.is_empty():
-		var t := creature_at(cell)
-		if t:
-			out.append(t)
-		return out
-	if area.shape == "sphere":
-		for o in combatants:
-			if o.is_alive() and CombatGrid.distance(o.grid_pos, cell) <= int(area.radius):
-				# „istoty według wyboru” (np. Uśpienie): rzucający pomija siebie i sojuszników
-				if sp.get("choose", false) and not o.is_hostile_to(c):
-					continue
-				out.append(o)
-	elif area.shape == "cone":
-		var dir := Vector2(cell - c.grid_pos).normalized()
-		for o in combatants:
-			if o == c or not o.is_alive():
-				continue
-			var d := CombatGrid.distance(c.grid_pos, o.grid_pos)
-			if d < 1 or d > int(area.length):
-				continue
-			var v := Vector2(o.grid_pos - c.grid_pos).normalized()
-			if dir.dot(v) >= 0.7 and grid.has_los(c.grid_pos, o.grid_pos):
-				out.append(o)
-	return out
+	if not sp.has("area"):
+		var target := creature_at(cell)
+		return [target] if target else []
+	var cells := spell_area_cells(grid, spell_id, c.grid_pos, cell)
+	return combatants.filter(func(o):
+		return o.is_alive() and o.grid_pos in cells and (not sp.get("choose", false) or o.is_hostile_to(c)))
 
 
-func can_cast(c: Creature, spell_id: String, cell: Vector2i) -> String:
+## Sprawdza gotowość do rzucenia czaru przed wskazaniem celu.
+func spell_action_error(c: Creature, spell_id: String) -> String:
 	if not is_my_turn(c):
 		return Loc.t("To nie twoja tura")
 	var err := Spellcasting.can_cast(c, spell_id)
@@ -437,8 +489,16 @@ func can_cast(c: Creature, spell_id: String, cell: Vector2i) -> String:
 	if sp.cast == "bonus":
 		if int(turn.bonus) <= 0:
 			return Loc.t("Brak akcji dodatkowej")
-	elif int(turn.action) <= 0 or int(turn.attacks_left) > 0 and int(turn.action) <= 0:
+	elif int(turn.action) <= 0:
 		return Loc.t("Brak akcji")
+	return ""
+
+
+func can_cast(c: Creature, spell_id: String, cell: Vector2i) -> String:
+	var err := spell_action_error(c, spell_id)
+	if err != "":
+		return err
+	var sp := Spellcasting.spell(spell_id)
 	var dist := CombatGrid.distance(c.grid_pos, cell)
 	if dist > int(sp.get("range", 1)):
 		return Loc.t("Poza zasięgiem")
@@ -465,10 +525,18 @@ func cast(c: Creature, spell_id: String, cell: Vector2i, slot: int = 0) -> Strin
 	var ctx := {"all": combatants}
 	if not targets.is_empty() and sp.type == "attack":
 		ctx = attack_context(c, targets[0], true, int(sp.range), 0)
+		if _has_attack_help(c, targets[0]):
+			targets[0].effects.erase("helped_by")
 	if slot > 0:
 		ctx["slot"] = slot
-	_emit({"type": "spell", "id": c.id, "spell": spell_id, "cell": [cell.x, cell.y]})
+	var used_slot := slot if slot > 0 else c.lowest_slot(int(sp.level)) if int(sp.level) > 0 else 0
 	var res := Spellcasting.cast(c, spell_id, targets, ctx)
+	_emit({"type": "spell", "id": c.id, "spell": spell_id, "cell": cell,
+		"slot": used_slot, "recipients": targets.map(func(target): return target.grid_pos),
+		"hit": res.get("attack_hit", true), "area_cells": spell_area_cells(grid, spell_id, c.grid_pos, cell)})
+	for roll in res.get("d20_rolls", []):
+		if roll.natural == 1 or roll.natural == 20:
+			_emit({"type": "d20", "id": roll.id, "natural": roll.natural})
 	for l in res.lines:
 		_log(l)
 	for pair in res.damaged:
@@ -505,9 +573,39 @@ func do_action(c: Creature, action_id: String, target: Creature = null) -> Strin
 			if adjacent_hostile(c):
 				return Loc.t("Wróg stoi obok")
 			var r := Checks.skill_check(c, "stealth", 15)
+			_emit_d20(c, int(r.natural))
 			_log(Loc.t("%s próbuje się ukryć. %s") % [c.name, r.text])
 			if r.success:
 				c.effects["hidden"] = true
+				c.effects["hide_dc"] = int(r.total)
+		"help", "stabilize":
+			var error := action_target_error(c, action_id, target)
+			if error != "":
+				return error
+			if action_id == "help":
+				target.effects["helped_by"] = c.id
+				_log(Loc.t("%s odwraca uwagę: %s.") % [c.name, target.name])
+			else:
+				var medicine := Checks.skill_check(c, "medicine", 10)
+				_emit_d20(c, int(medicine.natural))
+				_log(Loc.t("%s udziela pierwszej pomocy: %s") % [c.name, medicine.text])
+				if medicine.success:
+					target.stable = true
+					target.death_saves = {"success": 0, "fail": 0}
+					_log(Loc.t("%s stabilizuje się.") % target.name)
+					_emit_hp(target)
+		"search":
+			for enemy in hostiles_of(c):
+				if not enemy.effects.get("hidden", false) or not grid.has_los(c.grid_pos, enemy.grid_pos):
+					continue
+				var perception := Checks.skill_check(c, "perception", int(enemy.effects.get("hide_dc", 15)))
+				_emit_d20(c, int(perception.natural))
+				if perception.success:
+					enemy.effects.erase("hidden")
+					enemy.effects.erase("hide_dc")
+					_log(Loc.t("%s wykrywa ukrytego wroga: %s.") % [c.name, enemy.name])
+					_emit({"type": "condition", "id": enemy.id})
+			_log(Loc.t("%s przeszukuje pole walki.") % c.name)
 		"second_wind":
 			if not c.use_resource("second_wind"):
 				return Loc.t("Brak użyć")
@@ -546,6 +644,7 @@ func do_action(c: Creature, action_id: String, target: Creature = null) -> Strin
 			var d3 := Dice.roll_expr("1d8+%d" % c.mod("wis"))
 			if target.is_hostile_to(c):
 				var sv := Checks.saving_throw(target, "con", c.spell_save_dc())
+				_emit_d20(target, int(sv.natural))
 				var amount: int = d3.total if not sv.success else floori(int(d3.total) / 2.0)
 				_log(Loc.t("%s: Boska iskra! %s") % [c.name, sv.text])
 				var dealt := target.take_damage(amount, "radiant")
@@ -568,7 +667,7 @@ func do_action(c: Creature, action_id: String, target: Creature = null) -> Strin
 
 ## Lista akcji dostępnych dla postaci: [{id, name, cost}]
 func available_actions(c: Creature) -> Array:
-	var ids := ["dash", "disengage", "dodge", "hide"]
+	var ids := ["dash", "disengage", "dodge", "hide", "help", "search", "stabilize"]
 	if c.has_feature("cunning_action"):
 		ids.append_array(["cunning_dash", "cunning_disengage", "cunning_hide"])
 	for f in ["second_wind", "action_surge", "steady_aim", "divine_spark"]:
@@ -584,15 +683,33 @@ func available_actions(c: Creature) -> Array:
 
 const ACTION_NAMES := {
 	"dash": "Sprint", "disengage": "Odstąpienie", "dodge": "Unik", "hide": "Ukrycie się",
+	"help": "Pomoc w ataku", "search": "Szukaj", "stabilize": "Pierwsza pomoc",
 	"cunning_dash": "Sprint (spryt)", "cunning_disengage": "Odstąpienie (spryt)", "cunning_hide": "Ukrycie (spryt)",
 	"second_wind": "Drugi oddech", "action_surge": "Przypływ działania", "steady_aim": "Pewny cel",
 	"divine_spark": "Boska iskra", "potion": "Mikstura leczenia",
 }
 
 
+func action_target_error(c: Creature, action_id: String, target: Creature) -> String:
+	if target == null or target == c or not target.is_alive():
+		return Loc.t("Niepoprawny cel")
+	match action_id:
+		"help":
+			if not target.is_hostile_to(c) or not target.is_conscious():
+				return Loc.t("Wskaż wroga")
+		"stabilize":
+			if target.team != c.team or target.hp > 0 or target.stable:
+				return Loc.t("Wskaż umierającego sojusznika")
+		_:
+			return ""
+	if CombatGrid.distance(c.grid_pos, target.grid_pos) > 1:
+		return Loc.t("Za daleko")
+	return ""
+
+
 func action_cost(c: Creature, action_id: String) -> String:
 	match action_id:
-		"dash", "disengage", "dodge", "hide", "divine_spark":
+		"dash", "disengage", "dodge", "hide", "divine_spark", "help", "search", "stabilize":
 			return "action"
 		"cunning_dash", "cunning_disengage", "cunning_hide", "second_wind", "steady_aim", "potion":
 			return "bonus"
@@ -605,6 +722,11 @@ func action_cost(c: Creature, action_id: String) -> String:
 
 func _log(text: String) -> void:
 	_emit({"type": "log", "text": text})
+
+
+func _emit_d20(c: Creature, natural: int) -> void:
+	if natural == 1 or natural == 20:
+		_emit({"type": "d20", "id": c.id, "natural": natural})
 
 
 func _emit(e: Dictionary) -> void:

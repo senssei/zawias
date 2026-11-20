@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 class_name Dice
 extends RefCounted
 ## Kości: rzuty, wyrażenia "2d6+3", przewaga/utrudnienie.

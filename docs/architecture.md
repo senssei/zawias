@@ -53,13 +53,19 @@ i18n/               translation overlays (see localization.md)
 - `Actor` is a character or object on the grid: loads its GLB model (falls back to a placeholder figure and reports
   an error if a model exists but fails to load), plays animations, moves along paths with footsteps synced to the
   walk cycle, and carries the x-ray silhouette material.
+- `NpcRoutes` moves NPCs with a `route` along their stops in exploration mode, pauses them for talks, barks,
+  dialogue and combat, and keeps them off the player, followers and lamp posts; the player re-paths around an NPC
+  that steps into the way.
 - `IsoCamera`: orthographic isometric camera (yaw 45°, pitch −35.26°), pan/zoom, clamped to the painting.
 
 ## UI (`scripts/ui`)
 
 `UI` holds shared widgets, colors and the settings panel (volumes, difficulty, language, fullscreen).
-`HUD` draws the portrait panel, log, combat bar, dialogue window and the character / inventory / journal /
-level-up windows. `MainMenu` and `CharacterCreation` are standalone screens. All visible strings go through `Loc.t()`.
+`HUD` draws the portrait panel, log, combat bar, dialogue window, the minimap and the character / inventory /
+journal / map / level-up windows. `MapView` draws a map grid with fog, markers and building labels: the minimap
+centers on the player and rotates with the camera, the full map fits the window and turns a click into a cell.
+The world supplies the markers (`World._map_markers`) and reveals cells in line of sight as the player walks
+(`GameState.explored`, stored in saves). `MainMenu` and `CharacterCreation` are standalone screens. All visible strings go through `Loc.t()`.
 
 ## Autoloads
 

@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 class_name Leveling
 extends RefCounted
 ## Awans: PD, cechy klasowe, miejsca na czary, podklasa na 3. poziomie.

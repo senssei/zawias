@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 """Sprawdza GLB-y przed wrzuceniem do gry: budżet trójkątów, szkielet i animacje, tekstury, rozmiar pliku.
 
 Użycie: validate_glb.py <plik.glb>... [--kind actor|prop] [--max-tris N] [--max-texture 1024] [--max-mb 6]

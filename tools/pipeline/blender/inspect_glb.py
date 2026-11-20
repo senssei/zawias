@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 """Wypisuje szkielet (kości z pozycjami) i animacje z pliku GLB/FBX."""
 import sys, bpy
 path = sys.argv[sys.argv.index("--") + 1]

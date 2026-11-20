@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 extends GutTest
 
 var grid: CombatGrid
@@ -17,6 +19,95 @@ func _pc() -> Creature:
 		"bonus": {"str": 2, "con": 1}, "choice": "defense",
 	})
 	return c
+
+
+func test_help_benefits_one_allied_attack_and_reports_the_selected_d20():
+	var pc := _pc()
+	pc.grid_pos = Vector2i(10, 8)
+	var ally := _pc()
+	ally.id = "ally"
+	ally.grid_pos = Vector2i(10, 9)
+	var enemy := CharacterBuilder.create_monster("bandit", "b")
+	enemy.grid_pos = Vector2i(11, 8)
+	var mgr := CombatManager.new(grid)
+	var rolls := []
+	mgr.event.connect(func(event): if event.type == "d20": rolls.append(event.natural))
+	Dice.force([19, 18, 2])
+	mgr.start([pc, ally], [enemy])
+	assert_eq(mgr.do_action(pc, "help", ally), Loc.t("Wskaż wroga"))
+	assert_eq(int(mgr.turn.action), 1)
+	assert_eq(mgr.do_action(pc, "help", enemy), "")
+	assert_eq(int(mgr.turn.action), 0)
+	assert_true(mgr.attack_context(pc, enemy, false, 1, 0).adv.is_empty())
+	assert_eq(mgr.attack_context(ally, enemy, false, 1, 0).adv.size(), 1)
+	mgr.end_turn()
+	assert_eq(mgr.current(), ally)
+	Dice.force([1, 20, 1, 1])
+	assert_eq(mgr.attack(ally, Attack.weapon_option(ally, "longsword"), enemy), "")
+	assert_eq(rolls, [20], "przy przewadze liczy się tylko wybrana kość")
+	assert_true(mgr.attack_context(ally, enemy, false, 1, 0).adv.is_empty())
+
+
+func test_search_and_first_aid_use_their_skill_checks():
+	var pc := _pc()
+	pc.grid_pos = Vector2i(10, 8)
+	var ally := _pc()
+	ally.id = "ally"
+	ally.grid_pos = Vector2i(10, 9)
+	ally.take_damage(ally.hp)
+	ally.death_saves.fail = 2
+	var enemy := CharacterBuilder.create_monster("bandit", "b")
+	enemy.grid_pos = Vector2i(11, 8)
+	var mgr := CombatManager.new(grid)
+	Dice.force([19, 18, 2])
+	mgr.start([pc, ally], [enemy])
+	enemy.effects["hidden"] = true
+	enemy.effects["hide_dc"] = 17
+	Dice.force([1])
+	assert_eq(mgr.do_action(pc, "search"), "")
+	assert_true(enemy.effects.has("hidden"))
+	mgr.turn.action = 1
+	Dice.force([20])
+	assert_eq(mgr.do_action(pc, "search"), "")
+	assert_false(enemy.effects.has("hidden"))
+	mgr.turn.action = 1
+	Dice.force([20])
+	assert_eq(mgr.do_action(pc, "stabilize", ally), "")
+	assert_true(ally.stable)
+	assert_eq(ally.hp, 0)
+	assert_eq(ally.death_saves.fail, 0)
+
+
+func test_spell_fx_uses_resolved_attack_and_area_targets():
+	var pc := _pc()
+	pc.grid_pos = Vector2i(10, 8)
+	var ally := _pc()
+	ally.id = "ally"
+	ally.grid_pos = Vector2i(11, 8)
+	var enemy := CharacterBuilder.create_monster("bandit", "b")
+	enemy.grid_pos = Vector2i(12, 9)
+	enemy.max_hp = 100
+	enemy.hp = 100
+	var mgr := CombatManager.new(grid)
+	var visuals := []
+	mgr.event.connect(func(event): if event.type == "spell": visuals.append(event))
+	Dice.force([19, 18, 2])
+	mgr.start([pc, ally], [enemy])
+	for id in ["fire_bolt", "ray_of_frost"]:
+		for roll in [1, 20]:
+			mgr.turn.action = 1
+			var hp_before := enemy.hp
+			Dice.force([roll, 2, 2])
+			assert_eq(mgr.cast(pc, id, enemy.grid_pos), "")
+			assert_eq(visuals.back().hit, roll == 20)
+			assert_eq(enemy.hp < hp_before, roll == 20)
+			assert_eq(mgr.turn.action, 0)
+	assert_eq(mgr.spell_targets(pc, "sleep", enemy.grid_pos), [enemy])
+	var cone := CombatManager.spell_area_cells(grid, "burning_hands", pc.grid_pos, Vector2i(12, 8))
+	assert_true(enemy.grid_pos in cone)
+	assert_false(pc.grid_pos in cone)
+	for cell in cone:
+		assert_true(grid.has_los(pc.grid_pos, cell))
 
 
 func test_grid_basics():
@@ -132,3 +223,18 @@ func test_sleep_spares_caster_in_area():
 	var t := mgr.spell_targets(c, "sleep", Vector2i(11, 8))
 	assert_eq(t.size(), 1)
 	assert_false(c in t)
+
+
+## Skalowanie solo: magazyn tylko na Normalnym, zasadzka (lista "difficulty") także na „Opowieści”; z towarzyszem nigdy.
+func test_solo_scaling_only_on_normal_without_companion():
+	var was := Difficulty.current
+	var enc := DB.entry("encounters", "warehouse")
+	Difficulty.current = "normal"
+	assert_eq(Difficulty.solo_skip(enc, 1), ["mefit"], "Normalny solo: bez mefita")
+	assert_eq(Difficulty.solo_skip(enc, 2), [], "z towarzyszem pełna walka")
+	Difficulty.current = "story"
+	assert_eq(Difficulty.solo_skip(enc, 1), [], "Opowieść: magazyn bez dodatkowego skalowania")
+	var amb := DB.entry("encounters", "ambush")
+	assert_eq(Difficulty.solo_skip(amb, 1), ["bandyta2"], "zasadzka skalowana też na Opowieści (lista difficulty)")
+	assert_eq(Difficulty.solo_skip(amb, 2), [], "z towarzyszem pełna zasadzka")
+	Difficulty.current = was

@@ -31,14 +31,21 @@
       "choices": [{"text": "[Odejdź]", "end": true}]
     },
     "caught": {
+      "redirect": [{"if": {"has_item": "rust_token", "reputation": ["unravelers", "friendly"]}, "next": "brother"}],
       "speaker": "Tylne drzwi",
       "text": "Deska skrzypi pod stopą. Mefit wrzeszczy jak przeciągany po blasze gwóźdź. Kultysta zrywa się na nogi.",
       "choices": [{"text": "[Walcz]", "effects": [{"start_combat": "warehouse"}], "end": true}]
     },
+    "brother": {
+      "speaker": "Tylne drzwi",
+      "text": "Mefit wrzeszczy, a kultysta zrywa się na nogi. Dostrzega jednak Żeton Rdzy i ucisza stwora gestem. „Swój. Następnym razem wejdź frontem, jak człowiek. Sever przyjmie cię w środku”.",
+      "effects": [{"set_flag": "front_open"}],
+      "choices": [{"text": "[Odejdź]", "end": true}]
+    },
     "lock_fail": {
       "speaker": "Tylne drzwi",
       "text": "Wytrych zgina się z cichym trzaskiem. Ten zamek jest mocniejszy, niż wyglądał. Chyba go zaklinowałeś.",
-      "effects": [{"set_flag": "lock_failed"}],
+      "effects": [{"set_flag": "lock_failed"}, {"journal": "Zaklinowałem zamek tylnych drzwi magazynu. Mogę je jeszcze wyważyć albo spróbować wejść frontem, przez Odźwiernego."}],
       "choices": [{"text": "Spróbuję inaczej.", "next": "start"}, {"text": "[Odejdź]", "end": true}]
     },
     "forced": {
@@ -50,7 +57,7 @@
     "force_fail": {
       "speaker": "Tylne drzwi",
       "text": "Drzwi nawet nie drgną. Rozcierasz bolący bark.",
-      "effects": [{"set_flag": "force_failed"}],
+      "effects": [{"set_flag": "force_failed"}, {"journal": "Nie dałem rady wyważyć tylnych drzwi magazynu. Front pilnuje Odźwierny. Mogę go przekonać, oszukać albo wejść siłą."}],
       "choices": [{"text": "[Odejdź]", "end": true}]
     },
     "open": {

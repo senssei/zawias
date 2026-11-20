@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 extends GutTest
 ## Tłumaczenie angielskie: pokrycie napisów z kodu, zgodność znaczników formatu i BBCode, poprawność nakładki danych.
 

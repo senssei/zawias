@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 extends SceneTree
 ## Sprawdza, że mapa głębi wczytana jako zasób (jak w eksporcie) jest identyczna z plikiem PNG.
 ## godot --headless -s res://tools/dev/check_depth_import.gd -- rusty_market

@@ -38,6 +38,17 @@ props get portraits with `--kind prop`. Dialogue shows the speaker's portrait, t
   seamless loops. `tools/dev/audio_check.py` checks silence, clipping and the loop seam without listening.
 - **Effects and ambience**: synthesized in numpy (`pipeline.sh sfx`, `sfx_synth.py`), no samples, no licenses.
   File names are the contract with `scripts/game/audio.gd`, so any file can be swapped for a recording.
+- **Character voices**: OmniVoice (k2-fsa, Apache 2.0) through the ComfyUI-OmniVoice-TTS nodes (`pipeline.sh voice`).
+  The voice cast lives in `assets/audio/voice/voices.json`: a Voice Design description per character renders one
+  reference clip, and every line is then cloned from that clip so the voice stays consistent. Each node is split
+  in order: quoted speech goes to the character, the description around it to a narrator voice (`_narrator`).
+  Every clip is checked with Whisper and regenerated with another seed when it doesn't say its text. Output goes
+  to `assets/audio/voice/<lang>/<dialogue>/<node>_<n>.ogg` plus a `manifest.json` that records the text of each
+  clip, and `tests/unit/test_voice.gd` flags clips that no longer
+  match the dialogue. In game, the voice language is a separate setting (English by default), so the dialogue
+  text works as subtitles. The narrator can be switched off. While a character speaks it plays its `talk`
+  animation and its dialogue portrait pulses with the voice level. The OS text-to-speech can optionally read
+  lines that have no clip.
 
 ## The painted map
 
@@ -45,5 +56,5 @@ See [painted-area.md](painted-area.md).
 
 ## Requirements
 
-ComfyUI with native TRELLIS.2 / FLUX.2 / ACE-Step nodes, Blender 5.x, Ollama (optional, for `castgen` and `--qa`),
+ComfyUI with native TRELLIS.2 / FLUX.2 / ACE-Step nodes and ComfyUI-OmniVoice-TTS (voices), Blender 5.x, Ollama (optional, for `castgen` and `--qa`),
 mixano (optional, for the default rigger). The models are not part of this repository.

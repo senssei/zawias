@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 """Renderuje przód postaci kamerą ortogonalną do detekcji pozy i zapisuje mapowanie piksel → metry.
 
 Użycie: blender -b --python render_front.py -- <model.fbx|glb> <out.png> [--res 1024]

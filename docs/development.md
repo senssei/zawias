@@ -11,18 +11,20 @@
 
 Pass after `--`, e.g. `godot --path . -- --quickstart --class=rogue --lang=en`.
 
+On WSL2 Mesa may fall back to the CPU renderer (`llvmpipe`, a few FPS). Use the GPU through D3D12 with `GALLIUM_DRIVER=d3d12 godot --path . -- --quickstart` (the overlay and the startup log show `D3D12 (NVIDIA ...)`).
+
 | Group | Flags |
 |---|---|
-| Start and state | `--quickstart [--class=fighter\|rogue\|wizard\|cleric] [--map=id]`, `--creation`, `--encounter=ambush`, `--dialogue=mirela`, `--goto=x,y`, `--flags=a,b`, `--xp=N [--levelup]`, `--settings` |
+| Start and state | `--quickstart [--class=fighter\|rogue\|wizard\|cleric] [--map=id]`, `--creation`, `--encounter=ambush`, `--dialogue=mirela`, `--goto=x,y`, `--flags=a,b`, `--xp=N [--levelup]`, `--settings`, `--openmap`, `--join=lis` |
 | Language and look | `--lang=pl\|en`, `--nopaint` (blockout instead of the painting) |
 | Camera and movement | `--zoom=n`, `--camat=x,y`, `--camyaw=degrees` (blockout only), `--walkto=x,y` |
 | Screenshots | `--shot=file.png` (frame 40, then quit), `--shotseq=dir[,start,every,count]`, `--showcase` (no HUD), `--clean[=arch]`, `--credits` |
-| Diagnostics | `--fps` (average and 1% low after warm-up, then quit), `--audiolog`, `--paintshots=dir` (blockout renders for painting) |
+| Diagnostics | `--debug` (overlay on from the start; F3 toggles it anywhere: FPS, frame time, draw calls, VRAM, GPU, player cell), `--fps` (average and 1% low over 8 s after warm-up, then quit), `--audiolog`, `--paintshots=dir` (blockout renders for painting) |
 
 ## Tests
 
 ```bash
-./run_tests.sh                       # all 46 tests, headless
+./run_tests.sh                       # SPDX, story check, story lint --strict, then all GUT tests, headless
 ./run_tests.sh -gselect=test_assets  # one file (GUT needs the "test" prefix)
 ```
 
@@ -35,6 +37,8 @@ Pass after `--`, e.g. `godot --path . -- --quickstart --class=rogue --lang=en`.
 | `measure_gait.gd`, `measure_slide.gd` | foot contact phases and foot sliding of walk cycles |
 | `depth_compare.py` | compares depth estimators on the painting |
 | `audio_check.py` | silence, clipping and loop seam of WAV files, with a spectrogram sheet |
+| `voice_check.py` | Whisper transcribes every voice clip and compares it with the manifest text (run with the ComfyUI venv) |
+| `spdx_check.py` | every file has an SPDX license (header or `REUSE.toml`) with its text in `LICENSES/`; runs first in `run_tests.sh` |
 
 ## Release checklist
 

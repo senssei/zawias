@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 """Kalibracja głębi z malunku (Depth Anything, względna) do metrów na podstawie zrzutu głębi makiety.
 
 Użycie (Python z numpy i PIL, np. ~/ComfyUI/.venv/bin/python):

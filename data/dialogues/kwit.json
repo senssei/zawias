@@ -1,5 +1,8 @@
 {
   "start": "start",
+  "starts": [
+    {"if": {"flag": "kwit_contract_redeemed", "not_flag": "kwit_bluff_exposed"}, "next": "bluff_exposed"}
+  ],
   "nodes": {
     "start": {
       "speaker": "Kwit",
@@ -8,7 +11,8 @@
         {"text": "Mirelę okradziono. Co o tym wiesz?", "if": {"quest": ["key", "started"]}, "next": "info"},
         {"text": "Na czym polega wasza filozofia?", "next": "philosophy"},
         {"text": "Co to za łuk na środku targu?", "next": "arch"},
-        {"text": "Nic. Do widzenia.", "end": true}
+        {"text": "Nic. Do widzenia.", "end": true},
+        {"text": "Masz na sprzedaż miksturę leczenia?", "if": {"quest_any": ["key", ["started", "lead_warehouse"]], "not_flag": "kwit_sold_potion"}, "next": "supplies"}
       ]
     },
     "info": {
@@ -16,7 +20,7 @@
       "text": "„Wiem. Informacja jest towarem, a towar ma cenę. Dziesięć sztuk złota”.",
       "effects": [{"set_flag": "asked_about_key"}],
       "choices": [
-        {"text": "Proszę, dziesięć sztuk.", "if": {"gold": 10}, "next": "lead", "effects": [{"gold": -10}]},
+        {"text": "Proszę, dziesięć sztuk.", "if": {"gold": 10}, "next": "lead", "effects": [{"gold": -10}, {"set_reputation": ["inscribed", "friendly"]}]},
         {"text": "Zaproponuję inną umowę: powiem ci, kto zadaje pytania o ciebie.", "once": true, "check": {"skill": "persuasion", "dc": 13, "success": "lead", "fail": "no_deal"}},
         {"text": "Przysyła mnie Kustoszka. Nie każ jej czekać.", "once": true, "check": {"skill": "deception", "dc": 15, "success": "lead_scared", "fail": "no_deal"}},
         {"text": "Może później.", "next": "start"}
@@ -31,16 +35,43 @@
     "lead_scared": {
       "speaker": "Kwit",
       "text": "Pióro wypada mu z palców. „Ja… oczywiście. Rozplatacze. Stary magazyn na wschodzie. Sever. Proszę przekazać Kustoszce, że Zapisani zawsze współpracują”.",
-      "effects": [{"quest": ["key", "lead_warehouse"]}, {"xp": 50}, {"give_item": "kwit_contract"}, {"journal": "Kwit, przekonany, że przysyła mnie Kustoszka, wskazał magazyn Rozplataczy. Dał mi też kontrakt Zapisanych."}],
+      "effects": [{"quest": ["key", "lead_warehouse"]}, {"xp": 50}, {"give_item": "kwit_contract"}, {"journal": "Kwit wskazał magazyn Rozplataczy i dał mi kontrakt Zapisanych. Hask przy bramie może go przyjąć w zamian za oczyszczenie wschodniego zaułka."}],
       "choices": [{"text": "Przekażę.", "next": "start"}]
     },
     "no_deal": {
       "speaker": "Kwit",
       "text": "„Nie”. Pióro znów skrzypi. „Dziesięć sztuk albo do widzenia”.",
+      "effects": [{"journal": "Kwit nie powie nic za darmo, chce dziesięciu sztuk. Pchła albo Lis w Archiwum Echa mogą wiedzieć o kradzieży to samo."}],
       "choices": [
-        {"text": "Proszę, dziesięć sztuk.", "if": {"gold": 10}, "next": "lead", "effects": [{"gold": -10}]},
+        {"text": "Proszę, dziesięć sztuk.", "if": {"gold": 10}, "next": "lead", "effects": [{"gold": -10}, {"set_reputation": ["inscribed", "friendly"]}]},
         {"text": "Do widzenia.", "end": true}
       ]
+    },
+    "bluff_exposed": {
+      "speaker": "Kwit",
+      "text": "Kwit kładzie przed tobą pokwitowanie patrolu. „Hask zwrócił mi kontrakt. Sprawdziłem w rejestrze. Kustoszka nikogo nie przysyłała. Wpisałem twoje nazwisko. Od dziś każdą cenę dla ciebie liczę z dopłatą za ryzyko”.",
+      "effects": [
+        {"set_flag": "kwit_bluff_exposed"},
+        {"set_reputation": ["inscribed", "wary"]},
+        {"journal": "Po zwrocie kontraktu przez patrol Kwit sprawdził rejestr i odkrył moje kłamstwo. Zapisani mi nie ufają. Kwit żąda teraz wyższej ceny za miksturę."}
+      ],
+      "choices": [{"text": "Rozumiem.", "next": "start"}]
+    },
+    "supplies": {
+      "speaker": "Kwit",
+      "text": "Kwit wyjmuje spod biurka fiolkę z czerwonym płynem i otwiera rejestr.",
+      "choices": [
+        {"text": "[5 sz., stawka dla zaufanych] Kupuję miksturę leczenia.", "if": {"reputation": ["inscribed", "friendly"], "gold": 5}, "next": "supplies_bought", "effects": [{"gold": -5}]},
+        {"text": "[10 sz.] Kupuję miksturę leczenia.", "if": {"reputation": ["inscribed", "neutral"], "gold": 10}, "next": "supplies_bought", "effects": [{"gold": -10}]},
+        {"text": "[20 sz., z dopłatą za ryzyko] Kupuję miksturę leczenia.", "if": {"reputation": ["inscribed", "wary"], "gold": 20}, "next": "supplies_bought", "effects": [{"gold": -20}]},
+        {"text": "Może później.", "next": "start"}
+      ]
+    },
+    "supplies_bought": {
+      "speaker": "Kwit",
+      "text": "Kwit zapisuje wpłatę i przesuwa fiolkę w twoją stronę.",
+      "effects": [{"give_item": "potion_healing"}, {"set_flag": "kwit_sold_potion"}],
+      "choices": [{"text": "Dziękuję.", "next": "start"}]
     },
     "philosophy": {
       "speaker": "Kwit",

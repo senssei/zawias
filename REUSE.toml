@@ -1,0 +1,83 @@
+version = 1
+SPDX-PackageName = "Zawias: Rdzawy Targ"
+SPDX-PackageSupplier = "Rafal Warzycha"
+
+# Licencje plików bez komentarzy (dane, obrazy, dźwięki, modele, dokumentacja) w formacie REUSE (https://reuse.software).
+# Kod (.gd, .py, .sh, .gdshader) ma nagłówki SPDX w samych plikach. Teksty licencji: LICENSES/.
+# Gdy pasuje kilka wpisów, wygrywa ostatni: najpierw zasady ogólne, na końcu wyjątki.
+# Sprawdzenie: python3 tools/dev/spdx_check.py
+
+# --- konfiguracja projektu, pliki generowane przez Godot i narzędzia pipeline'u
+[[annotations]]
+path = [
+  "project.godot", "export_presets.cfg", ".gitignore", ".gitattributes", "scenes/**",
+  "**/*.import", "**/*.uid",
+  "tools/pipeline/**/*.json", "tools/pipeline/cast/**", "tools/pipeline/palette.json",
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Rafal Warzycha"
+SPDX-License-Identifier = "MIT"
+
+# --- assety gry: modele, tekstury, portrety, malunek mapy, muzyka, głosy, efekty, ikona
+[[annotations]]
+path = ["assets/**", "icon.png", "icon.ico"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Rafal Warzycha"
+SPDX-License-Identifier = "CC-BY-4.0"
+
+# --- treść: świat, dialogi, mapy, okrzyki, tłumaczenia, dokumentacja
+[[annotations]]
+path = ["data/**", "i18n/**", "docs/**", "README.md", "README.pl.md", "tools/**/*.md", "tools/**/*.txt"]
+precedence = "aggregate"
+SPDX-FileCopyrightText = "2026 Rafal Warzycha"
+SPDX-License-Identifier = "CC-BY-4.0"
+
+# --- zasady z SRD 5.2 (przetłumaczone i miejscami uproszczone), zob. LICENSE-SRD.md
+[[annotations]]
+path = [
+  "data/armor.json", "data/backgrounds.json", "data/classes.json", "data/conditions.json", "data/features.json",
+  "data/items.json", "data/monsters.json", "data/species.json", "data/spells.json", "data/subclasses.json",
+  "data/weapons.json", "LICENSE-SRD.md",
+]
+precedence = "aggregate"
+SPDX-FileCopyrightText = ["2025 Wizards of the Coast LLC (System Reference Document 5.2)", "2026 Rafal Warzycha"]
+SPDX-License-Identifier = "CC-BY-4.0"
+
+# --- mapa głębi malunku: z Depth Anything V2 Large (CC-BY-NC-4.0), więc niekomercyjna,
+#     dopóki nie zostanie przeliczona modelem Small (Apache 2.0); wtedy przejdzie na CC-BY-4.0 jak reszta assetów
+[[annotations]]
+path = ["assets/backgrounds/*_depth.png", "assets/backgrounds/*_depth.png.import"]
+precedence = "override"
+SPDX-FileCopyrightText = "2026 Rafal Warzycha"
+SPDX-License-Identifier = "CC-BY-NC-4.0"
+
+# --- cudze: GUT (testy), jego czcionki, Universal Animation Library
+[[annotations]]
+path = "addons/gut/**"
+precedence = "override"
+SPDX-FileCopyrightText = "2018 Tom \"Butch\" Wesley"
+SPDX-License-Identifier = "MIT"
+
+[[annotations]]
+path = ["addons/gut/fonts/AnonymousPro-*", "addons/gut/fonts/OFL.txt"]
+precedence = "override"
+SPDX-FileCopyrightText = "2009 Mark Simonson"
+SPDX-License-Identifier = "OFL-1.1"
+
+[[annotations]]
+path = "addons/gut/fonts/CourierPrime-*"
+precedence = "override"
+SPDX-FileCopyrightText = "2013 Quote-Unquote Apps"
+SPDX-License-Identifier = "OFL-1.1"
+
+[[annotations]]
+path = "addons/gut/fonts/LobsterTwo-*"
+precedence = "override"
+SPDX-FileCopyrightText = "2010 Pablo Impallari"
+SPDX-License-Identifier = "OFL-1.1"
+
+[[annotations]]
+path = "tools/pipeline/third_party/ual/**"
+precedence = "override"
+SPDX-FileCopyrightText = "Quaternius (Universal Animation Library)"
+SPDX-License-Identifier = "CC0-1.0"

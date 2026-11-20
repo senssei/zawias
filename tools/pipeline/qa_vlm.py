@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 """Automatyczna kontrola obrazów lokalnym modelem wizyjnym (Ollama), zamiast ręcznego oglądania.
 
   qa_vlm.py concept <katalog work/id> [--kind character|prop]

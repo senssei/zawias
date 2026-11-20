@@ -1,0 +1,29 @@
+{
+  "inscribed": {
+    "name": "Zapisani",
+    "desc": "Rejestrują każde przejście i każdy dług. Kwit prowadzi Kancelarię, Hask pilnuje bramy z patrolem.",
+    "effects": {
+      "friendly": "Kwit sprzedaje taniej. Hask może wysłać patrol, żeby oczyścił wschodni zaułek.",
+      "neutral": "Zwykłe ceny u Kwita.",
+      "wary": "Kwit dolicza za ryzyko. Patrol chodzi za tobą, więc Odźwierny trudniej da się oszukać."
+    }
+  },
+  "echo": {
+    "name": "Echo",
+    "desc": "Archiwum Echa zbiera opowieści o przejściach. Lis spisuje każdą, którą usłyszy.",
+    "effects": {
+      "friendly": "Lis łatwiej odczytuje dla ciebie zapiski o kluczu (przewaga w teście Arkanów).",
+      "neutral": "Lis podaje to, co wie, ale zapiski trzeba odczytać samemu.",
+      "wary": "Archiwum jest dla ciebie zamknięte."
+    }
+  },
+  "unravelers": {
+    "name": "Rozplatacze",
+    "desc": "Kult rozpadu ze starego magazynu. Odźwierny strzeże drzwi, Sever chce zniszczyć klucz.",
+    "effects": {
+      "friendly": "Z Żetonem Rdzy uznają cię za swojego: przyłapany w magazynie nie musisz walczyć.",
+      "neutral": "Wpuszczą tego, kto ich przekona.",
+      "wary": "Odźwierny pamięta twoją twarz. Rozmową już go nie przekonasz."
+    }
+  }
+}

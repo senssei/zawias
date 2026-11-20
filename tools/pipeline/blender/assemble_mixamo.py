@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 """Składa postać z Mixamo w jeden plik GLB dla gry.
 
 Katalog wejściowy:

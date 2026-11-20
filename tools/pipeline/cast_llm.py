@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 """Opis po polsku → linie pliku obsady (`id: opis` / `id [wysokość glow]: opis`) przez lokalny LLM (Ollama).
 
   cast_llm.py "<opis po polsku>" cast/<plik>.txt [--kind character|prop] [--count N]

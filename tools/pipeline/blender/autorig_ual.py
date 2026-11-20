@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 """Auto-rig postaci szkieletem Quaternius UAL (CC0) i przeniesienie animacji, w pełni lokalnie.
 
 Wejście: siatka (po prep, stopy na 0, przód w -Y), punkty pozy z DWPose na renderze przodu

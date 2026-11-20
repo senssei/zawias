@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 class_name CharacterBuilder
 extends RefCounted
 ## Tworzy postać gracza z wyborów kreatora oraz potwory z monsters.json.

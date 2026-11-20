@@ -1,6 +1,9 @@
 {
   "start": "start",
-  "starts": [{"if": {"has_item": "key_without_door"}, "next": "with_key"}],
+  "starts": [
+    {"if": {"quest": ["key", "done_portal"]}, "next": "after_portal"},
+    {"if": {"has_item": "key_without_door"}, "next": "with_key"}
+  ],
   "nodes": {
     "start": {
       "speaker": "Łuk bez drzwi",
@@ -9,6 +12,11 @@
         {"text": "Przyjrzyj się runom na kamieniu.", "once": true, "check": {"skill": "arcana", "dc": 10, "success": "runes", "fail": "runes_fail"}},
         {"text": "[Odejdź]", "end": true}
       ]
+    },
+    "after_portal": {
+      "speaker": "Łuk bez drzwi",
+      "text": "Pod łukiem znów widać bruk targu. We wnęce zwornika pozostał ciepły ślad po przejściu.",
+      "choices": [{"text": "[Odejdź]", "end": true}]
     },
     "runes": {
       "speaker": "Łuk bez drzwi",
@@ -19,9 +27,11 @@
     "runes_fail": {
       "speaker": "Łuk bez drzwi",
       "text": "Runy rozmywają się, kiedy próbujesz się na nich skupić. Boli cię od tego głowa.",
+      "effects": [{"journal": "Runy na Łuku bez drzwi rozmyły mi się przed oczami. Mirela albo Lis z Archiwum Echa mogą wiedzieć, co znaczą."}],
       "choices": [{"text": "[Odejdź]", "end": true}]
     },
     "with_key": {
+      "redirect": [{"if": {"quest_any": ["wanderer", ["", "trace", "record"]]}, "next": "wanderer_memory"}],
       "speaker": "Łuk bez drzwi",
       "text": "Klucz w twojej dłoni robi się gorący. Jego zęby obracają się, nieruchomieją i wskazują na zwornik łuku. Powietrze pod łukiem drży jak tafla wody.",
       "choices": [
@@ -29,10 +39,19 @@
         {"text": "Jeszcze nie.", "end": true}
       ]
     },
+    "wanderer_memory": {
+      "speaker": "Łuk bez drzwi",
+      "text": "Kiedy zbliżasz klucz do kamienia, Łuk przywołuje pierwszą bramę Zawiasu. To twoja dłoń kreśli trzy znaki na zworniku. To ciebie nazywają Wędrowcem i proszą o pozwolenie na przejście. Słyszysz własny głos: „Oddaję bramie imię. Droga należy do tych, którzy nią idą”. Klucz zachował to wspomnienie. Teraz Łuk czeka, aż zdecydujesz, czy go otworzyć.",
+      "effects": [{"quest": ["wanderer", "revealed"]}],
+      "choices": [
+        {"text": "Przyjrzyj się Łukowi z kluczem w dłoni.", "next": "with_key"},
+        {"text": "Potrzebuję chwili.", "end": true}
+      ]
+    },
     "portal": {
       "speaker": "Łuk bez drzwi",
       "text": "Klucz obraca się w pustce i coś się zatrzaskuje. Pod łukiem pojawiają się drzwi, które jeszcze przed chwilą nie istniały. Są zrobione z twojej opowieści. Uchylają się, a zza nich wieje wiatr pachnący miejscem, którego nie zna żaden atlas planów.",
-      "effects": [{"quest": ["key", "done_portal"]}, {"xp": 300}, {"journal": "Otworzyłem drzwi, które nie istniały. Zawias nigdy już nie będzie taki sam."}, {"end_game": "portal"}],
+      "effects": [{"quest": ["key", "done_portal"]}, {"xp": 300}, {"journal": "Otworzyłem drzwi, które nie istniały. Zawias nigdy już nie będzie taki sam."}, {"quest": ["wanderer", "done_crossed"]}, {"end_game": "portal"}],
       "choices": [{"text": "[Przekrocz próg]", "end": true}]
     }
   }

@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 """Proceduralne efekty dźwiękowe (numpy/scipy, bez zewnętrznych próbek) -> assets/audio/sfx/<id>.wav
 oraz ambient -> assets/audio/ambient/<id>.wav. Wszystko własne, bez licencji do pilnowania.
 

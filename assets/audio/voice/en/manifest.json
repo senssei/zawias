@@ -1,0 +1,2294 @@
+{
+ "arch/after_portal": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The market's cobbles are visible beneath the arch again. A warm trace of the crossing remains in the notch in the keystone.",
+    "file": "after_portal_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 8.83,
+    "seed": 909,
+    "wer": 0.0
+   }
+  ]
+ },
+ "arch/portal": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The key turns in the void and something clicks shut. A door appears beneath the arch that a moment ago did not exist. It is made of your story. It swings open, and a wind blows through smelling of a place no atlas of the planes has ever charted.",
+    "file": "portal_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 17.33,
+    "seed": 909,
+    "wer": 0.022
+   }
+  ]
+ },
+ "arch/runes": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The runes aren't a record but a question. The arch is waiting for an answer that doesn't exist yet. In the very middle of the keystone there is a small hollow shaped like a keyhole.",
+    "file": "runes_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 12.65,
+    "seed": 909,
+    "wer": 0.0
+   }
+  ]
+ },
+ "arch/runes_fail": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The runes blur whenever you try to focus on them. It gives you a headache.",
+    "file": "runes_fail_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 5.25,
+    "seed": 909,
+    "wer": 0.0
+   }
+  ]
+ },
+ "arch/start": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "A stone arch, taller than two men, stands in the middle of the market. Beneath it there is nothing but the market seen from the other side. Merchants give it a wide berth, though nobody remembers why.",
+    "file": "start_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 14.21,
+    "seed": 909,
+    "wer": 0.0
+   }
+  ]
+ },
+ "arch/wanderer_memory": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "As you bring the key close to the stone, the Arch calls up the first gate of Zawias. It is your hand that cuts three marks into the keystone. It is you they call the Wanderer and ask for leave to cross. You hear your own voice:",
+    "file": "wanderer_memory_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 15.86,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "I give my name to the gate. The road belongs to those who walk it.",
+    "file": "wanderer_memory_1.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 4.49,
+    "seed": 909,
+    "wer": 0.133
+   },
+   {
+    "who": "narrator",
+    "text": "The key kept that memory. Now the Arch waits for you to decide whether to open it.",
+    "file": "wanderer_memory_2.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 5.75,
+    "seed": 909,
+    "wer": 0.0
+   }
+  ]
+ },
+ "arch/with_key": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The key in your hand grows hot. Its teeth turn, go still, and point at the keystone. The air beneath the arch trembles like the surface of water.",
+    "file": "with_key_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 10.22,
+    "seed": 909,
+    "wer": 0.0
+   }
+  ]
+ },
+ "backdoor/brother": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The mephit shrieks and the cultist leaps to his feet. Then he spots the Rust Token and silences the creature with a gesture.",
+    "file": "brother_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 8.95,
+    "seed": 909,
+    "wer": 0.045
+   },
+   {
+    "who": "speaker",
+    "text": "One of us. Next time come in the front, like a person. Sever will see you inside.",
+    "file": "brother_1.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 5.63,
+    "seed": 909,
+    "wer": 0.0
+   }
+  ]
+ },
+ "backdoor/caught": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "A board creaks underfoot. The mephit shrieks like a nail dragged across tin. The cultist leaps to his feet.",
+    "file": "caught_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 7.62,
+    "seed": 909,
+    "wer": 0.059
+   }
+  ]
+ },
+ "backdoor/force_fail": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The door doesn't even budge. You rub your aching shoulder.",
+    "file": "force_fail_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 4.14,
+    "seed": 909,
+    "wer": 0.0
+   }
+  ]
+ },
+ "backdoor/forced": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The door flies off its hinges with a crash they probably heard on the far side of the ring. Shouts rise from inside.",
+    "file": "forced_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 8.21,
+    "seed": 909,
+    "wer": 0.091
+   }
+  ]
+ },
+ "backdoor/lock_fail": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The pick bends with a faint snap. This lock is sturdier than it looked. You may have jammed it.",
+    "file": "lock_fail_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 6.7,
+    "seed": 909,
+    "wer": 0.0
+   }
+  ]
+ },
+ "backdoor/open": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The door stands ajar.",
+    "file": "open_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 1.93,
+    "seed": 909,
+    "wer": 0.0
+   }
+  ]
+ },
+ "backdoor/picked": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The lock gives with a quiet click. You ease the door open. In the warehouse gloom a cultist dozes against a crate, and a small creature of rust and dust circles beneath the ceiling. Sever's chest stands right by the entrance.",
+    "file": "picked_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 15.95,
+    "seed": 909,
+    "wer": 0.0
+   }
+  ]
+ },
+ "backdoor/start": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "A rusty, iron-bound door with a heavy lock. From behind it comes a faint scratching, as if claws were scraping metal.",
+    "file": "start_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 8.28,
+    "seed": 909,
+    "wer": 0.0
+   }
+  ]
+ },
+ "backdoor/stolen": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "You slip between the shadows. The lid of the chest doesn't creak. Under the rags lies a brass key, warm as a living thing. Its teeth turn toward you. You leave as quietly as you came.",
+    "file": "stolen_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 12.83,
+    "seed": 909,
+    "wer": 0.0
+   }
+  ]
+ },
+ "barks/dorn_0": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "Warm beer, cold beds! Or the other way round, if you prefer.",
+    "file": "dorn_0_0.ogg",
+    "voice": "dorn",
+    "sig": "f5daac83fe12",
+    "seconds": 3.14,
+    "seed": 404,
+    "wer": 0.0
+   }
+  ]
+ },
+ "barks/dorn_1": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "Whoever doesn't sleep at the Crooked Hinge sleeps in the gutter.",
+    "file": "dorn_1_0.ogg",
+    "voice": "dorn",
+    "sig": "f5daac83fe12",
+    "seconds": 3.02,
+    "seed": 404,
+    "wer": 0.0
+   }
+  ]
+ },
+ "barks/hask_0": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "No contract, no trade. No trade, no Zawias.",
+    "file": "hask_0_0.ogg",
+    "voice": "hask",
+    "sig": "d487def15cf2",
+    "seconds": 2.26,
+    "seed": 202,
+    "wer": 0.0
+   }
+  ]
+ },
+ "barks/hask_1": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "The gate spat someone out again. Probably you.",
+    "file": "hask_1_0.ogg",
+    "voice": "hask",
+    "sig": "d487def15cf2",
+    "seconds": 2.45,
+    "seed": 202,
+    "wer": 0.0
+   }
+  ]
+ },
+ "barks/hask_2": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "I heard about the alley. The Inscribed saw nothing, understand?",
+    "file": "hask_2_0.ogg",
+    "voice": "hask",
+    "sig": "d487def15cf2",
+    "seconds": 3.37,
+    "seed": 202,
+    "wer": 0.0
+   }
+  ]
+ },
+ "barks/hask_3": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "Kwit says you pay on time. That's rare in this market.",
+    "file": "hask_3_0.ogg",
+    "voice": "hask",
+    "sig": "d487def15cf2",
+    "seconds": 2.77,
+    "seed": 202,
+    "wer": 0.091
+   }
+  ]
+ },
+ "barks/hask_4": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "The patrol has its eye on you, newcomer. No tricks.",
+    "file": "hask_4_0.ogg",
+    "voice": "hask",
+    "sig": "d487def15cf2",
+    "seconds": 2.66,
+    "seed": 202,
+    "wer": 0.0
+   }
+  ]
+ },
+ "barks/kwit_0": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "Sign here, here and... here. Reality won't record itself.",
+    "file": "kwit_0_0.ogg",
+    "voice": "kwit",
+    "sig": "d954463b5e38",
+    "seconds": 3.1,
+    "seed": 303,
+    "wer": 0.0
+   }
+  ]
+ },
+ "barks/kwit_1": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "Every rumor has a price. Most of them are cheap.",
+    "file": "kwit_1_0.ogg",
+    "voice": "kwit",
+    "sig": "d954463b5e38",
+    "seconds": 2.6,
+    "seed": 303,
+    "wer": 0.0
+   }
+  ]
+ },
+ "barks/kwit_2": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "For regular clients the ink drips less.",
+    "file": "kwit_2_0.ogg",
+    "voice": "kwit",
+    "sig": "d954463b5e38",
+    "seconds": 2.19,
+    "seed": 303,
+    "wer": 0.0
+   }
+  ]
+ },
+ "barks/kwit_3": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "Your name is in the register. In red.",
+    "file": "kwit_3_0.ogg",
+    "voice": "kwit",
+    "sig": "d954463b5e38",
+    "seconds": 2.06,
+    "seed": 303,
+    "wer": 0.0
+   }
+  ]
+ },
+ "barks/lis_0": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "Every stone in this market remembers more than we do.",
+    "file": "lis_0_0.ogg",
+    "voice": "lis",
+    "sig": "c6b6c8a225b5",
+    "seconds": 3.46,
+    "seed": 505,
+    "wer": 0.0
+   }
+  ]
+ },
+ "barks/lis_1": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "The letters are fleeing the books again. Something is coming.",
+    "file": "lis_1_0.ogg",
+    "voice": "lis",
+    "sig": "c6b6c8a225b5",
+    "seconds": 4.65,
+    "seed": 505,
+    "wer": 0.0
+   }
+  ]
+ },
+ "barks/lis_2": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "Your story is already making the rounds in the Archive. People ask about you.",
+    "file": "lis_2_0.ogg",
+    "voice": "lis",
+    "sig": "c6b6c8a225b5",
+    "seconds": 5.47,
+    "seed": 505,
+    "wer": 0.0
+   }
+  ]
+ },
+ "barks/lis_3": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "Every stone in this market has a story. Most of them are boring.",
+    "file": "lis_3_0.ogg",
+    "voice": "lis",
+    "sig": "c6b6c8a225b5",
+    "seconds": 4.44,
+    "seed": 505,
+    "wer": 0.0
+   }
+  ]
+ },
+ "barks/lis_4": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "I can smell rust in the air. The Unravelers are close.",
+    "file": "lis_4_0.ogg",
+    "voice": "lis",
+    "sig": "c6b6c8a225b5",
+    "seconds": 3.85,
+    "seed": 505,
+    "wer": 0.0
+   }
+  ]
+ },
+ "barks/lis_5": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "This Arch asks a question. I'd like to hear how you answer it.",
+    "file": "lis_5_0.ogg",
+    "voice": "lis",
+    "sig": "c6b6c8a225b5",
+    "seconds": 4.25,
+    "seed": 505,
+    "wer": 0.0
+   }
+  ]
+ },
+ "barks/lis_6": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "Flea warned us. Let's not get caught off guard in the alley.",
+    "file": "lis_6_0.ogg",
+    "voice": "lis",
+    "sig": "c6b6c8a225b5",
+    "seconds": 4.27,
+    "seed": 505,
+    "wer": 0.0
+   }
+  ]
+ },
+ "barks/lis_7": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "Kwit's contract? The Curator doesn't like people signing in her name.",
+    "file": "lis_7_0.ogg",
+    "voice": "lis",
+    "sig": "c6b6c8a225b5",
+    "seconds": 5.08,
+    "seed": 505,
+    "wer": 0.091
+   }
+  ]
+ },
+ "barks/lis_8": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "That token opens some doors and closes others. Be careful who you show it to.",
+    "file": "lis_8_0.ogg",
+    "voice": "lis",
+    "sig": "c6b6c8a225b5",
+    "seconds": 5.57,
+    "seed": 505,
+    "wer": 0.0
+   }
+  ]
+ },
+ "barks/lis_9": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "The Wanderer... the Echo wrote you down long ago. Now I understand why the mark called to you.",
+    "file": "lis_9_0.ogg",
+    "voice": "lis",
+    "sig": "c6b6c8a225b5",
+    "seconds": 6.76,
+    "seed": 505,
+    "wer": 0.0
+   }
+  ]
+ },
+ "barks/mirela_0": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "Keys! Keys for doors you haven't met yet!",
+    "file": "mirela_0_0.ogg",
+    "voice": "mirela",
+    "sig": "fea5d511f18d",
+    "seconds": 2.45,
+    "seed": 101,
+    "wer": 0.0
+   }
+  ]
+ },
+ "barks/mirela_1": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "Three locks. I forged them myself. Three!",
+    "file": "mirela_1_0.ogg",
+    "voice": "mirela",
+    "sig": "fea5d511f18d",
+    "seconds": 2.51,
+    "seed": 101,
+    "wer": 0.0
+   }
+  ]
+ },
+ "barks/mirela_2": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "Zawias remembers who brings keys back.",
+    "file": "mirela_2_0.ogg",
+    "voice": "mirela",
+    "sig": "fea5d511f18d",
+    "seconds": 2.49,
+    "seed": 101,
+    "wer": 0.0
+   }
+  ]
+ },
+ "barks/odzwierny_0": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "Everything frays. Even you.",
+    "file": "odzwierny_0_0.ogg",
+    "voice": "odzwierny",
+    "sig": "ca7b9a659634",
+    "seconds": 2.1,
+    "seed": 707,
+    "wer": 0.0
+   }
+  ]
+ },
+ "barks/odzwierny_1": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "Don't stand so close to the door, wanderer.",
+    "file": "odzwierny_1_0.ogg",
+    "voice": "odzwierny",
+    "sig": "ca7b9a659634",
+    "seconds": 2.94,
+    "seed": 707,
+    "wer": 0.0
+   }
+  ]
+ },
+ "barks/odzwierny_2": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "Brother, everything falls apart. But not today.",
+    "file": "odzwierny_2_0.ogg",
+    "voice": "odzwierny",
+    "sig": "ca7b9a659634",
+    "seconds": 3.21,
+    "seed": 707,
+    "wer": 0.0
+   }
+  ]
+ },
+ "barks/odzwierny_3": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "You. I remember your face.",
+    "file": "odzwierny_3_0.ogg",
+    "voice": "odzwierny",
+    "sig": "ca7b9a659634",
+    "seconds": 2.04,
+    "seed": 707,
+    "wer": 0.0
+   }
+  ]
+ },
+ "barks/pchla_0": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "News! Fresh, hardly used!",
+    "file": "pchla_0_0.ogg",
+    "voice": "pchla",
+    "sig": "de4fd9bada47",
+    "seconds": 1.7,
+    "seed": 606,
+    "wer": 0.0
+   }
+  ]
+ },
+ "barks/pchla_1": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "Don't look at me like that, I didn't steal anything. Today.",
+    "file": "pchla_1_0.ogg",
+    "voice": "pchla",
+    "sig": "de4fd9bada47",
+    "seconds": 2.91,
+    "seed": 606,
+    "wer": 0.0
+   }
+  ]
+ },
+ "barks/pchla_2": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "Remember, you didn't hear it from me.",
+    "file": "pchla_2_0.ogg",
+    "voice": "pchla",
+    "sig": "de4fd9bada47",
+    "seconds": 1.92,
+    "seed": 606,
+    "wer": 0.0
+   }
+  ]
+ },
+ "chest/brother": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The lid creaks and every head turns your way. A cultist reaches for his sickle, but notices the Rust Token and lowers the blade.",
+    "file": "brother_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 9.07,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "One of us? Then don't steal like an outsider. If you want the key, take it up with Sever.",
+    "file": "brother_1.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 6.14,
+    "seed": 909,
+    "wer": 0.0
+   }
+  ]
+ },
+ "chest/caught": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The lid creaks horribly. Every head in the warehouse turns toward you.",
+    "file": "caught_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 5.08,
+    "seed": 909,
+    "wer": 0.0
+   }
+  ]
+ },
+ "chest/empty": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Empty. Only threads and rust remain.",
+    "file": "empty_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.58,
+    "seed": 909,
+    "wer": 0.0
+   }
+  ]
+ },
+ "chest/loot": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "In the chest, under a heap of unpicked threads, lie a brass key warm as a living creature, a coin purse and a vial of red liquid.",
+    "file": "loot_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 8.82,
+    "seed": 909,
+    "wer": 0.091
+   }
+  ]
+ },
+ "chest/start": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "An iron-bound chest covered in rusty dust. The Unravelers are right next to it.",
+    "file": "start_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 5.67,
+    "seed": 909,
+    "wer": 0.0
+   }
+  ]
+ },
+ "chest/stolen": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Your fingers find warm brass under the rags. Nobody looks up.",
+    "file": "stolen_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 4.34,
+    "seed": 909,
+    "wer": 0.0
+   }
+  ]
+ },
+ "dorn/rested": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "You sleep like a stone. In Zawias there is no day or night, only the light seeping from beyond the ring. You wake up rested.",
+    "file": "rested_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 8.43,
+    "seed": 909,
+    "wer": 0.042
+   }
+  ]
+ },
+ "dorn/rumors": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "The Unravelers are prowling around the old warehouse in the east again. Lately they've been paying some thugs to watch the alley. And Mirela's been walking around like she's been poisoned since morning. You didn't hear it from me.",
+    "file": "rumors_0.ogg",
+    "voice": "dorn",
+    "sig": "f5daac83fe12",
+    "seconds": 12.5
+   }
+  ]
+ },
+ "dorn/start": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "A broad-shouldered innkeeper wipes a tankard with a rag that has seen better planes.",
+    "file": "start_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 6.08,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "The Crooked Hinge. A bed, beer, warm food. And gossip, if you're buying.",
+    "file": "start_1.ogg",
+    "voice": "dorn",
+    "sig": "f5daac83fe12",
+    "seconds": 3.82
+   }
+  ]
+ },
+ "hask/clear_alley": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Hask checks the seal and tucks the parchment under his breastplate.",
+    "file": "clear_alley_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 4.98,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "One favor. Agreed.",
+    "file": "clear_alley_1.ogg",
+    "voice": "hask",
+    "sig": "d487def15cf2",
+    "seconds": 1.57,
+    "seed": 202,
+    "wer": 0.0
+   },
+   {
+    "who": "narrator",
+    "text": "He whistles for the patrol. The guards head east and return a short while later.",
+    "file": "clear_alley_2.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 5.7,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "The thugs scattered. The alley is clear all the way to the warehouse's back door.",
+    "file": "clear_alley_3.ogg",
+    "voice": "hask",
+    "sig": "d487def15cf2",
+    "seconds": 4.21,
+    "seed": 202,
+    "wer": 0.0
+   }
+  ]
+ },
+ "hask/custodian": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Hask lowers his voice.",
+    "file": "custodian_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.06,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "You don't talk about her out loud. She makes sure doors open only for those they should. Whoever plays with keys they don't understand simply... vanishes. Nobody kills them. A door lets them in and never lets them out.",
+    "file": "custodian_1.ogg",
+    "voice": "hask",
+    "sig": "d487def15cf2",
+    "seconds": 11.53
+   }
+  ]
+ },
+ "hask/factions": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "The Inscribed. We believe reality is a contract, and anything can be negotiated if enough people sign. Belief has weight here, stranger. Here convictions truly change the world. Then there's the Echo, who collect stories, because identity is only a story. And the Unravelers.",
+    "file": "factions_0.ogg",
+    "voice": "hask",
+    "sig": "d487def15cf2",
+    "seconds": 14.88,
+    "seed": 202,
+    "wer": 0.048
+   },
+   {
+    "who": "narrator",
+    "text": "He grimaces.",
+    "file": "factions_1.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 1.61,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "They believe everything falls apart, and that it's a good thing.",
+    "file": "factions_2.ogg",
+    "voice": "hask",
+    "sig": "d487def15cf2",
+    "seconds": 3.16,
+    "seed": 202,
+    "wer": 0.0
+   }
+  ]
+ },
+ "hask/insight_fail": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "What's bothering me is that you ask too many questions.",
+    "file": "insight_fail_0.ogg",
+    "voice": "hask",
+    "sig": "d487def15cf2",
+    "seconds": 2.86
+   },
+   {
+    "who": "narrator",
+    "text": "Hask shifts his grip on his spear.",
+    "file": "insight_fail_1.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.42,
+    "seed": 909,
+    "wer": 0.0
+   }
+  ]
+ },
+ "hask/insight_ok": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Hask sighs.",
+    "file": "insight_ok_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 1.52,
+    "seed": 909,
+    "wer": 0.5
+   },
+   {
+    "who": "speaker",
+    "text": "You're sharp. Mirela, the keysmith on the north side of the market, was robbed last night. Something went missing that shouldn't have been in any display case. The Inscribed would rather stay out of it; it's not our contract. But if you're looking for work, go see her.",
+    "file": "insight_ok_1.ogg",
+    "voice": "hask",
+    "sig": "d487def15cf2",
+    "seconds": 14.21
+   }
+  ]
+ },
+ "hask/patrol_alley": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Hask whistles for two guards with the quill seal.",
+    "file": "patrol_alley_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 3.6,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "The Chancery doesn't like it when its debtors come to harm. The alley will be clear before you reach the warehouse.",
+    "file": "patrol_alley_1.ogg",
+    "voice": "hask",
+    "sig": "d487def15cf2",
+    "seconds": 5.97,
+    "seed": 202,
+    "wer": 0.0
+   }
+  ]
+ },
+ "hask/start": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "A guard in scale armor looks you up and down. His breastplate bears an embossed seal: a hand holding a quill.",
+    "file": "start_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 7.74,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "New? The gate spits out your kind every quarter hour. Welcome to the Rusty Market. Don't touch anything you haven't paid for.",
+    "file": "start_1.ogg",
+    "voice": "hask",
+    "sig": "d487def15cf2",
+    "seconds": 6.62
+   }
+  ]
+ },
+ "hask/tips": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "Click where you want to go, and you go. Click on someone to talk to them. In a fight everyone takes turns: move, action, bonus action, reaction, like any decent killing. You can take a short rest anywhere with R. For a proper sleep, see Dorn at the inn. And save your fate with F5, because Zawias doesn't forgive.",
+    "file": "tips_0.ogg",
+    "voice": "hask",
+    "sig": "d487def15cf2",
+    "seconds": 16.54
+   }
+  ]
+ },
+ "hask/wanderer_trace": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Hask turns your hand over. Three pale lines run across your skin, just like the cuts on the inside of the gate.",
+    "file": "wanderer_trace_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 7.86,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "I've only ever seen that mark on the keystone. It's always been there. Show it to Lis at the Archive of the Echo.",
+    "file": "wanderer_trace_1.ogg",
+    "voice": "hask",
+    "sig": "d487def15cf2",
+    "seconds": 5.84,
+    "seed": 202,
+    "wer": 0.0
+   }
+  ]
+ },
+ "hask/where": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "In Zawias. A ring-city hanging in the crack between the planes. Any door can become a gate if you carry the right key. It can be an object, a word, a memory or a regret. The city is ruled by the Curator. Nobody has seen her, and whoever tried won't see anything ever again.",
+    "file": "where_0.ogg",
+    "voice": "hask",
+    "sig": "d487def15cf2",
+    "seconds": 14.25
+   }
+  ]
+ },
+ "kwit/arch": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "The Doorless Arch. The oldest thing in the market, older than the market itself. It isn't in our register, because nobody ever signed for it. That is troubling.",
+    "file": "arch_0.ogg",
+    "voice": "kwit",
+    "sig": "d954463b5e38",
+    "seconds": 8.83,
+    "seed": 303,
+    "wer": 0.0
+   }
+  ]
+ },
+ "kwit/bluff_exposed": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Kwit lays the patrol's receipt in front of you.",
+    "file": "bluff_exposed_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 3.38,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Hask returned the contract. I checked the register. The Curator sent no one. I've entered your name. From now on, my prices for you include a risk surcharge.",
+    "file": "bluff_exposed_1.ogg",
+    "voice": "kwit",
+    "sig": "d954463b5e38",
+    "seconds": 8.39,
+    "seed": 303,
+    "wer": 0.0
+   }
+  ]
+ },
+ "kwit/info": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "I know. Information is a commodity, and a commodity has a price. Ten gold pieces.",
+    "file": "info_0.ogg",
+    "voice": "kwit",
+    "sig": "d954463b5e38",
+    "seconds": 4.41,
+    "seed": 303,
+    "wer": 0.0
+   }
+  ]
+ },
+ "kwit/lead": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Kwit writes something down, sets his quill aside and for the first time looks you in the eye.",
+    "file": "lead_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 6.51,
+    "seed": 909,
+    "wer": 0.056
+   },
+   {
+    "who": "speaker",
+    "text": "Rusty dust is what the Unravelers leave behind. They hole up in the old warehouse at the eastern edge of the market. Their leader, Sever, talks about 'unraveling promises'. A key is a promise. Work out the rest yourself.",
+    "file": "lead_1.ogg",
+    "voice": "kwit",
+    "sig": "d954463b5e38",
+    "seconds": 12.1,
+    "seed": 303,
+    "wer": 0.054
+   }
+  ]
+ },
+ "kwit/lead_scared": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The quill slips from his fingers.",
+    "file": "lead_scared_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.39,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "I... of course. The Unravelers. The old warehouse in the east. Sever. Please tell the Curator that the Inscribed always cooperate.",
+    "file": "lead_scared_1.ogg",
+    "voice": "kwit",
+    "sig": "d954463b5e38",
+    "seconds": 7.17,
+    "seed": 303,
+    "wer": 0.0
+   }
+  ]
+ },
+ "kwit/no_deal": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "No.",
+    "file": "no_deal_0.ogg",
+    "voice": "kwit",
+    "sig": "d954463b5e38",
+    "seconds": 0.88,
+    "seed": 303,
+    "wer": 0.0
+   },
+   {
+    "who": "narrator",
+    "text": "The quill scratches again.",
+    "file": "no_deal_1.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.04,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Ten pieces or goodbye.",
+    "file": "no_deal_2.ogg",
+    "voice": "kwit",
+    "sig": "d954463b5e38",
+    "seconds": 1.67,
+    "seed": 303,
+    "wer": 0.25
+   }
+  ]
+ },
+ "kwit/philosophy": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "Reality is a contract. Gravity works because everyone agreed to it. When enough people sign under some truth, it becomes law. We merely... keep the register.",
+    "file": "philosophy_0.ogg",
+    "voice": "kwit",
+    "sig": "d954463b5e38",
+    "seconds": 8.67,
+    "seed": 303,
+    "wer": 0.0
+   }
+  ]
+ },
+ "kwit/philosophy2": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Kwit smiles thinly.",
+    "file": "philosophy2_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 1.98,
+    "seed": 909,
+    "wer": 0.333
+   },
+   {
+    "who": "speaker",
+    "text": "Then their truth weighs less. And in Zawias, whatever weighs less is easily blown away.",
+    "file": "philosophy2_1.ogg",
+    "voice": "kwit",
+    "sig": "d954463b5e38",
+    "seconds": 4.77,
+    "seed": 303,
+    "wer": 0.067
+   }
+  ]
+ },
+ "kwit/start": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "A thin man in a grey frock coat keeps writing, even while he looks at you. The quill scratches.",
+    "file": "start_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 6.69,
+    "seed": 909,
+    "wer": 0.059
+   },
+   {
+    "who": "speaker",
+    "text": "Kwit, notary of the Inscribed. Every conversation is a contract, and a contract has a price. How may I serve?",
+    "file": "start_1.ogg",
+    "voice": "kwit",
+    "sig": "d954463b5e38",
+    "seconds": 5.98,
+    "seed": 303,
+    "wer": 0.059
+   }
+  ]
+ },
+ "kwit/supplies": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Kwit takes a vial of red liquid from under his desk and opens the register.",
+    "file": "supplies_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 5.41,
+    "seed": 909,
+    "wer": 0.0
+   }
+  ]
+ },
+ "kwit/supplies_bought": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Kwit records the payment and slides the vial toward you.",
+    "file": "supplies_bought_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 4.07,
+    "seed": 909,
+    "wer": 0.1
+   }
+  ]
+ },
+ "lis/arcana_fail": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The letters flee from your gaze and huddle in the corner of the page. Lis closes the book.",
+    "file": "arcana_fail_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 6.4,
+    "seed": 909,
+    "wer": 0.056
+   },
+   {
+    "who": "speaker",
+    "text": "Not every story wants to be read.",
+    "file": "arcana_fail_1.ogg",
+    "voice": "lis",
+    "sig": "c6b6c8a225b5",
+    "seconds": 2.46
+   }
+  ]
+ },
+ "lis/arcana_ok": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The letters settle under your gaze.",
+    "file": "arcana_ok_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.56,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "You see? This key has no door because its door doesn't exist yet. Whoever believes in it first will open it. To the Unravelers that's blasphemy. But if you tell Sever that an unfulfilled possibility is pure entropy, he might listen. Decay that hasn't started yet is still decay.",
+    "file": "arcana_ok_1.ogg",
+    "voice": "lis",
+    "sig": "c6b6c8a225b5",
+    "seconds": 20.41
+   }
+  ]
+ },
+ "lis/companion": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Lis walks beside you, scribbling something as she goes.",
+    "file": "companion_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 4.03,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "The story runs on. Where to now?",
+    "file": "companion_1.ogg",
+    "voice": "lis",
+    "sig": "c6b6c8a225b5",
+    "seconds": 2.34,
+    "seed": 505,
+    "wer": 0.0
+   }
+  ]
+ },
+ "lis/echo": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "Identity is the story you tell about yourself. Change the story and you change yourself. Steal someone's story and you steal them. We collect stories and keep them so nobody loses them... and so nobody steals them.",
+    "file": "echo_0.ogg",
+    "voice": "lis",
+    "sig": "c6b6c8a225b5",
+    "seconds": 15.82
+   }
+  ]
+ },
+ "lis/join": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Lis closes the book and looks at you for a moment, as if reading a page nobody has written yet.",
+    "file": "join_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 6.58,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "The Key Without a Door is a story that wants to end. I want to be there when it does. I'll come with you.",
+    "file": "join_1.ogg",
+    "voice": "lis",
+    "sig": "c6b6c8a225b5",
+    "seconds": 7.25,
+    "seed": 505,
+    "wer": 0.0
+   }
+  ]
+ },
+ "lis/key": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "Ah, the Key Without a Door. A beautiful story, still unfinished. The Unravelers want to cut it short. They believe unfulfilled promises are the worst kind of lie and must be unraveled. Their nest is in the old warehouse in the east.",
+    "file": "key_0.ogg",
+    "voice": "lis",
+    "sig": "c6b6c8a225b5",
+    "seconds": 17.04
+   }
+  ]
+ },
+ "lis/leave": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "I'll write down everything I saw. You know where to find me.",
+    "file": "leave_0.ogg",
+    "voice": "lis",
+    "sig": "c6b6c8a225b5",
+    "seconds": 4.25,
+    "seed": 505,
+    "wer": 0.0
+   },
+   {
+    "who": "narrator",
+    "text": "Lis walks off toward the Archive.",
+    "file": "leave_1.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.36,
+    "seed": 909,
+    "wer": 0.0
+   }
+  ]
+ },
+ "lis/start": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "A woman with hair the color of old paper sits on the steps of the Archive with an open book on her knees. The letters on the pages crawl like ants.",
+    "file": "start_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 10.21,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Everyone who comes here brings a story. What's yours?",
+    "file": "start_1.ogg",
+    "voice": "lis",
+    "sig": "c6b6c8a225b5",
+    "seconds": 3.71
+   }
+  ]
+ },
+ "lis/story": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "You tell her about the world you came from. Lis listens with her eyes closed while the letters in the book dance.",
+    "file": "story_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 7.82,
+    "seed": 909,
+    "wer": 0.045
+   },
+   {
+    "who": "speaker",
+    "text": "A good story. Here, this is for it.",
+    "file": "story_1.ogg",
+    "voice": "lis",
+    "sig": "c6b6c8a225b5",
+    "seconds": 2.41
+   },
+   {
+    "who": "narrator",
+    "text": "She touches your forehead and you feel a surge of confidence.",
+    "file": "story_2.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 4.37,
+    "seed": 909,
+    "wer": 0.0
+   }
+  ]
+ },
+ "lis/wanderer_record": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Lis opens the book of crossings. You find a drawing of three lines and a note:",
+    "file": "wanderer_record_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 5.42,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "The Wanderer gave their name to the gate. From this day, no keeper shall hold a road for themselves.",
+    "file": "wanderer_record_1.ogg",
+    "voice": "lis",
+    "sig": "c6b6c8a225b5",
+    "seconds": 7.23,
+    "seed": 505,
+    "wer": 0.0
+   },
+   {
+    "who": "narrator",
+    "text": "There is a blank beneath the entry.",
+    "file": "wanderer_record_2.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.3,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "The memory of that day was sealed in the key,",
+    "file": "wanderer_record_3.ogg",
+    "voice": "lis",
+    "sig": "c6b6c8a225b5",
+    "seconds": 3.2,
+    "seed": 505,
+    "wer": 0.0
+   },
+   {
+    "who": "narrator",
+    "text": "Lis says.",
+    "file": "wanderer_record_4.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 1.52,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "If you retrieve it, see whether it answers you.",
+    "file": "wanderer_record_5.ogg",
+    "voice": "lis",
+    "sig": "c6b6c8a225b5",
+    "seconds": 3.28,
+    "seed": 505,
+    "wer": 0.0
+   }
+  ]
+ },
+ "mirela/accept": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "Take this.",
+    "file": "accept_0.ogg",
+    "voice": "mirela",
+    "sig": "fea5d511f18d",
+    "seconds": 1.41,
+    "seed": 101,
+    "wer": 0.0
+   },
+   {
+    "who": "narrator",
+    "text": "She presses a vial of red liquid into your hand.",
+    "file": "accept_1.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 3.34,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Ask around the market. Kwit from the Chancery knows everything, but he charges for it. Flea, the little one by the eastern alley, sees everything. And Lis from the Archive of the Echo knows every story about keys.",
+    "file": "accept_2.ogg",
+    "voice": "mirela",
+    "sig": "fea5d511f18d",
+    "seconds": 13.02,
+    "seed": 101,
+    "wer": 0.054
+   }
+  ]
+ },
+ "mirela/done": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "Back again? Need a key? A discount for you. A small one.",
+    "file": "done_0.ogg",
+    "voice": "mirela",
+    "sig": "fea5d511f18d",
+    "seconds": 3.3
+   }
+  ]
+ },
+ "mirela/hints": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "Kwit at the Chancery of the Inscribed in the west. Flea by the eastern alley. Lis at the Archive of the Echo in the south. Rusty dust... Whoever leaves rust behind wants everything to fall apart.",
+    "file": "hints_0.ogg",
+    "voice": "mirela",
+    "sig": "fea5d511f18d",
+    "seconds": 11.65
+   }
+  ]
+ },
+ "mirela/keep": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "You thief! You... No. You know what? Go. May a door let you in and never let you out.",
+    "file": "keep_0.ogg",
+    "voice": "mirela",
+    "sig": "fea5d511f18d",
+    "seconds": 4.8
+   },
+   {
+    "who": "narrator",
+    "text": "She turns her back on you.",
+    "file": "keep_1.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 1.99,
+    "seed": 909,
+    "wer": 0.0
+   }
+  ]
+ },
+ "mirela/kept": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Mirela won't even look at you.",
+    "file": "kept_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.2,
+    "seed": 909,
+    "wer": 0.167
+   }
+  ]
+ },
+ "mirela/progress": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "Well? Have you got it? No? Then why are you standing here instead of looking?",
+    "file": "progress_0.ogg",
+    "voice": "mirela",
+    "sig": "fea5d511f18d",
+    "seconds": 4.61
+   }
+  ]
+ },
+ "mirela/return": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Mirela freezes when she sees the key in your hand. Its teeth move slowly, as if searching for something.",
+    "file": "return_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 7.37,
+    "seed": 909,
+    "wer": 0.053
+   },
+   {
+    "who": "speaker",
+    "text": "You have it... Give it back. Please.",
+    "file": "return_1.ogg",
+    "voice": "mirela",
+    "sig": "fea5d511f18d",
+    "seconds": 2.14
+   }
+  ]
+ },
+ "mirela/returned": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Mirela clutches the key to her chest as if holding a child.",
+    "file": "returned_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 4.1,
+    "seed": 909,
+    "wer": 0.091
+   },
+   {
+    "who": "speaker",
+    "text": "Thank you. Zawias will remember this favor. I certainly will.",
+    "file": "returned_1.ogg",
+    "voice": "mirela",
+    "sig": "fea5d511f18d",
+    "seconds": 3.75
+   }
+  ]
+ },
+ "mirela/reward": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "A hundred gold pieces. Fair, by market standards.",
+    "file": "reward_0.ogg",
+    "voice": "mirela",
+    "sig": "fea5d511f18d",
+    "seconds": 3.05
+   }
+  ]
+ },
+ "mirela/reward_no": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "A hundred. Or I'll find someone cheaper, and there's one on every corner.",
+    "file": "reward_no_0.ogg",
+    "voice": "mirela",
+    "sig": "fea5d511f18d",
+    "seconds": 4.42
+   }
+  ]
+ },
+ "mirela/reward_plus": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Mirela purses her lips and counts something on her fingers.",
+    "file": "reward_plus_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 4.41,
+    "seed": 909,
+    "wer": 0.1
+   },
+   {
+    "who": "speaker",
+    "text": "A hundred and fifty. But not a copper more.",
+    "file": "reward_plus_1.ogg",
+    "voice": "mirela",
+    "sig": "fea5d511f18d",
+    "seconds": 2.56
+   }
+  ]
+ },
+ "mirela/start": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "A woman with fingers blackened by brass shifts keys from one pile to another, as if she needed something to do. There must be a hundred of them hanging around her neck.",
+    "file": "start_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 11.83,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Not buying? Then don't waste my... Wait. You've got the face of someone who isn't afraid of alleys.",
+    "file": "start_1.ogg",
+    "voice": "mirela",
+    "sig": "fea5d511f18d",
+    "seconds": 5.88
+   }
+  ]
+ },
+ "mirela/theft": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "Someone stole the Key Without a Door. From my display case, from under three locks I forged myself! All they left was rusty dust on the velvet.",
+    "file": "theft_0.ogg",
+    "voice": "mirela",
+    "sig": "fea5d511f18d",
+    "seconds": 8.71
+   }
+  ]
+ },
+ "mirela/truth": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Mirela lowers her eyes.",
+    "file": "truth_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.01,
+    "seed": 909,
+    "wer": 0.25
+   },
+   {
+    "who": "speaker",
+    "text": "The arch in the middle of the market. The one without a door. It's always stood there and opens nothing, because its door doesn't exist yet. This key can... create it. I was going to sell it to the highest bidder. The Curator would never forgive me, but gold is gold.",
+    "file": "truth_1.ogg",
+    "voice": "mirela",
+    "sig": "fea5d511f18d",
+    "seconds": 15.91
+   }
+  ]
+ },
+ "mirela/truth_fail": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "It opens what it's meant to open. I'm a keysmith, not a philosopher.",
+    "file": "truth_fail_0.ogg",
+    "voice": "mirela",
+    "sig": "fea5d511f18d",
+    "seconds": 4.06
+   },
+   {
+    "who": "narrator",
+    "text": "She holds out her hand.",
+    "file": "truth_fail_1.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.01,
+    "seed": 909,
+    "wer": 0.0
+   }
+  ]
+ },
+ "mirela/wanderer_memory": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The key burns in your hand. For a moment you see the first gate of Zawias. It is your hand that cuts three lines into the keystone. It is you they call the Wanderer and ask for leave to cross. You hear yourself take an oath:",
+    "file": "wanderer_memory_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 15.61,
+    "seed": 909,
+    "wer": 0.022
+   },
+   {
+    "who": "speaker",
+    "text": "I give my name to the gate. The road belongs to those who walk it.",
+    "file": "wanderer_memory_1.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 4.49,
+    "seed": 909,
+    "wer": 0.133
+   },
+   {
+    "who": "narrator",
+    "text": "The memory fades. Mirela notices the key has stopped shaking.",
+    "file": "wanderer_memory_2.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 4.53,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "You can give it back. Or you can find out who the Arch is waiting for now.",
+    "file": "wanderer_memory_3.ogg",
+    "voice": "mirela",
+    "sig": "fea5d511f18d",
+    "seconds": 4.35,
+    "seed": 101,
+    "wer": 0.0
+   }
+  ]
+ },
+ "mirela/what_key": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "In Zawias every key is a promise: somewhere there's a door it will open. This one is a promise with no address. It doesn't fit any lock I know, and I know them all. But it's alive. It's warm. It's searching.",
+    "file": "what_key_0.ogg",
+    "voice": "mirela",
+    "sig": "fea5d511f18d",
+    "seconds": 11.95
+   }
+  ]
+ },
+ "odzwierny/fight_node": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The Doorkeeper grins wide, baring blackened teeth, and draws a sickle.",
+    "file": "fight_node_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 4.95,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Finally, something interesting.",
+    "file": "fight_node_1.ogg",
+    "voice": "odzwierny",
+    "sig": "ca7b9a659634",
+    "seconds": 2.23
+   },
+   {
+    "who": "narrator",
+    "text": "Shuffling comes from behind the door.",
+    "file": "fight_node_2.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.76,
+    "seed": 909,
+    "wer": 0.0
+   }
+  ]
+ },
+ "odzwierny/let_in": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The Doorkeeper studies you for a long time, then steps away from the door.",
+    "file": "let_in_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 5.37,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Go in. Sever likes people who fall apart out of curiosity.",
+    "file": "let_in_1.ogg",
+    "voice": "odzwierny",
+    "sig": "ca7b9a659634",
+    "seconds": 3.91
+   }
+  ]
+ },
+ "odzwierny/let_in_token": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The Doorkeeper turns the token over in his fingers and smiles for the first time.",
+    "file": "let_in_token_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 5.86,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "The brothers from the alley... Good. I don't stop our own. Sever is inside.",
+    "file": "let_in_token_1.ogg",
+    "voice": "odzwierny",
+    "sig": "ca7b9a659634",
+    "seconds": 4.95,
+    "seed": 707,
+    "wer": 0.0
+   }
+  ]
+ },
+ "odzwierny/open": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "Sever is waiting inside.",
+    "file": "open_0.ogg",
+    "voice": "odzwierny",
+    "sig": "ca7b9a659634",
+    "seconds": 2.0
+   }
+  ]
+ },
+ "odzwierny/refuse": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "Sever doesn't talk to strangers. Leave while you're still in one piece.",
+    "file": "refuse_0.ogg",
+    "voice": "odzwierny",
+    "sig": "ca7b9a659634",
+    "seconds": 4.73
+   }
+  ]
+ },
+ "odzwierny/start": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "A man in a robe with threads deliberately unpicked leans against the warehouse door. A rusty tin plate hangs around his neck.",
+    "file": "start_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 9.07,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Everything falls apart, stranger. Your plans too. What do you want?",
+    "file": "start_1.ogg",
+    "voice": "odzwierny",
+    "sig": "ca7b9a659634",
+    "seconds": 4.49
+   }
+  ]
+ },
+ "pchla/alley": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "A shortcut to the old warehouse. Round the back. The back door's got a lock any old pick will open, if you've got nimble fingers.",
+    "file": "alley_0.ogg",
+    "voice": "pchla",
+    "sig": "de4fd9bada47",
+    "seconds": 6.33,
+    "seed": 606,
+    "wer": 0.043
+   }
+  ]
+ },
+ "pchla/paid": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Flea glances around quickly.",
+    "file": "paid_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.21,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "It's the Unravelers. The warehouse at the end, past the alley. But listen, this part's free: two thugs with a crossbow are waiting in the alley. They get paid to grab anyone who asks about the key. Go in with a weapon in your hand, not your mouth.",
+    "file": "paid_1.ogg",
+    "voice": "pchla",
+    "sig": "de4fd9bada47",
+    "seconds": 12.17,
+    "seed": 606,
+    "wer": 0.0
+   }
+  ]
+ },
+ "pchla/scared": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Flea goes pale.",
+    "file": "scared_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 1.68,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Fine, fine. The Unravelers gave me a copper to tell them who's sniffing around. But you're all right. Two of them are waiting in the alley. The warehouse is further on, past them. Don't say it was me.",
+    "file": "scared_1.ogg",
+    "voice": "pchla",
+    "sig": "de4fd9bada47",
+    "seconds": 9.52,
+    "seed": 606,
+    "wer": 0.054
+   }
+  ]
+ },
+ "pchla/snitch": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "I don't know nothing, I didn't see nothing.",
+    "file": "snitch_0.ogg",
+    "voice": "pchla",
+    "sig": "de4fd9bada47",
+    "seconds": 2.19,
+    "seed": 606,
+    "wer": 0.0
+   },
+   {
+    "who": "narrator",
+    "text": "Flea shrugs, and when you turn away you hear quick footsteps behind you heading for the alley.",
+    "file": "snitch_1.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 6.68,
+    "seed": 909,
+    "wer": 0.0
+   }
+  ]
+ },
+ "pchla/start": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "A boy in a coat far too big for him flips a copper without looking at it.",
+    "file": "start_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 4.96,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "What? I'm not small, I'm cheap.",
+    "file": "start_1.ogg",
+    "voice": "pchla",
+    "sig": "de4fd9bada47",
+    "seconds": 1.81,
+    "seed": 606,
+    "wer": 0.0
+   }
+  ]
+ },
+ "sever/after": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "Go now. Don't disturb me while I fall apart.",
+    "file": "after_0.ogg",
+    "voice": "sever",
+    "sig": "964b12a55ef9",
+    "seconds": 3.08
+   }
+  ]
+ },
+ "sever/angry": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Sever stands.",
+    "file": "angry_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 1.7,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Words fall apart too.",
+    "file": "angry_1.ogg",
+    "voice": "sever",
+    "sig": "964b12a55ef9",
+    "seconds": 1.5,
+    "seed": 808,
+    "wer": 0.0
+   },
+   {
+    "who": "narrator",
+    "text": "He raises his hand, and the air behind him cracks like glass.",
+    "file": "angry_2.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 4.2,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Unravel them.",
+    "file": "angry_3.ogg",
+    "voice": "sever",
+    "sig": "964b12a55ef9",
+    "seconds": 1.0,
+    "seed": 808,
+    "wer": 0.0
+   }
+  ]
+ },
+ "sever/convinced": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Sever falls silent. The dust stops trickling from his fingers. Then he laughs dryly, as if something inside him cracked.",
+    "file": "convinced_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 8.74,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "A possibility that rots before it's born... You're right. Let it fall apart on its own.",
+    "file": "convinced_1.ogg",
+    "voice": "sever",
+    "sig": "964b12a55ef9",
+    "seconds": 6.29,
+    "seed": 808,
+    "wer": 0.0
+   },
+   {
+    "who": "narrator",
+    "text": "He tosses you the key.",
+    "file": "convinced_2.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 1.89,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Take it. Watch it die.",
+    "file": "convinced_3.ogg",
+    "voice": "sever",
+    "sig": "964b12a55ef9",
+    "seconds": 2.0,
+    "seed": 808,
+    "wer": 0.0
+   }
+  ]
+ },
+ "sever/scared": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The cracks on Sever's face darken.",
+    "file": "scared_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.51,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Fear is decay too. Interesting.",
+    "file": "scared_1.ogg",
+    "voice": "sever",
+    "sig": "964b12a55ef9",
+    "seconds": 2.5,
+    "seed": 808,
+    "wer": 0.0
+   },
+   {
+    "who": "narrator",
+    "text": "He tosses you the key.",
+    "file": "scared_2.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 1.89,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Take it. It will return to dust anyway.",
+    "file": "scared_3.ogg",
+    "voice": "sever",
+    "sig": "964b12a55ef9",
+    "seconds": 2.75,
+    "seed": 808,
+    "wer": 0.0
+   }
+  ]
+ },
+ "sever/start": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "A tall man sits on a chest, his face covered in a web of fine cracks like old porcelain. Rusty dust trickles between his fingers.",
+    "file": "start_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 9.07,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "You've come for the key. Do you know what it is? A promise. And a promise is a lie that hasn't rotted yet.",
+    "file": "start_1.ogg",
+    "voice": "sever",
+    "sig": "964b12a55ef9",
+    "seconds": 7.55
+   }
+  ]
+ },
+ "sever/why": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "Everything falls apart: stars, planes, gods. That's not a tragedy, it's the honesty of the universe. But this key pretends it can begin something. Open a door that isn't there. That's a lie, and the worst kind, because it gives hope. We will unravel it.",
+    "file": "why_0.ogg",
+    "voice": "sever",
+    "sig": "964b12a55ef9",
+    "seconds": 18.69
+   }
+  ]
+ }
+}

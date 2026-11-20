@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 """Uruchamia kilka skryptów pipeline'u w jednym procesie Blendera (oszczędza czas startu).
 
 Użycie: blender -b --python run_steps.py -- <kroki.json>

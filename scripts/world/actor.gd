@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 class_name Actor
 extends Node3D
 ## Wizualna reprezentacja postaci na mapie: low-poly figura, podpis, pierścień zaznaczenia.
@@ -23,7 +25,7 @@ var _dead := false
 
 const MODEL_DIR := "res://assets/actors/"
 const MODEL_HEIGHT := 1.75
-const LOOPING := ["idle", "walk", "run"]
+const LOOPING := ["idle", "walk", "run", "talk"]
 ## Ruch: prędkości w m/s (pole = 1 m). Naturalna prędkość animacji zmierzona narzędziem
 ## tools/dev/measure_gait.gd (stopa podporowa względem modelu 1,75 m) – tempo animacji dopasowujemy
 ## do prędkości ruchu, żeby stopy nie ślizgały się po ziemi.
@@ -398,6 +400,18 @@ func place(c: Vector2i) -> void:
 	_last_pos = position
 
 
+## Mgła wojny (FogOfWar): ukrywa model i podpis, aktor zostaje w świecie (klik, trasa, mapa).
+var fogged := false
+
+
+func set_fogged(on: bool) -> void:
+	if on == fogged:
+		return
+	fogged = on
+	_idle_root.visible = not on
+	_label.visible = not on and not _dead
+
+
 func set_highlight(on: bool, color := Color.WHITE) -> void:
 	_ring.visible = on
 	(_ring.material_override as StandardMaterial3D).albedo_color = color
@@ -505,6 +519,61 @@ func stop_walk() -> void:
 
 func is_walking() -> bool:
 	return _gait != ""
+
+
+var _voice3d: AudioStreamPlayer3D
+var _bark_until := 0.0
+
+
+## Okrzyk: głos z pozycji postaci (animacja mówienia na czas nagrania). Zwraca, jak długo pokazywać dymek (s);
+## sam dymek rysuje HUD (HUD.bubble), żeby był czytelny na każdym tle.
+func say(text: String, voice_path := "") -> float:
+	var dur := 0.0
+	if voice_path != "" and ResourceLoader.exists(voice_path):
+		if _voice3d == null:
+			_voice3d = AudioStreamPlayer3D.new()
+			_voice3d.bus = "Voice"
+			_voice3d.unit_size = 6.0
+			_voice3d.max_distance = 30.0
+			_voice3d.position.y = 1.5
+			add_child(_voice3d)
+		var st: AudioStream = load(voice_path)
+		_voice3d.stream = st
+		_voice3d.play()
+		dur = st.get_length()
+		set_talking(true)
+		get_tree().create_timer(dur).timeout.connect(func(): if is_instance_valid(self): set_talking(false))
+	var show := maxf(2.0 + text.length() * 0.05, dur + 0.6)
+	_bark_until = Time.get_ticks_msec() / 1000.0 + show
+	return show
+
+
+## Przerywa okrzyk (np. kiedy zaczyna się rozmowa albo walka).
+func hush() -> void:
+	_bark_until = 0.0
+	if _voice3d and _voice3d.playing:
+		_voice3d.stop()
+		set_talking(false)
+
+
+func is_barking() -> bool:
+	return (_voice3d != null and _voice3d.playing) or Time.get_ticks_msec() / 1000.0 < _bark_until
+
+
+## Rozmowa: animacja „talk”, póki postać mówi (głos), potem powrót do bezczynności.
+func set_talking(on: bool) -> void:
+	if _anim == null or _dead or is_walking():
+		return
+	var cur := String(_anim.current_animation).get_slice("/", String(_anim.current_animation).get_slice_count("/") - 1).to_lower()
+	if on and cur != "talk":
+		play_anim("talk", "idle")
+	elif not on and cur == "talk":
+		play_anim("idle")
+
+
+## Obraca postać twarzą do punktu (np. rozmówcy).
+func face_toward(target: Vector3) -> void:
+	_face(target)
 
 
 ## Ustawia kierunek, do którego postać płynnie się obraca (_process).

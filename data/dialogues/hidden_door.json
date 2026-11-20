@@ -1,0 +1,37 @@
+{
+  "start": "start",
+  "starts": [
+    {"if": {"flag": "hidden_door_opened"}, "next": "inside_again"},
+    {"if": {"not_item": "key_without_door"}, "next": "faded"}
+  ],
+  "nodes": {
+    "start": {
+      "speaker": "Drzwi, których nie ma",
+      "text": "Klucz bez drzwi szarpie się w twojej dłoni w stronę gładkiego muru między Kluczarnią a magazynami. Na kamieniu, jak szron, pojawia się zarys drzwi, których przed chwilą nie było.",
+      "choices": [
+        {"text": "Przyłóż klucz do zarysu.", "if": {"has_item": "key_without_door"}, "next": "opened"},
+        {"text": "[Odejdź]", "end": true}
+      ]
+    },
+    "opened": {
+      "speaker": "Drzwi, których nie ma",
+      "text": "Klucz obraca się w powietrzu i drzwi stają się prawdziwe. Za nimi jest ciasna izba strażnicy: zimne palenisko, ława i księga przejść otwarta na ostatniej stronie. Ostatni wpis jest twoim pismem: „Odmówiłem przejścia Kustoszce. Brama nie jest dla tych, którzy chcą ją zamknąć za sobą”. Pod spodem ktoś dopisał świeższym atramentem: „Pamiętam. — K.”",
+      "effects": [{"set_flag": "hidden_door_opened"}, {"xp": 50},
+                  {"journal": "Klucz otworzył drzwi w murze targu. W dawnej strażnicy leżała księga przejść: Wędrowiec odmówił kiedyś przejścia Kustoszce, a ona to pamięta."}],
+      "choices": [
+        {"text": "Zabierz księgę przejść.", "effects": [{"give_item": "crossings_ledger"}], "end": true},
+        {"text": "Zostaw wszystko tak, jak było.", "end": true}
+      ]
+    },
+    "inside_again": {
+      "speaker": "Drzwi, których nie ma",
+      "text": "Drzwi stoją w murze, jakby były tu zawsze. W strażnicy panuje cisza i pachnie zimnym popiołem.",
+      "choices": [{"text": "[Odejdź]", "end": true}]
+    },
+    "faded": {
+      "speaker": "Drzwi, których nie ma",
+      "text": "Na murze widać tylko bladą rysę w kształcie drzwi. Bez klucza to zwykły kamień.",
+      "choices": [{"text": "[Odejdź]", "end": true}]
+    }
+  }
+}

@@ -10,7 +10,7 @@ Ready-to-paste fields for the itch.io project page. Images: `docs/media/cover_63
 - **Uploads**: `zawias-0.1.0-windows.zip` (Windows), `zawias-0.1.0-linux.zip` (Linux)
 - **Genre**: Role Playing · **Tags**: isometric, crpg, turn-based-combat, dungeons-and-dragons, fantasy, planar, story-rich, godot, singleplayer, tactical
 - **Languages**: English, Polish · **Inputs**: Mouse, Keyboard · **Average session**: *(fill in after a timed playthrough)*
-- **AI disclosure** (itch asks for it): Yes. Art, 3D models, portraits and music were generated locally with open models (FLUX.2 klein, TRELLIS.2, Depth Anything V2, ACE-Step) and processed by our own pipeline. Writing and code were created by the author together with an AI coding assistant.
+- **AI disclosure** (itch asks for it): Yes. Art, 3D models, portraits, music and character voices were generated locally with open models (FLUX.2 klein, TRELLIS.2, Depth Anything V2, ACE-Step, OmniVoice) and processed by our own pipeline. Writing and code were created by the author together with an AI coding assistant.
 
 ## Description (English)
 

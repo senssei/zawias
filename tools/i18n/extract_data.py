@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 """Teksty do tłumaczenia z data/**/*.json jako płaska mapa {"plik:ścieżka": "tekst"} (format i18n/<lang>/data.json).
 Pomija pola z identyfikatorami i wyrażeniami (ID_KEYS) oraz napisy bez liter. --missing i18n/en/data.json: tylko brakujące."""
 import json, sys, pathlib

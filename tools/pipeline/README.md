@@ -187,6 +187,89 @@ siatka przesunięta na głębię z malunku (cienie 3D) + DEPTH na piksel (przes�
 Po zmianie mapy (budynki, rekwizyty) trzeba malować od nowa. Gałąź shaderów dla Forward+ (Vulkan) nieprzetestowana.
 
 
+## Fabuła i game design
+
+```bash
+./pipeline.sh story check
+./pipeline.sh story arc wanderer
+./pipeline.sh story voice
+./pipeline.sh story lint
+```
+
+Kontrola wymaga Pythona 3. Sprawdza przejścia w dialogach oraz odwołania do
+przedmiotów, etapów zadań, spotkań i celów mapy. Błędne odwołanie kończy polecenie
+kodem 1. Ostrzeżenia o węzłach bez wejścia i potencjalnych pętlach przekierowań
+uwzględniają strukturę grafu. Dostępność wyborów w konkretnym stanie gry
+sprawdzają testy Godota. Opis przebiegu prac i pilotażu jest w
+[researchu fabuły i game designu](../../docs/story-game-design.md).
+
+`story arc` wypisuje etapy i sceny osi zapisanej w `data/story_arcs.json`.
+Kontrola sprawdza, czy każda wskazana scena ustawia przypisany etap.
+[Projekt osi Wędrowca](../../docs/wanderer.md) opisuje odkrycia, decyzje i plan prób w grze.
+
+`story voice` wypisuje węzły dialogów bez nagrania w każdym języku z manifestem głosów.
+Gwiazdka oznacza scenę kluczową, czyli źródło etapu osi albo węzeł odwiedzany w kadrze
+storyboardu. `story check` zgłasza brak nagrania sceny kluczowej jako ostrzeżenie
+z poleceniem `voice`, które je uzupełni.
+
+`story lint` sprawdza reguły pisania z [propozycji pipeline'u fabuły](../../docs/story-pipeline.md):
+- porażka testu musi zostawić drogę dalej albo wpis w dzienniku;
+- każdy opis skutku w `factions.json` musi mieć warunek w danych, a każdy warunek frakcji musi mieć opis;
+- cytat po frazie o własnym głosie dostaje ostrzeżenie, jeśli węzeł nie ma `narrator_quotes`;
+- komentarz towarzysza musi mieć warunek.
+
+`run_tests.sh` uruchamia `story check` i `story lint --strict` przed testami Godota.
+
+## Storyboard
+
+```bash
+./pipeline.sh storyboard check rusty_market
+./pipeline.sh storyboard review rusty_market work/storyboard --lang pl
+```
+
+Pilotaż w `data/storyboard.json` ma 10 kadrów: bramę, mapę po przyjęciu zadania,
+trop u Lis, odmowę Odźwiernego z mapą, trzy kadry walki czarodziejem (księga, cel,
+efekt), wspomnienie z odłożoną decyzją i oba finały. Kadr może ustawić klasę postaci
+(`class`), ziarno rzutów (`seed`) i opóźnienie zrzutu (`capture`). Kroki walki to
+`{"wait": "player_turn"}`, `{"menu": "spellbook"}`, `{"cast": czar}` i
+`{"target": aktor, "click": true}`. Opis formatu jest w `tools/dev/storyboard_runner.gd`. Każdy kadr uruchamia nową partię i odtwarza wybory przez interfejs gry.
+Przejścia między rozmówcami są skrócone przez ustawienie postaci obok celu.
+Raport zapisuje PNG i `index.html` z pytaniami do playtestu. `--lang` ustawia
+język gry na klatkach. Render wymaga ekranu lub wirtualnego serwera X11.
+
+## Animacje czarów
+
+```bash
+./pipeline.sh spellfx check
+./pipeline.sh spellfx preview burning_hands
+./pipeline.sh spellfx preview magic_missile --headless
+./pipeline.sh spellfx capture burning_hands work/spellfx
+./pipeline.sh spellfx review work/spellfx-review --only burning_hands,sleep,shield
+```
+
+Edytuj `data/spell_fx.json`. Każdy profil zawiera szablon (`bolt`, `volley`,
+`beam`, `pillar`, `burst`, `cone` albo `aura`), kolor `#RRGGBB` i czas
+w sekundach. Długość stożka, promień obszaru i liczba pocisków pochodzą z
+`data/spells.json`. Podgląd w pętli działa na Rdzawym Targu i korzysta z tego
+samego efektu, gestu i dźwięku co walka. `--once` odtwarza czar raz i zamyka grę.
+Tryb `--headless` sprawdza odtworzenie bez renderowania okna.
+Przed pierwszym podglądem zaimportuj projekt w Godot.
+
+`capture` wymaga ekranu lub serwera X11 do renderowania. Ustawia ten sam
+kadr co podgląd i zapisuje trzy PNG po 18%, 50% i 83% czasu z profilu.
+Przykładowe pliki: `burning_hands-18.png`, `burning_hands-50.png`,
+`burning_hands-83.png`. Kolejny zapis tego samego czaru zastępuje jego
+poprzednie klatki w podanym katalogu.
+
+`review` zapisuje klatki wszystkich czarów w jednym uruchomieniu Godota
+oraz lokalny raport `index.html`. Opcja `--only` pozwala wybrać czary.
+Kliknięcie klatki w raporcie otwiera PNG w pełnym rozmiarze.
+W trybach podglądu i renderowania postacie w tle pozostają na swoich
+miejscach i nie odtwarzają kwestii, dzięki czemu łatwiej porównać klatki.
+
+Profile użytkowe można obejrzeć w podglądzie. W grze animacja uruchamia się,
+gdy mechanika emituje zdarzenie rzucenia czaru, także przy reakcji Tarcza.
+
 ## Portrety
 
 `pipeline.sh portraits cast/rusty_market.txt`: popiersia z konceptów (`work/<id>/concept.png`) do `assets/portraits/<id>.png`.
@@ -201,6 +284,25 @@ w oknie dialogu (id dialogu, `backdoor` -> `door`, węzeł może podać `"portra
   Warianty: `--count 2`, wybrane kopiujesz z `work/audio/` (model czasem robi długie przerwy w środku utworu).
 - **Efekty i ambient:** `pipeline.sh sfx` – synteza w numpy (`sfx_synth.py`), bez próbek i licencji.
   Nazwy plików są kontraktem z grą (`scripts/game/audio.gd`): można je podmienić na nagrania, np. pakiety CC0.
-- **W grze:** autoload `Audio` (szyny Music/Ambient/SFX, ustawienia w `user://settings.cfg`), kroki zsynchronizowane
+- **Głosy postaci:** `pipeline.sh voice [--lang en] [--only mirela] [--node theft] [--force] [--force-ref] [--dry-run]`
+  – OmniVoice (k2-fsa, Apache 2.0) w ComfyUI, węzły `custom_nodes/ComfyUI-OmniVoice-TTS` (instalacja:
+  `python install.py` w venv ComfyUI; model ~4 GB pobiera się sam do `models/omnivoice/`). Obsada:
+  `assets/audio/voice/voices.json` (klucz = id dialogu): `instruct` (atrybuty Voice Design: płeć, wiek, wysokość,
+  akcent, whisper), `ref_text` (kwestia próbki), `seed`, `speed`. Najpierw powstaje próbka głosu
+  `work/voice/<id>/ref.wav` (Voice Design), potem każda wypowiedź jest klonem tej próbki, więc barwa się nie
+  rozjeżdża. Tekst węzła dzieli się na fragmenty po kolei: kwestie w cudzysłowie mówi postać, opis wokół
+  czyta narrator (głos `_narrator` w obsadzie; `--no-narrator` go pomija, `--only _narrator` generuje tylko
+  jego). Wynik: `assets/audio/voice/<lang>/<dialog>/<węzeł>_<n>.ogg` + `manifest.json` z tekstem każdego
+  fragmentu – po zmianie dialogu skrypt sam odświeża nieaktualne fragmenty i usuwa nieużywane pliki, a `tests/unit/test_voice.gd` wyłapie zapomniane. Zmiana barwy w
+  obsadzie unieważnia próbkę automatycznie. Każda próbka i kwestia przechodzi kontrolę Whisperem
+  (large-v3-turbo): przy złym WER albo tempie pipeline bierze kolejny seed (`--tries 4`, próbki do 8;
+  `--no-check` wyłącza). Voice Design potrafi dać sam szum zamiast mowy (tak było z wysokimi głosami Kwita i
+  Pchły), a wtedy wszystkie klony też byłyby zepsute. Kontrola całości bez generowania:
+  `LD_LIBRARY_PATH=/usr/lib/wsl/lib ~/ComfyUI/.venv/bin/python -I tools/dev/voice_check.py [--only id]`.
+  Wymaga w venv ComfyUI: `install.py` węzła oraz `accelerate`. W grze język głosów jest osobnym ustawieniem (domyślnie angielski),
+  tekst dialogu robi wtedy za napisy; narratora można wyłączyć; opcjonalnie synteza mowy systemu dla kwestii
+  bez nagrania. Gdy mówi postać, gra animację `talk` i obraca się do gracza, a jej portret pulsuje w rytm
+  głośności (analizator widma na szynie Voice); przy narratorze portret przygasa.
+- **W grze:** autoload `Audio` (szyny Music/Ambient/SFX/Voice, ustawienia w `user://settings.cfg`), kroki zsynchronizowane
   z fazą animacji chodu (`Actor.FOOTFALLS`). Debug: `--audiolog`. W WSL nie ma urządzenia ALSA, więc dźwięk słychać
   dopiero w buildzie/na Windowsie.

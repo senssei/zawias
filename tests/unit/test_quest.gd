@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 extends GutTest
 ## Testy integracyjne: dialogi, flagi i ścieżki questa „Klucz bez drzwi”.
 
@@ -41,6 +43,60 @@ func test_mirela_starts_quest():
 	assert_true("potion_healing" in gs.player.inventory)
 
 
+func test_kwit_exposes_bluff_after_contract_redemption():
+	gs.quests["key"] = "started"
+	var r := DialogueRunner.new(gs)
+	r.start("kwit")
+	_choose_text(r, "Mirelę okradziono")
+	Dice.force([20])
+	_choose_text(r, "Przysyła mnie Kustoszka")
+	assert_eq(gs.faction_attitude("inscribed"), "neutral")
+	r.start("kwit")
+	assert_eq(r.current_id, "start", "kontrakt nie wrócił jeszcze do Kwita")
+	r.start("hask")
+	_choose_text(r, "Oddaj kontrakt Kwita")
+	r.start("kwit")
+	assert_eq(r.current_id, "bluff_exposed")
+	assert_eq(gs.faction_attitude("inscribed"), "wary")
+	assert_eq(gs.faction_attitude("echo"), "neutral")
+
+	var save_data: Dictionary = JSON.parse_string(JSON.stringify(gs.to_dict()))
+	gs.from_dict(save_data)
+	assert_eq(gs.faction_attitude("inscribed"), "wary")
+	r.start("kwit")
+	assert_eq(r.current_id, "start", "konfrontacja odbywa się raz")
+	gs.player.gold = 19
+	_choose_text(r, "na sprzedaż miksturę")
+	assert_false(r.visible_choices().any(func(ch): return "Kupuję" in ch.text))
+	gs.player.gold = 20
+	_choose_text(r, "[20 sz.")
+	assert_eq(gs.player.gold, 0)
+	assert_true("potion_healing" in gs.player.inventory)
+	_choose_text(r, "Dziękuję")
+	assert_false(r.visible_choices().any(func(ch): return "na sprzedaż miksturę" in ch.text))
+
+	save_data.erase("reputation")
+	gs.from_dict(save_data)
+	assert_eq(gs.faction_attitude("inscribed"), "neutral", "stare zapisy zaczynają od neutralności")
+
+
+func test_paying_kwit_for_the_lead_unlocks_friendly_price():
+	gs.quests["key"] = "started"
+	gs.player.gold = 20
+	var r := DialogueRunner.new(gs)
+	r.start("kwit")
+	_choose_text(r, "na sprzedaż miksturę")
+	assert_true(r.visible_choices().any(func(ch): return "[10 sz.]" in ch.text))
+	_choose_text(r, "Może później")
+	_choose_text(r, "Mirelę okradziono")
+	_choose_text(r, "Proszę, dziesięć sztuk")
+	assert_eq(gs.faction_attitude("inscribed"), "friendly")
+	_choose_text(r, "Dziękuję")
+	_choose_text(r, "na sprzedaż miksturę")
+	_choose_text(r, "[5 sz.")
+	assert_eq(gs.player.gold, 5)
+
+
 func test_diplomacy_path():
 	gs.quests["key"] = "started"
 	var r := DialogueRunner.new(gs)
@@ -64,12 +120,52 @@ func test_diplomacy_path():
 	gs.world_request.connect(func(e): ended.append(e))
 	r = DialogueRunner.new(gs)
 	r.start("mirela")
-	assert_eq(r.current_id, "return")
+	assert_eq(r.current_id, "wanderer_memory")
+	assert_eq(gs.quest_stage("wanderer"), "revealed")
+	_choose_text(r, "Porozmawiajmy o kluczu")
 	_choose_text(r, "Oto twój klucz")
 	assert_eq(gs.quest_stage("key"), "done_returned")
+	assert_eq(gs.quest_stage("wanderer"), "done_stayed")
 	assert_false("key_without_door" in gs.player.inventory)
 	assert_true(ended.any(func(e): return e.has("end_game")))
 	assert_gte(gs.player.level + gs.player.pending_levels, 2, "awans czeka w oknie awansu")
+
+
+func test_wanderer_clues_and_memory_survive_a_save_before_the_choice():
+	var r := DialogueRunner.new(gs)
+	r.start("hask")
+	_choose_text(r, "ślad na dłoni")
+	assert_eq(gs.quest_stage("wanderer"), "trace")
+	r.start("lis")
+	_choose_text(r, "Znasz znak z bramy")
+	assert_eq(gs.quest_stage("wanderer"), "record")
+	r.start("hask")
+	assert_false(r.visible_choices().any(func(ch): return "ślad na dłoni" in ch.text))
+	r.start("mirela")
+	_choose_text(r, "Co się stało")
+	_choose_text(r, "Pomogę ci go")
+	r.start("lis")
+	_choose_text(r, "Szukam skradzionego klucza")
+	r.start("backdoor")
+	Dice.force([15, 15])
+	_choose_text(r, "wytrychem")
+	_choose_text(r, "Zakradnij")
+	assert_true("key_without_door" in gs.player.inventory)
+	r.start("arch")
+	assert_eq(r.current_id, "wanderer_memory")
+	_choose_text(r, "Potrzebuję chwili")
+	var slot := "gut_wanderer_%s" % OS.get_process_id()
+	assert_true(gs.save_game(slot))
+	gs.quests.erase("wanderer")
+	gs.player.inventory.erase("key_without_door")
+	assert_true(gs.load_game(slot))
+	DirAccess.remove_absolute(ProjectSettings.globalize_path(gs.SAVE_DIR.path_join(slot + ".json")))
+	assert_eq(gs.quest_stage("wanderer"), "revealed")
+	assert_true("key_without_door" in gs.player.inventory)
+	r.start("mirela")
+	assert_eq(r.current_id, "return", "wspomnienie nie powtarza się w drugiej scenie")
+	_choose_text(r, "Oto twój klucz")
+	assert_eq(gs.quest_stage("wanderer"), "done_stayed")
 
 
 func test_stealth_path():
@@ -83,9 +179,18 @@ func test_stealth_path():
 	assert_true(gs.has_flag("key_stolen"))
 	r = DialogueRunner.new(gs)
 	r.start("arch")
-	assert_eq(r.current_id, "with_key")
+	assert_eq(r.current_id, "wanderer_memory")
+	assert_eq(gs.quest_stage("wanderer"), "revealed")
+	_choose_text(r, "Przyjrzyj się Łukowi")
 	_choose_text(r, "przekręć")
 	assert_eq(gs.quest_stage("key"), "done_portal")
+	assert_eq(gs.quest_stage("wanderer"), "done_crossed")
+	var xp: int = gs.player.xp
+	gs.from_dict(JSON.parse_string(JSON.stringify(gs.to_dict())))
+	r.start("arch")
+	assert_eq(r.current_id, "after_portal")
+	_choose_text(r, "Odejdź")
+	assert_eq(gs.player.xp, xp, "ponowne podejście do Łuku nie przyznaje nagrody")
 
 
 func test_failed_check_starts_combat():

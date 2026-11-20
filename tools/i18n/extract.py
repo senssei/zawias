@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 """Wyciąga napisy do tłumaczenia ze skryptów GDScript: literały z polskimi znakami albo zdania (spacja + litera).
 Wypisuje JSON {plik: [napisy]}; pomija ścieżki, identyfikatory, BBCode bez tekstu i linie oznaczone `# notr`."""
 import json, re, sys, pathlib

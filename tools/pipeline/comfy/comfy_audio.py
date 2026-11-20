@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 """Muzyka przez ComfyUI + ACE-Step 1.5 turbo (MIT; repack Comfy-Org: Apache 2.0) -> assets/audio/music/<id>.wav.
 
 Użycie: comfy_audio.py <lista.txt> [--only id1,id2] [--force] [--seed N] [--count 1]

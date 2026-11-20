@@ -1,0 +1,232 @@
+{
+ "hask": [
+  {
+   "text": "Bez kontraktu nie ma handlu. Bez handlu nie ma Zawiasu."
+  },
+  {
+   "text": "Brama znowu kogoś wypluła. Pewnie ciebie."
+  },
+  {
+   "text": "Słyszałem o zaułku. Zapisani niczego nie widzieli, rozumiesz?",
+   "if": {
+    "flag": "ambush_done"
+   }
+  },
+  {
+   "text": "Kwit mówi, że płacisz w terminie. Rzadkość na tym targu.",
+   "if": {
+    "reputation": [
+     "inscribed",
+     "friendly"
+    ]
+   }
+  },
+  {
+   "text": "Patrol ma cię na oku, przybyszu. Nie kombinuj.",
+   "if": {
+    "reputation": [
+     "inscribed",
+     "wary"
+    ]
+   }
+  }
+ ],
+ "kwit": [
+  {
+   "text": "Podpis tutaj, tutaj i… tutaj. Rzeczywistość nie zapisze się sama."
+  },
+  {
+   "text": "Każda plotka ma cenę. Większość jest tania."
+  },
+  {
+   "text": "Dla stałych klientów atrament mniej kapie.",
+   "if": {
+    "reputation": [
+     "inscribed",
+     "friendly"
+    ]
+   }
+  },
+  {
+   "text": "Twoje nazwisko jest w rejestrze. Na czerwono.",
+   "if": {
+    "reputation": [
+     "inscribed",
+     "wary"
+    ]
+   }
+  }
+ ],
+ "mirela": [
+  {
+   "text": "Klucze! Klucze do drzwi, których jeszcze nie znasz!",
+   "if": {
+    "not_quest": "key"
+   }
+  },
+  {
+   "text": "Trzy zamki. Sama je wykułam. Trzy!",
+   "if": {
+    "quest_any": [
+     "key",
+     [
+      "started",
+      "lead_warehouse"
+     ]
+    ]
+   }
+  },
+  {
+   "text": "Zawias pamięta, kto oddaje klucze.",
+   "if": {
+    "quest": [
+     "key",
+     "done_returned"
+    ]
+   }
+  }
+ ],
+ "dorn": [
+  {
+   "text": "Ciepłe piwo, zimne łóżka! Albo odwrotnie, jak kto woli."
+  },
+  {
+   "text": "Kto nie śpi pod Krzywym Zawiasem, ten śpi w rynsztoku."
+  }
+ ],
+ "lis": [
+  {
+   "text": "Każdy kamień na tym targu pamięta więcej niż my."
+  },
+  {
+   "text": "Litery znowu uciekają z ksiąg. Coś się zbliża."
+  },
+  {
+   "text": "Twoja opowieść już krąży po Archiwum. Ludzie pytają o ciebie.",
+   "if": {
+    "reputation": [
+     "echo",
+     "friendly"
+    ]
+   }
+  },
+  {
+   "text": "Każdy kamień na tym targu ma swoją opowieść. Większość jest nudna.",
+   "companion": true,
+   "if": {
+    "near": [
+     10,
+     8,
+     6
+    ]
+   }
+  },
+  {
+   "text": "Czuję rdzę w powietrzu. Rozplatacze są blisko.",
+   "companion": true,
+   "if": {
+    "near": [
+     30,
+     13,
+     4
+    ]
+   }
+  },
+  {
+   "text": "Ten Łuk zadaje pytanie. Chciałabym usłyszeć, jak na nie odpowiesz.",
+   "companion": true,
+   "if": {
+    "near": [
+     16,
+     9,
+     3
+    ]
+   }
+  },
+  {
+   "text": "Pchła nas ostrzegł. Nie dajmy się zaskoczyć w zaułku.",
+   "companion": true,
+   "if": {
+    "flag": "ambush_warned",
+    "not_flag": "ambush_done"
+   }
+  },
+  {
+   "text": "Kontrakt Kwita? Kustoszka nie lubi, gdy ktoś podpisuje się jej imieniem.",
+   "companion": true,
+   "if": {
+    "has_item": "kwit_contract"
+   }
+  },
+  {
+   "text": "Ten żeton otwiera jedne drzwi i zamyka inne. Uważaj, komu go pokazujesz.",
+   "companion": true,
+   "if": {
+    "has_item": "rust_token"
+   }
+  },
+  {
+   "text": "Wędrowiec… Echo zapisało cię dawno temu. Teraz rozumiem, czemu znak cię wołał.",
+   "companion": true,
+   "if": {
+    "quest": [
+     "wanderer",
+     "revealed"
+    ]
+   }
+  },
+  {
+   "text": "Ten mur pamięta cię lepiej niż Archiwum. Klucz to czuje.",
+   "companion": true,
+   "if": {
+    "near": [
+     21,
+     4,
+     3
+    ],
+    "has_item": "key_without_door",
+    "not_flag": "hidden_door_opened"
+   }
+  }
+ ],
+ "pchla": [
+  {
+   "text": "Wiadomości! Świeże, prawie nieużywane!"
+  },
+  {
+   "text": "Nie patrz tak, nic nie ukradłem. Dzisiaj."
+  },
+  {
+   "text": "Pamiętaj, ode mnie nic nie słyszałeś.",
+   "if": {
+    "flag": "pchla_told"
+   }
+  }
+ ],
+ "odzwierny": [
+  {
+   "text": "Wszystko się pruje. Nawet ty."
+  },
+  {
+   "text": "Nie stój tak blisko drzwi, wędrowcze."
+  },
+  {
+   "text": "Bracie, wszystko się rozpada. Ale nie dziś.",
+   "if": {
+    "reputation": [
+     "unravelers",
+     "friendly"
+    ]
+   }
+  },
+  {
+   "text": "Ty. Zapamiętałem twoją twarz.",
+   "if": {
+    "reputation": [
+     "unravelers",
+     "wary"
+    ]
+   }
+  }
+ ]
+}

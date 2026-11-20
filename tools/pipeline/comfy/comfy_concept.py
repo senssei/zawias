@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 """Koncept postaci przez ComfyUI + FLUX.2 [klein] 4B (Apache 2.0).
 
 Użycie:

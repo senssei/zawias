@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 class_name Rest
 extends RefCounted
 ## Krótki i długi odpoczynek (SRD 5.2).

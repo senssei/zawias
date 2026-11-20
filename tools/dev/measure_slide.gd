@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 extends SceneTree
 ## Poślizg stóp w grze: postać idzie prosto 8 pól z daną prędkością, mierzymy prędkość stopy podporowej
 ## w świecie (powinna być bliska 0). Użycie: godot --headless -s tools/dev/measure_slide.gd -- <id> <m/s>

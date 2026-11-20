@@ -1,6 +1,9 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 class_name AIBasic
 extends RefCounted
-## Prosta AI wrogów: wybierz cel, podejdź, zaatakuj; użyj zdolności specjalnych.
+## Prosta AI wrogów i towarzyszy: wybierz cel, podejdź, zaatakuj; użyj zdolności specjalnych.
+## Postacie z klasą (towarzysze) rzucają ofensywne sztuczki (np. Fire Bolt), zanim sięgną po broń.
 
 
 static func take_turn(mgr: CombatManager, c: Creature) -> void:
@@ -36,6 +39,16 @@ static func take_turn(mgr: CombatManager, c: Creature) -> void:
 			mgr._emit({"type": "condition", "id": target.id})
 			return
 
+	var cantrip := _attack_cantrip(c)
+	if cantrip != "":
+		var sp := Spellcasting.spell(cantrip)
+		# z dystansu: sztuczka; przy wrogu obok najpierw odsuń się, jeśli to bezpieczne (bez okazji do ataku)
+		if mgr.can_cast(c, cantrip, target.grid_pos) != "":
+			_approach(mgr, c, target, int(sp.get("range", 12)))
+		if mgr.can_cast(c, cantrip, target.grid_pos) == "":
+			mgr.cast(c, cantrip, target.grid_pos)
+			return
+
 	var dist := CombatGrid.distance(c.grid_pos, target.grid_pos)
 	var use_ranged := false
 	if not ranged.is_empty():
@@ -62,6 +75,23 @@ static func take_turn(mgr: CombatManager, c: Creature) -> void:
 		if not ranged.is_empty() and not mgr.grid.has_los(c.grid_pos, target.grid_pos):
 			want = 1
 		_approach(mgr, c, target, want)
+
+
+## Najmocniejsza ofensywna sztuczka (rzut ataku albo rzut obronny przeciw wrogowi), "" gdy brak.
+static func _attack_cantrip(c: Creature) -> String:
+	if c.kind == "monster":
+		return ""
+	var best := ""
+	var best_dmg := 0.0
+	for sid in c.cantrips:
+		var sp := Spellcasting.spell(sid)
+		if sp.get("target", "") != "enemy" or not sp.get("type", "") in ["attack", "save"]:
+			continue
+		var dmg := Dice.average(str(sp.get("damage", "0")))
+		if dmg > best_dmg:
+			best_dmg = dmg
+			best = sid
+	return best
 
 
 static func _attack_all(mgr: CombatManager, c: Creature, opt: Dictionary, target: Creature) -> void:

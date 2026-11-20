@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 class_name Attack
 extends RefCounted
 ## Ataki bronią i ataki potworów: trafienie, krytyki, obrażenia, Weapon Mastery (SRD 5.2).
@@ -106,6 +108,8 @@ static func compute_mode(attacker: Creature, target: Creature, ranged: bool, ctx
 		dis.append("unieruchomienie")
 	if attacker.effects.get("sapped", false):
 		dis.append("Sap")
+	if attacker.effects.get("jammed", false) and not ctx.get("spell", false):
+		dis.append(Loc.t("zacięta broń"))
 	if attacker.effects.get("hidden", false):
 		adv.append("ukryty")
 	if attacker.effects.get("steady_aim", false):
@@ -204,7 +208,9 @@ static func resolve(attacker: Creature, target: Creature, opt: Dictionary, ctx: 
 	if attacker.effects.get("vex_target", "") == target.id:
 		attacker.effects.erase("vex_target")
 	attacker.effects.erase("sapped")
+	attacker.effects.erase("jammed")
 	attacker.effects.erase("hidden")
+	attacker.effects.erase("hide_dc")
 	attacker.effects.erase("steady_aim")
 	target.effects.erase("guided")
 

@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 class_name Creature
 extends RefCounted
 ## Postać gracza albo potwór. Wszystkie statystyki według SRD 5.2.

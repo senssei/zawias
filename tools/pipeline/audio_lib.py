@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 """Wspólne narzędzia audio (numpy): zapis WAV, normalizacja, pętle bez szwu, obwiednie."""
 import wave
 

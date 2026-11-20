@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 """Wykrywa punkty kluczowe pozy (DWPose, comfyui_controlnet_aux) i zapisuje JSON w formacie OpenPose.
 
 Użycie: comfy_pose.py <obraz.png> <wyjście.json> [--server URL]

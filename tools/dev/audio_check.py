@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 """Szybka kontrola plików WAV bez słuchania: długość, RMS, szczyt, cisza, przester, spektrogram (PNG).
 Użycie: audio_check.py <plik.wav>... [--sheet wynik.png]"""
 import sys

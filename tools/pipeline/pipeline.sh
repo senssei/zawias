@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 # Pipeline modeli postaci: wygenerowany model -> Mixamo -> GLB w grze.
 #
 #   ./pipeline.sh comfy
@@ -29,8 +31,35 @@
 #       portrety do dialogów z konceptów (work/<id>/concept.png) -> assets/portraits/<id>.png
 #   ./pipeline.sh music [lista.txt] [--only id] [--force] [--count 2]
 #       muzyka ACE-Step 1.5 (domyślnie cast/audio_music.txt) -> assets/audio/music/<id>.wav (pętle bez szwu)
+#   ./pipeline.sh voice [--lang en] [--only mirela,hask] [--node theft] [--force] [--force-ref] [--dry-run]
+#       głosy postaci OmniVoice (obsada assets/audio/voice/voices.json): próbka głosu z opisu, potem klon dla
+#       każdej wypowiedzi w cudzysłowie -> assets/audio/voice/<lang>/<dialog>/<węzeł>.ogg (+ manifest.json)
 #   ./pipeline.sh sfx [--only id]
 #       proceduralne efekty i ambient (bez próbek) -> assets/audio/sfx, assets/audio/ambient
+#   ./pipeline.sh story check
+#       sprawdza odwołania i przejścia w danych fabuły (Python 3)
+#   ./pipeline.sh story arc wanderer
+#       wypisuje etapy osi Wędrowca i przypisane sceny
+#   ./pipeline.sh story lint [--strict]
+#       reguły pisania: porażka z wyjściem, obietnice frakcji, kto mówi, okrzyki towarzysza (docs/story-pipeline.md)
+#   ./pipeline.sh story keys [--fix] [--strict] [--init]
+#       klucze tłumaczeń i nagrań okrzyków zgodne z polskim tekstem (przesunięte, nieaktualne, bez źródła)
+#   ./pipeline.sh story paths [--classes a,b] [--difficulty normal] [--max-states 300] [--walks 200] [--json plik]
+#       przejścia gry w Godot: finały, PD i poziom przed walkami, ślepe zaułki, wybory niewidoczne w żadnym przebiegu
+#   ./pipeline.sh story balance [--classes a,b] [--seeds 16] [--json plik] [--strict]
+#       macierz walk: poziom trudności × klasa × solo/z Lis × spotkanie (tabela Markdown do ADR)
+#   ./pipeline.sh story report --out <katalog> [--paths-json p] [--balance-json b]
+#       jedna strona HTML do przeglądu: kontrole, oś, frakcje, porażki, przejścia, balans, decyzje
+#   ./pipeline.sh story voice
+#       węzły dialogów bez nagrania w każdym języku z manifestem (* = scena kluczowa: oś fabuły lub storyboard)
+#   ./pipeline.sh storyboard check <mapa> | storyboard review <mapa> <katalog> [--lang pl|en]
+#       sprawdza kadry lub odtwarza je w Godot i zapisuje raport
+#   ./pipeline.sh spellfx check | spellfx preview <id> [--once] [--headless]
+#       waliduje profile lub odtwarza animację wybranego czaru w Godot
+#   ./pipeline.sh spellfx capture <id> <katalog>
+#       zapisuje początek, środek i końcówkę animacji jako PNG
+#   ./pipeline.sh spellfx review <katalog> [--only id,id]
+#       renderuje czary w jednym uruchomieniu i zapisuje przegląd HTML
 #   ./pipeline.sh test
 #       pełny test na wygenerowanej postaci testowej (bez Mixamo)
 #
@@ -39,6 +68,12 @@ set -euo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"
 ROOT="$(cd "$HERE/../.." && pwd)"
 WORK="${WORK:-$HERE/work}"
+
+if [[ "${1:-}" == story || "${1:-}" == spellfx || "${1:-}" == storyboard ]]; then
+  command="$1"
+  shift
+  exec python3 "$HERE/$command.py" "$@"
+fi
 
 if [[ -z "${BLENDER:-}" ]]; then
   if command -v blender >/dev/null; then BLENDER=blender
@@ -124,6 +159,11 @@ case "$cmd" in
     list="${1:-$HERE/cast/audio_music.txt}"; [[ $# -gt 0 ]] && shift
     exec "$COMFY_DIR/.venv/bin/python" "$HERE/comfy/comfy_audio.py" "$list" "$@" --server "$COMFY_URL"
     ;;
+  voice)
+    if [[ " $* " != *" --dry-run "* ]]; then comfy_up || "$0" comfy; fi
+    # kontrola Whisperem na GPU: czysty LD_LIBRARY_PATH, jak przy starcie ComfyUI (cuDNN)
+    LD_LIBRARY_PATH=/usr/lib/wsl/lib exec "$COMFY_DIR/.venv/bin/python" "$HERE/comfy/comfy_voice.py" "$@" --server "$COMFY_URL"
+    ;;
   sfx)
     exec "$COMFY_DIR/.venv/bin/python" -I "$HERE/sfx_synth.py" "$@"
     ;;
@@ -140,5 +180,5 @@ case "$cmd" in
     ls -la "$T"/*.glb "$T"/*.fbx
     ;;
   *)
-    sed -n '2,36p' "$0"; exit 1;;
+    sed -n '4,54p' "$0"; exit 1;;
 esac

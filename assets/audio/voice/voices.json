@@ -1,0 +1,59 @@
+{
+ "_doc": "Obsada głosów (klucz = id dialogu; _narrator czyta opisy w dialogach). instruct: atrybuty OmniVoice Voice Design (male/female; child, teenager, young adult, middle-aged, elderly; very low pitch … very high pitch; whisper; <x> accent). ref_text: kwestia próbki głosu (8–12 s), z której klonowane są wszystkie wypowiedzi postaci, więc barwa się nie rozjeżdża. seed/speed: generowanie. tts_*: zapasowa synteza systemu w grze. Zmiana instruct/ref_text/seed wymaga --force-ref dla postaci.",
+ "voices": {
+  "_narrator": {
+   "instruct": "female, elderly, low pitch, british accent",
+   "ref_text": "The arch stands in the middle of the market, older than the stones around it. You feel the air hum beneath it, as if something on the other side were holding its breath.",
+   "seed": 909, "speed": 0.92,
+   "tts_gender": "female", "tts_pitch": 0.85, "tts_rate": 0.92
+  },
+  "mirela": {
+   "instruct": "female, middle-aged, moderate pitch, british accent",
+   "ref_text": "Keys are promises, stranger. Every one of them swears there's a door somewhere waiting for it. Now, are you buying, or just breathing on my wares?",
+   "seed": 101, "speed": 1.0,
+   "tts_gender": "female", "tts_pitch": 0.95, "tts_rate": 1.0
+  },
+  "hask": {
+   "instruct": "male, middle-aged, low pitch, british accent",
+   "ref_text": "Keep your hands where I can see them and your business where the ledger can see it. Zawias has rules, and I'm the one who writes them down.",
+   "seed": 202, "speed": 0.95,
+   "tts_gender": "male", "tts_pitch": 0.8, "tts_rate": 0.95
+  },
+  "kwit": {
+   "instruct": "male, middle-aged, high pitch, british accent",
+   "ref_text": "Everything has a price, and everything has a page. Your name, your debts, your little secrets. I simply write them down before anyone else does.",
+   "seed": 303, "speed": 1.05,
+   "tts_gender": "male", "tts_pitch": 1.15, "tts_rate": 1.05
+  },
+  "dorn": {
+   "instruct": "male, middle-aged, very low pitch, american accent",
+   "ref_text": "Pull up a stool, friend. The ale's warm, the beds are cheap, and the walls have heard worse than anything you're about to tell me.",
+   "seed": 404, "speed": 0.95,
+   "tts_gender": "male", "tts_pitch": 0.7, "tts_rate": 0.95
+  },
+  "lis": {
+   "instruct": "female, young adult, moderate pitch, british accent",
+   "ref_text": "Every story wants an ending, but the best ones keep slipping out of reach. Sit with me a while. The letters are restless today.",
+   "seed": 505, "speed": 0.9,
+   "tts_gender": "female", "tts_pitch": 1.1, "tts_rate": 0.9
+  },
+  "pchla": {
+   "instruct": "male, teenager, high pitch, british accent",
+   "ref_text": "Oi, what're you looking at? I ain't no beggar, I'm a businessman. You want to know something, you pay like everyone else does.",
+   "seed": 606, "speed": 1.1,
+   "tts_gender": "male", "tts_pitch": 1.4, "tts_rate": 1.15
+  },
+  "odzwierny": {
+   "instruct": "male, middle-aged, low pitch, whisper",
+   "ref_text": "Everything frays in the end, little visitor. Threads, doors, faces. Step closer and I'll show you how quickly yours comes apart.",
+   "seed": 707, "speed": 0.95,
+   "tts_gender": "male", "tts_pitch": 0.85, "tts_rate": 0.9
+  },
+  "sever": {
+   "instruct": "male, elderly, low pitch, british accent",
+   "ref_text": "Stars burn out. Planes unravel. Even gods forget their own names. This is not a tragedy, it is the honesty of the universe.",
+   "seed": 808, "speed": 0.85,
+   "tts_gender": "male", "tts_pitch": 0.75, "tts_rate": 0.85
+  }
+ }
+}

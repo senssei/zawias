@@ -29,7 +29,7 @@
     "snitch": {
       "speaker": "Pchła",
       "text": "„Nic nie wiem, nic nie widziałem”. Pchła wzrusza ramionami, a kiedy się odwracasz, słyszysz za plecami szybkie kroki w stronę zaułka.",
-      "effects": [{"set_flag": "pchla_told"}, {"set_flag": "asked_about_key"}],
+      "effects": [{"set_flag": "pchla_told"}, {"set_flag": "asked_about_key"}, {"journal": "Pchła nic mi nie powiedział i pobiegł w stronę wschodniego zaułka. O kradzież mogę jeszcze zapytać Kwita albo Lis w Archiwum Echa."}],
       "choices": [{"text": "[Odejdź]", "end": true}]
     },
     "alley": {

@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 class_name Abilities
 extends RefCounted
 ## Cechy, umiejętności i stałe zasad SRD 5.2.

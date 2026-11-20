@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 class_name Spellcasting
 extends RefCounted
 ## Rzucanie czarów: ataki czarem, rzuty obronne, leczenie, koncentracja.
@@ -70,21 +72,26 @@ static func cast(caster: Creature, spell_id: String, targets: Array, ctx: Dictio
 			lines.append_array(end_concentration(caster, ctx.get("all", [])))
 		caster.concentration = spell_id
 	var damaged := []  # [creature, dealt]
+	var d20_rolls := []
+	var attack_hit := false
 	var potent := lvl == 0 and caster.has_feature("potent_cantrip")
 	var dc := caster.spell_save_dc(spell_id)
 
 	match sp.type:
 		"attack":
 			for t in targets:
-				var m := Attack.compute_mode(caster, t, true, ctx)
+				var m := Attack.compute_mode(caster, t, true, ctx.merged({"spell": true}))   # zacięta broń nie dotyczy czarów
 				var r := Dice.d20(int(m.mode))
+				d20_rolls.append({"id": caster.id, "natural": int(r.natural)})
 				var bonus := caster.spell_attack_bonus(spell_id)
 				var bless := Dice.roll_die(4) if caster.effects.has("bless") else 0
 				var total := int(r.natural) + bonus + bless
 				var ac: int = t.ac() + (5 if t.effects.get("shield_spell", false) else 0)
 				var crit := int(r.natural) == 20
 				var hit := int(r.natural) != 1 and (crit or total >= ac)
+				attack_hit = attack_hit or hit
 				caster.effects.erase("hidden")
+				caster.effects.erase("hide_dc")
 				t.effects.erase("guided")
 				lines.append(Loc.t("  Atak czarem w %s: k20 %s %s = %d vs KP %d") % [t.name, str(r.rolls), Abilities.fmt_mod(bonus), total, ac])
 				var dice := _scaled_dice(caster, sp, slot)
@@ -115,6 +122,7 @@ static func cast(caster: Creature, spell_id: String, targets: Array, ctx: Dictio
 					lines.append(Loc.t("  %s jest odporny na magiczny sen.") % t.name)
 					continue
 				var sv := Checks.saving_throw(t, sp.save, dc)
+				d20_rolls.append({"id": t.id, "natural": int(sv.natural)})
 				lines.append("  %s %s" % [t.name, sv.text])
 				if sp.has("damage"):
 					var amount := int(roll.total)
@@ -161,7 +169,7 @@ static func cast(caster: Creature, spell_id: String, targets: Array, ctx: Dictio
 			for t in targets.slice(0, 3):
 				t.effects[sp.effect] = caster.id
 				lines.append(Loc.t("  %s jest pod wpływem: %s.") % [t.name, sp.name])
-	return {"ok": true, "lines": lines, "damaged": damaged}
+	return {"ok": true, "lines": lines, "damaged": damaged, "d20_rolls": d20_rolls, "attack_hit": attack_hit}
 
 
 ## Rzut na utrzymanie koncentracji po obrażeniach.

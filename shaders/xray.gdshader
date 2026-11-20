@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2026 Rafal Warzycha
+// SPDX-License-Identifier: MIT
 shader_type spatial;
 // Sylwetka postaci za przeszkodą (ściana, malunek): rysowana tylko tam, gdzie test głębi NIE przechodzi.
 // Siatka przesunięta ku kamerze o `push`, żeby postać nie „prześwitywała” przez samą siebie (ręka za tułowiem).

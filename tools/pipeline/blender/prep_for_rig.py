@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 """Czyści model z generatora (np. Hunyuan3D w ComfyUI) przed riggingiem w Mixamo.
 
 Łączy siatki, ustawia stopy na zero i środek w osi, skaluje do zadanej wysokości,

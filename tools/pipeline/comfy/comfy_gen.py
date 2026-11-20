@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 """Generuje model 3D z obrazu przez API ComfyUI (Hunyuan3D-2) i zapisuje GLB.
 
 Użycie: comfy_gen.py <obraz.png> <wyjście.glb> [--seed N] [--steps 30] [--octree 256]

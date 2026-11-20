@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 class_name IsoCamera
 extends Node3D
 ## Kamera izometryczna (ortogonalna): obrót co 90° (Q/E), zoom kółkiem, przesuwanie WASD/strzałkami.

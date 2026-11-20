@@ -2,6 +2,7 @@
   "potion_healing":   {"name": "Mikstura leczenia", "type": "consumable", "heal": "2d4+2", "action": "bonus", "desc": "Przywraca 2k4+2 PW. Wypicie to akcja dodatkowa."},
   "thieves_tools":    {"name": "Narzędzia złodziejskie", "type": "tool", "desc": "Wytrychy i pilniki. Pozwalają otwierać zamki."},
   "key_without_door": {"name": "Klucz bez drzwi", "type": "quest", "desc": "Mosiężny klucz, który jest ciepły w dotyku. Jego zęby co chwilę zmieniają kształt, jakby szukały zamka."},
+  "crossings_ledger": {"name": "Księga przejść", "type": "quest", "desc": "Księga z dawnej strażnicy Wędrowca. Ostatni wpis twoim pismem: odmowa przejścia dla Kustoszki."},
   "rust_token":       {"name": "Żeton Rdzy", "type": "misc", "desc": "Zardzewiała blaszka z wybitym znakiem rozplecionego węzła. To znak rozpoznawczy Rozplataczy."},
-  "kwit_contract":    {"name": "Kontrakt Zapisanych", "type": "misc", "desc": "Pergamin z pieczęcią Kwita. Uprawnia okaziciela do jednej przysługi."}
+  "kwit_contract":    {"name": "Kontrakt Zapisanych", "type": "misc", "desc": "Pergamin z pieczęcią Kwita. Oddaj go Haskowi przy bramie, żeby patrol oczyścił wschodni zaułek."}
 }

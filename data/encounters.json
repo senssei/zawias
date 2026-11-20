@@ -2,13 +2,14 @@
   "ambush": {
     "name": "Zasadzka w zaułku",
     "spawn": [
-      {"monster": "bandit", "id": "bandyta1", "name": "Bandyta z zaułka", "pos": [35, 6]},
-      {"monster": "bandit", "id": "bandyta2", "name": "Bandytka z kuszą", "pos": [37, 8]}
+      {"monster": "bandit", "id": "bandyta1", "name": "Bandyta z zaułka", "pos": [37, 9]},
+      {"monster": "bandit", "id": "bandyta2", "name": "Bandytka z kuszą", "pos": [37, 11]}
     ],
     "surprise_unless_flag": "ambush_warned",
+    "solo": {"skip": ["bandyta2"], "difficulty": ["story", "normal"]},
     "intro": "Z cienia zaułka wychodzą dwie postacie. „Ktoś za bardzo interesuje się cudzymi kluczami”.",
     "on_victory": [
-      {"set_flag": "ambush_done"}, {"xp": 100}, {"give_item": "rust_token"},
+      {"set_flag": "ambush_done"}, {"xp": 250}, {"give_item": "rust_token"},
       {"journal": "Napastnicy z zaułka mieli przy sobie Żeton Rdzy. To znak Rozplataczy, którzy siedzą w starym magazynie."},
       {"quest": ["key", "lead_warehouse"]}
     ]
@@ -17,8 +18,10 @@
     "name": "Magazyn Rozplataczy",
     "intro": "Sever unosi dłoń. „Wszystko się rozpada. Ty też”.",
     "unlock": ["front_open", "back_open"],
+    "solo": {"skip": ["mefit"]},
+    "entropy": true,
     "on_victory": [
-      {"set_flag": "warehouse_cleared"}, {"xp": 100},
+      {"set_flag": "warehouse_cleared"}, {"xp": 100}, {"set_reputation": ["unravelers", "wary"]},
       {"journal": "Rozplatacze z magazynu zostali pokonani, a Sever uciekł przez szparę w rzeczywistości. Klucz powinien leżeć w jego skrzyni."}
     ]
   }

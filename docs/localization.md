@@ -34,6 +34,19 @@ A flat map from a JSON path to the translation, applied by `DB` when a file is l
 The key is `<file under data/, without .json>:<path>`, path segments are dictionary keys or array indices.
 Missing keys fall back to Polish (proper names like Mirela or Sever don't need entries).
 
+Because keys contain array indices, inserting a choice, effect or bark in the middle of a list shifts every key
+after it. `i18n/<lang>/data.source.json` stores the Polish text each translation was made from, and
+`pipeline.sh story keys` compares it with the data:
+
+- **shifted**: the source text now sits under another key of the same shape; `--fix` renames the key, and also
+  renames bark recordings with their `.ogg` files;
+- **stale**: the Polish text changed, so the translation needs a manual update (then `--fix` records the new
+  source);
+- **no source**: a new translation; `--fix` records its source.
+
+`run_tests.sh` runs `story keys --strict`, so after translating new strings run
+`tools/pipeline/pipeline.sh story keys --fix`.
+
 ## Tools
 
 ```bash

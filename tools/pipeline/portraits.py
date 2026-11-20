@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 """Portrety do dialogów: koncept postaci (work/<id>/concept.png) → malowane popiersie → assets/portraits/<id>.png.
 
 Użycie (Python z venv ComfyUI):

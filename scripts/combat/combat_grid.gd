@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 class_name CombatGrid
 extends RefCounted
 ## Siatka mapy (1 pole = 1,5 m). Ściany, trudny teren, ścieżki, linia wzroku.

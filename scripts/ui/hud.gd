@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 class_name HUD
 extends CanvasLayer
 ## Interfejs w grze: portret, log, pasek walki, kolejka inicjatywy, dialogi, okna.
@@ -7,8 +9,10 @@ signal menu_pressed(id: String)                          # sheet/inventory/journ
 signal dialogue_choice(index: int)
 signal item_used(item_id: String)
 signal weapon_equipped(weapon_id: String)
+signal spellbook_cast(spell_id: String)
 signal end_screen_choice(id: String)
 signal level_up_chosen(choices: Dictionary)              # {"hp": "avg"|"roll", "subclass": id, "spells": [...]}
+signal map_travel(cell: Vector2i)                        # klik na pełnej mapie: idź tam
 
 var root: Control
 var portrait: PanelContainer
@@ -17,7 +21,7 @@ var hp_bar: ProgressBar
 var level_up_button: Button
 var log_box: RichTextLabel
 var combat_bar: PanelContainer
-var combat_buttons: HFlowContainer
+var combat_buttons: VBoxContainer
 var economy_label: RichTextLabel
 var turn_label: RichTextLabel
 var hint_label: Label
@@ -34,9 +38,19 @@ var window: PanelContainer
 var window_body: VBoxContainer
 var window_title: Label
 var toast: Label
+var d20_badge: PanelContainer
+var d20_number: Label
+var d20_caption: Label
+var d20_animation: Tween
 var menu_box: HBoxContainer
 var _dlg_choice_count := 0
 var selected_key := ""
+var minimap_panel: PanelContainer
+var minimap: MapView
+var minimap_title: Label
+var map_markers: Callable                                # () -> Array znaczników (MapView)
+var map_explored: Callable                               # (Vector2i) -> bool
+var map_data: Dictionary
 
 
 func _ready() -> void:
@@ -88,9 +102,33 @@ func _ready() -> void:
 	menu.offset_top = 12
 	root.add_child(menu)
 	for pair in [["sheet", Loc.t("Postać [C]")], ["inventory", Loc.t("Ekwipunek [I]")], ["journal", Loc.t("Dziennik [J]")],
+			["spellbook", Loc.t("Księga czarów [K]")], ["map", Loc.t("Mapa [M]")],
 			["rest", Loc.t("Odpoczynek [R]")], ["save", Loc.t("Zapisz [F5]")], ["load", Loc.t("Wczytaj [F9]")], ["menu", Loc.t("Menu")]]:
 		var id_: String = pair[0]
 		menu.add_child(UI.button(pair[1], func(): menu_pressed.emit(id_)))
+
+	# Minimapa (prawy górny róg, pod przyciskami)
+	minimap_panel = UI.panel(Color(UI.BG, 0.85))
+	minimap_panel.anchor_left = 1.0
+	minimap_panel.anchor_right = 1.0
+	minimap_panel.grow_horizontal = Control.GROW_DIRECTION_BEGIN
+	minimap_panel.offset_right = -12
+	minimap_panel.offset_top = 60
+	minimap_panel.tooltip_text = Loc.t("Kliknij, żeby otworzyć mapę [M]")
+	root.add_child(minimap_panel)
+	var mv := UI.vbox(4)
+	minimap_panel.add_child(mv)
+	minimap_title = UI.label("", 14, UI.BRASS)
+	minimap_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	minimap_title.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	mv.add_child(minimap_title)
+	minimap = MapView.new()
+	minimap.rotate_with_camera = true
+	minimap.cell_px = 9.0
+	minimap.custom_minimum_size = Vector2(220, 180)
+	minimap.cell_clicked.connect(func(_c): menu_pressed.emit("map"))
+	mv.add_child(minimap)
+	minimap_panel.visible = false
 
 	# Log
 	var log_panel := UI.panel(Color(UI.BG, 0.85))
@@ -145,11 +183,28 @@ func _ready() -> void:
 	economy_label.fit_content = true
 	economy_label.scroll_active = false
 	cv.add_child(economy_label)
-	combat_buttons = HFlowContainer.new()
-	combat_buttons.add_theme_constant_override("h_separation", 4)
-	combat_buttons.add_theme_constant_override("v_separation", 4)
+	combat_buttons = UI.vbox(4)
 	cv.add_child(combat_buttons)
 	combat_bar.visible = false
+
+	d20_badge = PanelContainer.new()
+	d20_badge.set_anchors_preset(Control.PRESET_CENTER_TOP)
+	d20_badge.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	d20_badge.offset_left = -124
+	d20_badge.offset_right = 124
+	d20_badge.offset_top = 78
+	d20_badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var roll_details := UI.vbox(2)
+	roll_details.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	d20_badge.add_child(roll_details)
+	d20_number = UI.label("", 48)
+	d20_caption = UI.label("", 15)
+	for label in [d20_number, d20_caption]:
+		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+		label.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		roll_details.add_child(label)
+	d20_badge.hide()
+	root.add_child(d20_badge)
 
 
 	# Podpowiedź pod kursorem
@@ -306,6 +361,52 @@ func set_hint(text: String) -> void:
 	hint_label.text = text
 
 
+func show_d20(natural: int, roller: String) -> void:
+	if natural != 1 and natural != 20:
+		return
+	if d20_animation and d20_animation.is_running():
+		d20_animation.kill()
+	var color := UI.BRASS if natural == 20 else UI.BAD
+	var style := StyleBoxFlat.new()
+	style.bg_color = UI.BG
+	style.border_color = color
+	style.set_border_width_all(2)
+	style.set_corner_radius_all(10)
+	style.content_margin_bottom = 8
+	d20_badge.add_theme_stylebox_override("panel", style)
+	d20_number.text = str(natural)
+	d20_number.add_theme_color_override("font_color", color)
+	d20_caption.text = Loc.t("%s · naturalny rzut k20") % roller
+	d20_badge.show()
+	root.move_child(d20_badge, -1)
+	d20_badge.reset_size()
+	d20_badge.position.y = _d20_top()
+	d20_badge.pivot_offset = d20_badge.size / 2
+	d20_badge.modulate.a = 1
+	d20_badge.scale = Vector2.ONE * 0.7
+	d20_animation = create_tween()
+	d20_animation.tween_property(d20_badge, "scale", Vector2.ONE, 0.2).set_trans(Tween.TRANS_BACK).set_ease(Tween.EASE_OUT)
+	d20_animation.tween_interval(0.9)
+	d20_animation.tween_property(d20_badge, "modulate:a", 0.0, 0.25)
+	d20_animation.tween_callback(d20_badge.hide)
+
+
+## Górna krawędź odznaki k20: domyślnie pod paskiem menu; przy otwartym oknie (mapa, dziennik) pod nim albo
+## nad nim, żeby nie zasłaniać nagłówka okna.
+func _d20_top() -> float:
+	const TOP := 78.0
+	if not window.visible:
+		return TOP
+	var r := window.get_rect()          # okno i odznaka mają wspólnego rodzica (root)
+	var h := d20_badge.size.y
+	var vh := root.size.y
+	if r.end.y + 8.0 + h <= vh - 4.0:
+		return r.end.y + 8.0
+	if r.position.y - 8.0 - h >= TOP:
+		return r.position.y - 8.0 - h
+	return TOP
+
+
 func show_tooltip(text: String, at: Vector2) -> void:
 	if text == "":
 		tooltip.visible = false
@@ -352,15 +453,31 @@ func build_combat_bar(mgr: CombatManager, c: Creature, my_turn: bool) -> void:
 			dot.call(int(t.action) + int(t.attacks_left)), dot.call(int(t.bonus)),
 			dot.call(0 if c.effects.get("reaction_used", false) else 1), int(t.move) * 1.5,
 			Loc.t("   [color=#9b7fd1]Odstąpienie[/color]") if t.get("disengaged", false) else ""]
+		if not c.is_player:   # tura sterowanego towarzysza: czyja to tura, widać od razu
+			economy_label.text = "[b][color=#d9b36c]%s[/color][/b]   " % c.name + economy_label.text
 	else:
 		economy_label.text = Loc.t("[color=#a89584]Tura przeciwnika…[/color]")
 	if not my_turn:
 		return
+	var groups := {}
+	for group in [["action", Loc.t("Akcje")], ["bonus", Loc.t("Akcje dodatkowe")], ["free", Loc.t("Bez kosztu akcji")]]:
+		var flow := HFlowContainer.new()
+		flow.add_theme_constant_override("h_separation", 4)
+		flow.add_theme_constant_override("v_separation", 4)
+		flow.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		var row := UI.hbox(8)
+		var heading := UI.label_w(group[1], 14, UI.MUTED)
+		heading.custom_minimum_size.x = 110
+		heading.size_flags_horizontal = Control.SIZE_SHRINK_BEGIN
+		row.add_child(heading)
+		row.add_child(flow)
+		combat_buttons.add_child(row)
+		groups[group[0]] = flow
 	var has_attack := int(t.action) > 0 or int(t.attacks_left) > 0
 	var i := 0
 	for o in Attack.options(c):
 		var key := "atk:%d" % i
-		var b := _combat_button("⚔ " + o.name, key, not has_attack)
+		var b := _combat_button(groups.action, "⚔ " + o.name, key, not has_attack)
 		b.tooltip_text = Loc.t("%s do trafienia, %s%s %s%s") % [Abilities.fmt_mod(int(o.bonus)), o.dice,
 			Abilities.fmt_mod(int(o.dmg_bonus)), Loc.t(str(Attack.DAMAGE_NAMES.get(o.damage_type, ""))),
 			(Loc.t("\nOpanowanie: ") + o.mastery) if o.mastery != "" else ""]
@@ -370,9 +487,8 @@ func build_combat_bar(mgr: CombatManager, c: Creature, my_turn: bool) -> void:
 	for sid in Spellcasting.combat_spells(c):
 		var sp := Spellcasting.spell(sid)
 		var key: String = "spell:" + sid
-		var cost_ok := (int(t.bonus) > 0) if sp.cast == "bonus" else (int(t.action) > 0)
-		var lvl_ok := int(sp.level) == 0 or c.lowest_slot(int(sp.level)) > 0
-		var b := _combat_button(("✦ " if int(sp.level) > 0 else "✧ ") + sp.name, key, not (cost_ok and lvl_ok))
+		var group := "bonus" if sp.cast == "bonus" else "action"
+		var b := _combat_button(groups[group], ("✦ " if int(sp.level) > 0 else "✧ ") + sp.name, key, mgr.spell_action_error(c, sid) != "")
 		b.tooltip_text = "%s\n%s" % [Loc.t("Sztuczka") if int(sp.level) == 0 else Loc.t("Krąg %d") % int(sp.level), sp.desc]
 		var sid_: String = sid
 		b.pressed.connect(func(): _select(key); action_selected.emit("spell", {"id": sid_}))
@@ -387,30 +503,38 @@ func build_combat_bar(mgr: CombatManager, c: Creature, my_turn: bool) -> void:
 			ok = false
 		if a.id == "divine_spark" and c.resource("channel_divinity") <= 0:
 			ok = false
-		var label: String = a.name + (Loc.t(" (dod.)") if a.cost == "bonus" else "")
 		var key: String = "act:" + a.id
-		var b := _combat_button(label, key, not ok)
+		var b := _combat_button(groups[a.cost], a.name, key, not ok)
+		match a.id:
+			"help":
+				b.tooltip_text = Loc.t("Wskaż sąsiedniego wroga. Pierwszy atak sojusznika przeciw niemu zyska przewagę do początku twojej następnej tury.")
+			"search":
+				b.tooltip_text = Loc.t("Wykonaj testy Percepcji, by wykryć ukrytych wrogów w linii wzroku.")
+			"stabilize":
+				b.tooltip_text = Loc.t("Wskaż sąsiedniego umierającego sojusznika. Udany test Medycyny ST 10 stabilizuje go.")
 		var ad: Dictionary = a
 		b.pressed.connect(func(): _select(key); action_selected.emit("action", ad))
 	var end := UI.button(Loc.t("Koniec tury [Spacja]"), func(): action_selected.emit("end_turn", {}))
 	end.add_theme_color_override("font_color", UI.BRASS)
-	combat_buttons.add_child(end)
+	groups.free.add_child(end)
+	for group in ["bonus", "free"]:
+		groups[group].get_parent().visible = groups[group].get_child_count() > 0
 
 
-func _combat_button(text: String, key: String, disabled: bool) -> Button:
+func _combat_button(group: HFlowContainer, text: String, key: String, disabled: bool) -> Button:
 	var b := UI.button(text)
 	b.disabled = disabled
 	b.toggle_mode = true
 	b.button_pressed = key == selected_key
 	b.set_meta("key", key)
-	combat_buttons.add_child(b)
+	group.add_child(b)
 	return b
 
 
 func _select(key: String) -> void:
 	selected_key = key
-	for b in combat_buttons.get_children():
-		if b is Button and b.has_meta("key"):
+	for b in combat_buttons.find_children("*", "Button", true, false):
+		if b.has_meta("key"):
 			b.button_pressed = b.get_meta("key") == key
 
 
@@ -449,6 +573,91 @@ func dialogue_append(text: String, success: bool) -> void:
 
 func hide_dialogue() -> void:
 	dialogue_panel.visible = false
+	set_voice_speaker("")
+
+
+var _voice_who := ""
+
+
+## Kto mówi na głos: portret rozmówcy ożywa przy jego kwestiach, przygasa przy narratorze.
+func set_voice_speaker(who: String) -> void:
+	_voice_who = who
+
+
+# ------------------------------------------------------------------ dymki okrzyków
+
+var _bubbles: Array = []             # [{target: Node3D, panel: PanelContainer, until: float}]
+
+
+## Dymek nad postacią w świecie (podąża za nią na ekranie), znika po secs sekundach.
+func bubble(target: Node3D, who: String, text: String, secs: float) -> void:
+	for b in _bubbles:
+		if b.target == target:
+			b.panel.queue_free()
+	_bubbles = _bubbles.filter(func(b): return b.target != target)
+	var p := UI.panel(Color(UI.BG, 0.88))
+	p.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	p.custom_minimum_size.x = 0
+	var v := UI.vbox(0)
+	v.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	p.add_child(v)
+	var n := UI.label(who, 13, UI.BRASS)
+	n.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	v.add_child(n)
+	var l := UI.label_w(text, 16)
+	l.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	l.custom_minimum_size.x = mini(320, 40 + text.length() * 8)
+	v.add_child(l)
+	p.modulate.a = 0.0
+	root.add_child(p)
+	root.move_child(p, 0)            # pod oknami i panelami
+	create_tween().tween_property(p, "modulate:a", 1.0, 0.2)
+	_bubbles.append({"target": target, "panel": p, "until": Time.get_ticks_msec() / 1000.0 + secs})
+
+
+func clear_bubbles() -> void:
+	for b in _bubbles:
+		if is_instance_valid(b.panel):
+			b.panel.queue_free()
+	_bubbles.clear()
+
+
+func _update_bubbles() -> void:
+	if _bubbles.is_empty():
+		return
+	var cam := root.get_viewport().get_camera_3d()
+	var now := Time.get_ticks_msec() / 1000.0
+	var keep := []
+	for b in _bubbles:
+		var p: PanelContainer = b.panel
+		if not is_instance_valid(b.target) or not is_instance_valid(p) or now > b.until + 0.4:
+			if is_instance_valid(p):
+				p.queue_free()
+			continue
+		if now > b.until:
+			p.modulate.a = clampf((b.until + 0.4 - now) / 0.4, 0.0, 1.0)
+		var head: Vector3 = (b.target as Node3D).global_position + Vector3(0, 2.3, 0)
+		p.visible = cam != null and not cam.is_position_behind(head) and not dialogue_panel.visible
+		if p.visible:
+			var sp := cam.unproject_position(head)
+			p.position = (sp - Vector2(p.size.x * 0.5, p.size.y)).round()
+		keep.append(b)
+	_bubbles = keep
+
+
+func _process(delta: float) -> void:
+	_update_bubbles()
+	if dlg_portrait == null or not dialogue_panel.visible or not dlg_portrait.visible:
+		return
+	var lvl: float = Audio.voice_level() if _voice_who == "speaker" else 0.0
+	var bright := 1.0 + lvl * 0.35
+	if _voice_who == "narrator":
+		bright = 0.62
+	var want := Color(bright, bright, bright)
+	dlg_portrait.modulate = dlg_portrait.modulate.lerp(want, 1.0 - exp(-delta * 14.0))
+	dlg_portrait.pivot_offset = dlg_portrait.size * Vector2(0.5, 1.0)
+	var sc := 1.0 + lvl * 0.035
+	dlg_portrait.scale = dlg_portrait.scale.lerp(Vector2(sc, sc), 1.0 - exp(-delta * 18.0))
 
 
 func dialogue_key(n: int) -> bool:
@@ -579,9 +788,15 @@ func open_settings() -> void:
 	window_body.add_child(UI.settings_panel())
 
 
-func open_inventory(c: Creature) -> void:
+func open_inventory(c: Creature, can_equip := true, can_use := true) -> void:
 	_open_window(Loc.t("Ekwipunek"))
 	window_body.add_child(UI.label_w(Loc.t("Złoto: %d sz.") % c.gold, 18, UI.BRASS))
+	var armor := DB.entry("armor", c.armor_id)
+	window_body.add_child(UI.label_w(Loc.t("Pancerz: %s · KP %d") % [
+		armor.get("name", Loc.t("Bez pancerza")), c.ac()], 16))
+	if c.shield:
+		window_body.add_child(UI.label_w(Loc.t("Tarcza"), 16))
+	window_body.add_child(HSeparator.new())
 	window_body.add_child(UI.label_w(Loc.t("Broń (pierwsza to broń główna):"), 16, UI.MUTED))
 	for w in c.weapons:
 		var row := UI.hbox()
@@ -591,7 +806,9 @@ func open_inventory(c: Creature) -> void:
 		row.add_child(l)
 		if w != c.main_weapon():
 			var wid: String = w
-			row.add_child(UI.button(Loc.t("Ustaw jako główną"), func(): weapon_equipped.emit(wid)))
+			var equip := UI.button(Loc.t("Ustaw jako główną"), func(): weapon_equipped.emit(wid))
+			equip.disabled = not can_equip
+			row.add_child(equip)
 		window_body.add_child(row)
 	window_body.add_child(HSeparator.new())
 	window_body.add_child(UI.label_w(Loc.t("Przedmioty:"), 16, UI.MUTED))
@@ -603,13 +820,74 @@ func open_inventory(c: Creature) -> void:
 	for it in counts.keys():
 		var d := DB.entry("items", it)
 		var row := UI.hbox()
-		var l := UI.label_w("%s ×%d: %s" % [d.get("name", it), counts[it], d.get("desc", "")], 15)
-		l.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-		row.add_child(l)
+		var details := UI.vbox(2)
+		details.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		details.add_child(UI.label_w("%s ×%d" % [d.get("name", it), counts[it]], 16))
+		if d.has("desc"):
+			details.add_child(UI.label_w(d.desc, 15, UI.MUTED))
+		row.add_child(details)
 		if d.get("type", "") == "consumable":
 			var iid: String = it
-			row.add_child(UI.button(Loc.t("Użyj"), func(): item_used.emit(iid)))
+			var use := UI.button(Loc.t("Użyj"), func(): item_used.emit(iid))
+			use.disabled = not can_use
+			row.add_child(use)
 		window_body.add_child(row)
+
+
+func open_spellbook(c: Creature, combat: CombatManager = null) -> void:
+	_open_window(Loc.t("Księga czarów"))
+	var known := Spellcasting.known(c)
+	if known.is_empty():
+		window_body.add_child(UI.label_w(Loc.t("Ta postać nie zna żadnych czarów."), 16, UI.MUTED))
+		return
+	if not c.slots.is_empty():
+		window_body.add_child(UI.label_w(Loc.t("Miejsca na czary"), 18, UI.BRASS))
+		for level in range(1, 10):
+			var slot: Dictionary = c.slots.get(str(level), {})
+			if not slot.is_empty():
+				window_body.add_child(UI.label_w(Loc.t("Krąg %d: %d/%d") % [level, int(slot.cur), int(slot.max)], 15))
+	if c.concentration != "":
+		var spell := Spellcasting.spell(c.concentration)
+		window_body.add_child(UI.label_w(Loc.t("Koncentracja: %s") % spell.get("name", c.concentration), 15, UI.BRASS))
+	for level in range(10):
+		var heading_added := false
+		for id in known:
+			var spell := Spellcasting.spell(id)
+			if spell.is_empty() or int(spell.level) != level:
+				continue
+			if not heading_added:
+				window_body.add_child(HSeparator.new())
+				window_body.add_child(UI.label_w(Loc.t("Sztuczki") if level == 0 else Loc.t("Krąg %d") % level, 18, UI.BRASS))
+				heading_added = true
+			_add_spellbook_entry(c, str(id), spell, combat)
+
+
+func _add_spellbook_entry(c: Creature, id: String, spell: Dictionary, combat: CombatManager) -> void:
+	var row := UI.hbox()
+	var details := UI.vbox(2)
+	details.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	row.add_child(details)
+	details.add_child(UI.label_w(spell.name, 17))
+	var tags: Array[String] = []
+	match spell.cast:
+		"bonus": tags.append(Loc.t("Akcja dodatkowa"))
+		"reaction": tags.append(Loc.t("Reakcja"))
+		_: tags.append(Loc.t("Akcja"))
+	if spell.type == "utility":
+		tags.append(Loc.t("Czar użytkowy"))
+	if spell.has("range"):
+		tags.append(Loc.t("Zasięg: %s m") % str(int(spell.range) * 1.5))
+	if spell.get("concentration", false):
+		tags.append(Loc.t("Koncentracja"))
+	details.add_child(UI.label_w(" · ".join(tags), 14, UI.MUTED))
+	details.add_child(UI.label_w(spell.desc, 15))
+	if combat != null and spell.type not in ["utility", "reaction"]:
+		var button := UI.button(Loc.t("Rzuć czar"), func(): spellbook_cast.emit(id))
+		button.size_flags_vertical = Control.SIZE_SHRINK_CENTER
+		button.tooltip_text = combat.spell_action_error(c, id)
+		button.disabled = button.tooltip_text != ""
+		row.add_child(button)
+	window_body.add_child(row)
 
 
 func open_journal() -> void:
@@ -620,9 +898,65 @@ func open_journal() -> void:
 		window_body.add_child(UI.label_w("%s %s" % ["✔" if done else "◆", Loc.t(str(GameState.QUEST_NAMES.get(q, q)))], 20, UI.GOOD if done else UI.BRASS))
 		window_body.add_child(UI.label_w(Loc.t(str(GameState.QUEST_STAGES.get(q, {}).get(stage, stage))), 16))
 		window_body.add_child(HSeparator.new())
+	# frakcje: nastawienie, kim są i co to teraz zmienia (data/factions.json: desc, effects[nastawienie])
+	window_body.add_child(UI.label_w(Loc.t("Frakcje"), 18, UI.BRASS))
+	var factions := DB.table("factions")
+	for faction in factions:
+		var f: Dictionary = factions[faction]
+		var att := GameState.faction_attitude(faction)
+		var col: Color = {"friendly": UI.GOOD, "wary": UI.BAD}.get(att, UI.TEXT)
+		window_body.add_child(UI.label_w("%s · %s" % [f.name, GameState.attitude_label(att)], 16, col))
+		if f.has("desc"):
+			window_body.add_child(UI.label_w(str(f.desc), 14, UI.MUTED))
+		var eff := str(f.get("effects", {}).get(att, ""))
+		if eff != "":
+			window_body.add_child(UI.label_w("→ " + eff, 14))
+	window_body.add_child(HSeparator.new())
 	window_body.add_child(UI.label_w(Loc.t("Zapiski"), 18, UI.BRASS))
 	for i in range(GameState.journal.size() - 1, -1, -1):
 		window_body.add_child(UI.label_w("• " + GameState.journal[i], 15))
+
+
+## Mapa: dane siatki, źródło znaczników i mgły (świat podaje funkcje, HUD nic nie wie o aktorach).
+func setup_map(m: Dictionary, markers: Callable, explored_fn: Callable) -> void:
+	map_data = m
+	map_markers = markers
+	map_explored = explored_fn
+	minimap.set_map(m)
+	minimap.markers_fn = markers
+	minimap.explored = explored_fn
+	minimap_title.text = Loc.t(str(m.get("name", ""))) + "   [M]"
+	minimap_panel.visible = true
+
+
+## Kąt kamery dla minimapy (rad).
+func set_map_yaw(yaw: float) -> void:
+	if minimap:
+		minimap.yaw = yaw
+
+
+func open_map() -> void:
+	_open_window(Loc.t(str(map_data.get("name", Loc.t("Mapa")))))
+	var mv := MapView.new()
+	mv.show_names = true
+	mv.custom_minimum_size = Vector2(720, 380)
+	mv.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	mv.set_map(map_data)
+	mv.markers_fn = map_markers
+	mv.explored = map_explored
+	mv.cell_clicked.connect(func(c):
+		close_window()
+		map_travel.emit(c))
+	window_body.add_child(mv)
+	var legend := RichTextLabel.new()
+	legend.bbcode_enabled = true
+	legend.fit_content = true
+	legend.scroll_active = false
+	legend.add_theme_font_size_override("normal_font_size", 15)
+	legend.text = "[color=#5fa8d3]●[/color] %s    [color=#e8c98a]●[/color] %s    [color=%s]◇[/color] %s    [color=#e0634f]✕[/color] %s    [color=#a39a8c]■[/color] %s" % [
+		Loc.t("Ty"), Loc.t("Postacie"), UI.BRASS.to_html(false), Loc.t("Cel zadania"), Loc.t("Zamknięte"), Loc.t("Obiekty")]
+	window_body.add_child(legend)
+	window_body.add_child(UI.label_w(Loc.t("Kliknij miejsce na mapie, żeby tam pójść. Ciemne pola są jeszcze nieodkryte."), 14, UI.MUTED))
 
 
 func open_end_screen(title: String, text: String, buttons: Array) -> void:
@@ -646,7 +980,7 @@ func is_blocking() -> bool:
 
 func mouse_over_ui() -> bool:
 	var mp := root.get_viewport().get_mouse_position()
-	for n in [portrait, combat_bar, dialogue_panel, window, log_box.get_parent(), menu_box]:
+	for n in [portrait, combat_bar, dialogue_panel, window, log_box.get_parent(), menu_box, minimap_panel]:
 		if n.visible and n.get_global_rect().has_point(mp):
 			return true
 	return false

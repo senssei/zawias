@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 """Porównanie estymatorów głębi dla malowanego obszaru (Python z venv ComfyUI).
 
 Użycie: depth_compare.py <work/paint_<map>> [--methods da2_large,da2_guided,da2_small,depthpro]

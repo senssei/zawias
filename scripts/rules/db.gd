@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 class_name DB
 extends RefCounted
 ## Statyczny dostęp do danych JSON w res://data. Liczby z JSON są float: rzutuj na int.

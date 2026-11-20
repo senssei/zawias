@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 extends Control
 ## Kreator postaci zgodny z SRD 5.2: gatunek, tło (premie do cech i atut), klasa, point-buy, umiejętności.
 

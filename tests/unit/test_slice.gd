@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 extends GutTest
 ## Test przejścia vertical slice'a: każda z 4 klas przechodzi 3 drogi questu „Klucz bez drzwi”
 ## (dyplomacja, skradanie, walka). Walki rozgrywa AI po obu stronach, rzuty są z ziarna (powtarzalne).
@@ -60,96 +62,54 @@ func _talk(id: String, choices: Array, dice: Array = []) -> DialogueRunner:
 
 ## Przyjmuje wszystkie oczekujące awanse (średnie PW, pierwsza podklasa, pierwsze czary z listy).
 func _take_levels() -> void:
-	while gs.player.pending_levels > 0:
-		var o := Leveling.level_up_options(gs.player)
-		var spells: Array = o.spell_choices.slice(0, o.spell_picks)
-		var sub: String = o.subclasses[0] if not o.subclasses.is_empty() else ""
-		Leveling.apply_level(gs.player, {"hp": "avg", "subclass": sub, "spells": spells})
+	CombatSim.take_levels(gs.player)
 
 
-## Walka jak w świecie: wrogowie ze spawnów spotkania i z NPC przypisanych do spotkania; AI po obu stronach.
+## Walka jak w świecie (tools/dev/combat_sim.gd, ta sama symulacja co w pipeline.sh story balance).
 func _fight(enc_id: String, player_cell: Vector2i) -> bool:
-	var map := DB.map("rusty_market")
-	var grid := CombatGrid.new(map)
-	var enc := DB.entry("encounters", enc_id)
-	for f in enc.get("unlock", []):
-		gs.flags[f] = true
-	var pc: Creature = gs.player
-	pc.grid_pos = player_cell
-	var enemies: Array = []
-	for s in enc.get("spawn", []):
-		var m := CharacterBuilder.create_monster(s.monster, s.id, s.get("name", ""))
-		m.grid_pos = Vector2i(int(s.pos[0]), int(s.pos[1]))
-		enemies.append(m)
-	for n in map.npcs:
-		if n.get("encounter", "") == enc_id and n.has("monster") and not n.get("flees", false):
-			var m := CharacterBuilder.create_monster(n.monster, n.id, n.name)
-			m.grid_pos = Vector2i(int(n.pos[0]), int(n.pos[1]))
-			enemies.append(m)
-	assert_gt(enemies.size(), 0, enc_id + ": brak wrogów")
-	var mgr := CombatManager.new(grid)
-	if dbg_log:
-		mgr.event.connect(func(e): if e.type in ["log", "turn"]: print("EV ", e.get("text", e.get("id", ""))))
-	var surprised: bool = enc.has("surprise_unless_flag") and not gs.has_flag(enc.surprise_unless_flag)
-	mgr.start([pc], enemies, surprised)
-	var guard := 0
-	while mgr.active and guard < 200:
-		guard += 1
-		var c := mgr.current()
-		if c == pc:
-			_player_turn(mgr, pc, enemies)
-		else:
-			AIBasic.take_turn(mgr, c)
-		if mgr.active:
-			mgr.end_turn()
-	assert_false(mgr.active, "%s: walka %s nie skończyła się w 200 turach" % [pc.class_id, enc_id])
-	if mgr.victory:
-		var xp := 0
-		for e in enemies:
-			xp += int(DB.entry("monsters", e.template_id).get("xp", 0))
-		gs.apply_effects([{"xp": xp}] + enc.get("on_victory", []))
-		for e in enemies:
-			if not e.id in gs.removed_npcs:
-				gs.removed_npcs.append(e.id)
-	pc.effects.clear()
-	pc.concentration = ""
-	return mgr.victory
-
-
-## Prosta taktyka gracza: leczenie przy niskich PW, najlepszy dostępny czar na najbliższego wroga,
-## potem to, co robi AI (podejście i atak bronią). Słabsza od człowieka, ale korzysta z narzędzi klasy.
-const SPELL_PRIORITY := ["sleep", "guiding_bolt", "magic_missile", "inflict_wounds", "burning_hands",
-	"chromatic_orb", "fire_bolt", "sacred_flame", "ray_of_frost"]
-
-
-func _player_turn(mgr: CombatManager, pc: Creature, enemies: Array) -> void:
-	if pc.hp <= pc.max_hp * 0.4:
-		if pc.resource("second_wind") > 0:
-			mgr.do_action(pc, "second_wind")
-		for sp in ["healing_word", "cure_wounds"]:
-			if sp in pc.spells and mgr.can_cast(pc, sp, pc.grid_pos) == "":
-				mgr.cast(pc, sp, pc.grid_pos, 1)
-				break
-	var target: Creature = null
-	for e in enemies:
-		if e.is_conscious() and (target == null or CombatGrid.distance(pc.grid_pos, e.grid_pos) < CombatGrid.distance(pc.grid_pos, target.grid_pos)):
-			target = e
-	if target == null or not mgr.active:
-		return
-	for sp in SPELL_PRIORITY:
-		if not (sp in pc.spells or sp in pc.cantrips):
-			continue
-		var lvl := int(Spellcasting.spell(sp).get("level", 0))
-		if mgr.can_cast(pc, sp, target.grid_pos) == "":
-			mgr.cast(pc, sp, target.grid_pos, lvl)
-			return
-	AIBasic.take_turn(mgr, pc)
+	var log_cb := (func(t): print("EV ", t)) if dbg_log else Callable()
+	return CombatSim.fight(gs, enc_id, player_cell, log_cb)
 
 
 func _ending() -> Array:
 	var ended := []
 	gs.world_request.connect(func(e): if e.has("end_game"): ended.append(e))
 	return ended
+
+
+func test_kwit_contract_skips_ambush_once_without_combat_rewards():
+	_new_game("rogue")
+	_talk("mirela", ["Co się stało", "Pomogę ci go"])
+	_talk("kwit", ["Mirelę okradziono", "Przysyła mnie Kustoszka"], [20])
+	assert_true("kwit_contract" in gs.player.inventory)
+	assert_eq(gs.quest_stage("key"), "lead_warehouse")
+	var map := DB.map("rusty_market")
+	var ambush: Dictionary = map.triggers[0]
+	assert_true(gs.check(ambush["if"]), "sam kontrakt nie wyłącza zasadzki")
+
+	var xp_before: int = gs.player.xp
+	var r := _talk("hask", ["Oddaj kontrakt Kwita"])
+	assert_eq(r.current_id, "clear_alley")
+	assert_false("kwit_contract" in gs.player.inventory)
+	assert_false("rust_token" in gs.player.inventory)
+	assert_eq(gs.player.xp, xp_before)
+	assert_eq(gs.quest_stage("key"), "lead_warehouse")
+	assert_false(gs.check(ambush["if"]))
+	r.choose(0)
+
+	var saved: Dictionary = JSON.parse_string(JSON.stringify(gs.to_dict()))
+	_new_game("rogue")
+	gs.from_dict(saved)
+	assert_false("kwit_contract" in gs.player.inventory)
+	assert_false(gs.check(ambush["if"]))
+	r = _talk("hask", [])
+	assert_false(r.visible_choices().any(func(ch): return "Oddaj kontrakt Kwita" in ch.text))
+	var world: Node3D = load("res://scripts/world/world.gd").new()
+	add_child_autofree(world)
+	await wait_physics_frames(3)
+	for cell in ambush.cells:
+		assert_false(world._check_triggers(Vector2i(int(cell[0]), int(cell[1]))))
+	assert_eq(world.mode, "explore")
 
 
 func test_diplomacy_path_all_classes():
@@ -166,7 +126,8 @@ func test_diplomacy_path_all_classes():
 		assert_eq(gs.quest_stage("key"), "has_key", cls)
 		var ended := _ending()
 		var r := _talk("mirela", [])
-		assert_eq(r.current_id, "return", cls)
+		assert_eq(r.current_id, "wanderer_memory", cls)
+		_choose(r, "Porozmawiajmy o kluczu")
 		_choose(r, "Oto twój klucz")
 		assert_eq(gs.quest_stage("key"), "done_returned", cls)
 		assert_eq(ended.size(), 1, cls + ": zakończenie")
@@ -190,7 +151,8 @@ func test_stealth_path_all_classes():
 		assert_true("key_without_door" in gs.player.inventory, cls)
 		var ended := _ending()
 		var r := _talk("arch", [])
-		assert_eq(r.current_id, "with_key", cls)
+		assert_eq(r.current_id, "wanderer_memory", cls)
+		_choose(r, "Przyjrzyj się Łukowi")
 		_choose(r, "przekręć")
 		assert_eq(gs.quest_stage("key"), "done_portal", cls)
 		assert_eq(ended.size(), 1, cls + ": zakończenie")
@@ -205,7 +167,7 @@ func _combat_path(cls: String, seed: int) -> bool:
 	_talk("kwit", ["Mirelę okradziono", "dziesięć sztuk"])
 	if not gs.has_flag("asked_about_key"):
 		return false
-	if not _fight("ambush", Vector2i(31, 6)):
+	if not _fight("ambush", Vector2i(37, 7)):
 		return false
 	_take_levels()
 	gs.player.hp = gs.player.max_hp   # długi odpoczynek przed magazynem
@@ -233,7 +195,106 @@ func test_combat_path_all_classes_with_save_load():
 		assert_true("key_without_door" in gs.player.inventory, cls)
 		var ended := _ending()
 		var r := _talk("mirela", [])
+		_choose(r, "Porozmawiajmy o kluczu")
 		_choose(r, "Oto twój klucz")
 		assert_eq(ended.size(), 1, cls + ": zakończenie")
 		_take_levels()
 		DirAccess.remove_absolute(ProjectSettings.globalize_path(gs.SAVE_DIR.path_join("slice_test.json")))
+
+
+## Porażki wymuszają [1, 1]: pierwszy rzut i automatyczny przerzut z Heroicznej inspiracji (człowiek).
+
+## P1 porażki: po odmowie Odźwiernego dziennik wskazuje tylne drzwi, a wojownik bez wytrycha je wyważa.
+## Słaby czarodziej, któremu nie wyjdzie ani rozmowa, ani wyważenie, wciąż ma wejście siłą frontem.
+func test_doorkeeper_refusal_points_to_back_door():
+	for cls in ["fighter", "wizard"]:
+		_new_game(cls)
+		_talk("mirela", ["Co się stało", "Pomogę ci go"])
+		_talk("pchla", ["Coś cię gryzie"], [15])
+		var r := _talk("odzwierny", ["rozmawiać z Severem"], [1, 1])
+		assert_eq(r.current_id, "refuse", cls)
+		assert_true(gs.journal.back().contains("tylne drzwi"), cls + ": dziennik wskazuje inną drogę")
+		_choose(r, "[Odejdź]")
+		r = _talk("odzwierny", [])
+		assert_false(r.visible_choices().any(func(ch): return "rozmawiać z Severem" in ch.text), cls + ": prośba była jednorazowa")
+		var requests := []
+		gs.world_request.connect(func(e): requests.append(e))
+		if cls == "fighter":
+			r = _talk("backdoor", ["Wyważ"], [20])
+			assert_true(gs.has_flag("back_open"), cls)
+			_choose(r, "[Walcz]")
+			assert_true(requests.any(func(e): return e.get("start_combat", "") == "warehouse"), cls + ": walka w magazynie")
+		else:
+			r = _talk("backdoor", ["Wyważ"], [1, 1])
+			assert_eq(r.current_id, "force_fail", cls)
+			assert_true(gs.journal.back().contains("Odźwierny"), cls + ": dziennik wraca do frontu")
+			_choose(r, "[Odejdź]")
+			r = _talk("backdoor", [])
+			assert_false(r.visible_choices().any(func(ch): return "Wyważ" in ch.text), cls)
+			r = _talk("odzwierny", ["Zejdź mi z drogi", "[Walcz]"])
+			assert_true(requests.any(func(e): return e.get("start_combat", "") == "warehouse"), cls + ": ostatnia droga to walka")
+
+
+## P1 porażki: bez pieniędzy i po nieudanej rozmowie z Kwitem dziennik kieruje do Pchły i Lis; Lis daje trop za darmo.
+func test_no_money_kwit_refuses_then_lis_gives_lead():
+	_new_game("fighter")
+	_talk("mirela", ["Co się stało", "Pomogę ci go"])
+	gs.player.gold = 0
+	var r := _talk("kwit", ["Mirelę okradziono"])
+	assert_false(r.visible_choices().any(func(ch): return "dziesięć sztuk" in ch.text), "bez złota nie ma opcji zapłaty")
+	r = _talk("kwit", ["Mirelę okradziono", "inną umowę"], [1, 1])
+	assert_eq(r.current_id, "no_deal")
+	assert_true(gs.journal.back().contains("Lis"), "dziennik wskazuje inne źródło")
+	_choose(r, "Do widzenia")
+	r = _talk("kwit", ["Mirelę okradziono", "Kustoszka"], [1, 1])
+	assert_eq(r.current_id, "no_deal")
+	assert_eq(gs.journal.filter(func(j): return j.begins_with("Kwit nie powie")).size(), 1, "ta sama porażka nie dubluje wpisu")
+	r = _talk("pchla", [])
+	assert_false(r.visible_choices().any(func(ch): return "(5 sz.)" in ch.text), "Pchła też chce złota")
+	_talk("lis", ["Szukam skradzionego klucza"])
+	assert_eq(gs.quest_stage("key"), "lead_warehouse")
+
+
+## P1 porażki: zaklinowany zamek u łotrzyka zostawia wyważenie i front; z frontu łotrzyk kradnie klucz po cichu.
+func test_jammed_lock_leaves_front_door():
+	_new_game("rogue")
+	_talk("mirela", ["Co się stało", "Pomogę ci go"])
+	_talk("pchla", ["Coś cię gryzie"], [15])
+	var r := _talk("backdoor", ["wytrychem"], [1, 1])
+	assert_eq(r.current_id, "lock_fail")
+	assert_true(gs.journal.back().contains("Odźwiernego"), "dziennik wskazuje front")
+	_choose(r, "Spróbuję inaczej")
+	assert_false(r.visible_choices().any(func(ch): return "wytrychem" in ch.text), "zamek zaklinowany")
+	assert_true(r.visible_choices().any(func(ch): return "Wyważ" in ch.text), "zostaje wyważenie")
+	_choose(r, "[Odejdź]")
+	_talk("odzwierny", ["rozmawiać z Severem"], [18])
+	assert_true(gs.has_flag("front_open"))
+	_talk("chest", ["po cichu"], [18])
+	assert_true("key_without_door" in gs.player.inventory)
+
+
+## P1 balans: czarodziej sam, bez Lis, na Normalnym (zasadzka bez ostrzeżenia, potem magazyn po odpoczynku),
+## ze skalowaniem solo ze spotkań (bez drugiego bandyty i bez mefita).
+## Mierzy odsetek wygranych na stałych ziarnach. Wymaga tylko, żeby droga była osiągalna; liczba trafia do raportu GUT.
+func test_wizard_solo_normal_combat_rate():
+	Difficulty.current = "normal"
+	var wins := {"ambush": 0, "warehouse": 0}
+	var runs := 12
+	for k in runs:
+		Dice.seed_rng(500 + k * 37)
+		_new_game("wizard")
+		_talk("mirela", ["Co się stało", "Pomogę ci go"])
+		_talk("kwit", ["Mirelę okradziono", "dziesięć sztuk"])
+		if _fight("ambush", Vector2i(37, 7)):
+			wins.ambush += 1
+		else:   # w grze porażka = wczytanie i ponowna próba; magazyn mierzymy na poziomie po wygranej zasadzce
+			gs.apply_effects([{"xp": 275}])
+		_take_levels()
+		Rest.long_rest(gs.player)
+		if _fight("warehouse", Vector2i(29, 15)):
+			wins.warehouse += 1
+	gut.p("czarodziej solo, Normalny: zasadzka %d/%d, magazyn %d/%d (poziom %d)" % [wins.ambush, runs, wins.warehouse, runs, gs.player.level])
+	# próg regresji dla skalowania solo (encounters.json "solo"); taktyka testowa nie pije mikstur, człowiek gra lepiej
+	assert_eq(gs.player.level, 2, "po zasadzce gracz wchodzi do magazynu na 2. poziomie")
+	assert_gte(wins.ambush, 9, "zasadzka solo do wygrania na Normalnym")
+	assert_gte(wins.warehouse, 6, "magazyn solo do wygrania na Normalnym")

@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 """Generuje testową postać w formacie zbliżonym do Mixamo (szkielet mixamorig:*),
 żeby sprawdzić pipeline bez prawdziwych plików z Mixamo.
 

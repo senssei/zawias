@@ -24,6 +24,14 @@ hide courtyards, so a courtyard enclosed by a building is painted as a low wall 
 (painting the whole map at once drifts the layout), removes props in an edit pass (they stay 3D in the game),
 scores every tile for "void on the platform" and repaints bad tiles, then stitches them with minimum-error seams.
 Areas outside the platform get the planar void texture.
+The theme asks for verdigris roofs and for rust stains on the cobbles, and FLUX tends to put the same round stains on
+the copper roofs, where they look like stickers. `tools/pipeline/derust_roofs.py` finds the roofs from the painting
+itself (verdigris area with closed holes: a stain surrounded by patina belongs to a roof, stains on grey cobbles do
+not) and inpaints the stains with the surrounding patina. Flat roofs are a second problem: FLUX paints them as
+cobbles with the same stains as the street, so they blend with the pavement. Using the house tops from the blockout,
+the script regrades those roofs to dark verdigris slate (stains removed, large bright patches evened out, a dark
+cornice band along the edge), keeping the cobble texture. Copper roofs and red tile roofs are left alone. Only
+colour changes, so the depth stays valid; it runs as part of the depth step (`--keep-roof-rust` skips it).
 
 ## 3. Depth
 
@@ -63,3 +71,10 @@ tools/pipeline/pipeline.sh paint <map_id> --from check           # re-run only t
 ```
 
 Any change to buildings or props in the map JSON requires painting again.
+
+## Mgła wojny
+
+`scripts/world/fog_of_war.gd` buduje z `GameState.explored` maskę (4 próbki na pole, skalowanie
+kubiczne) dla `paint_depth.gdshader`. Nieodkryty malunek przykrywa ruchoma mgła w kolorze
+`fog_color`, a nad odkrytym terenem płynie lekka mgiełka (`mist_amount`). NPC, obiekty i rekwizyty 3D
+na nieodkrytych polach są ukryte. `--nofog` wyłącza mgłę, np. do zrzutów reklamowych.

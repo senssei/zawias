@@ -1,0 +1,65 @@
+{
+  "rusty_market": {
+    "opening": [
+      {"actor": "mirela"},
+      {"node": "start", "choice": 0},
+      {"node": "theft", "choice": 1},
+      {"node": "accept", "choice": 0}
+    ],
+    "recover_key": [
+      {"actor": "chest"},
+      {"node": "start", "choice": 0, "roll": 20},
+      {"node": "stolen", "choice": 0}
+    ],
+    "warehouse_fight": [
+      {"actor": "pchla"}, {"node": "start", "choice": 1, "roll": 20}, {"node": "scared", "choice": 0},
+      {"actor": "odzwierny"}, {"node": "start", "choice": 3}, {"node": "fight_node", "choice": 0},
+      {"wait": "player_turn"}
+    ],
+    "panels": [
+      {"id": "01-brama", "title": "Brama i ślad", "question": "Co skłania do pokazania znaku i dokąd prowadzi wskazówka?", "steps": [
+        {"actor": "hask"}, {"node": "start", "choice": 6}
+      ], "expect": {"quest": ["wanderer", "trace"]}},
+      {"id": "02-mapa", "title": "Mapa po zleceniu Mireli", "question": "Kogo odwiedzisz najpierw i skąd wiesz, gdzie go szukać?", "steps": [
+        {"sequence": "opening"}, {"menu": "map"}
+      ], "expect": {"quest": ["key", "started"], "window": true}},
+      {"id": "03-trop-lis", "title": "Lis odczytuje znak", "question": "Co wiesz teraz o znaku na dłoni i co zrobisz z tą wiedzą po odzyskaniu klucza?", "steps": [
+        {"sequence": "opening"}, {"actor": "lis"}, {"node": "start", "choice": 6}
+      ], "expect": {"quest": ["wanderer", "record"]}},
+      {"id": "04-odmowa", "title": "Odmowa Odźwiernego", "question": "Odźwierny cię nie wpuścił. Którędy spróbujesz teraz i skąd o tym wiesz?", "steps": [
+        {"sequence": "opening"}, {"actor": "pchla"}, {"node": "start", "choice": 1, "roll": 20}, {"node": "scared", "choice": 0},
+        {"actor": "odzwierny"}, {"node": "start", "choice": 0, "roll": 1}, {"node": "refuse", "choice": 1}, {"menu": "map"}
+      ], "expect": {"quest": ["key", "lead_warehouse"], "window": true}},
+      {"id": "05a-walka-ksiega", "title": "Walka: księga czarów", "class": "wizard", "seed": 7, "question": "Który czar wybierzesz i po czym poznajesz, ile cię kosztuje?", "steps": [
+        {"sequence": "opening"}, {"sequence": "warehouse_fight"}, {"menu": "spellbook"}
+      ], "expect": {"quest": ["key", "lead_warehouse"], "mode": "combat", "window": true}},
+      {"id": "05b-walka-cel", "title": "Walka: wybór celu", "class": "wizard", "seed": 7, "question": "Kogo obejmie Płonące dłonie? Czy widzisz, że trafi tylko wrogów?", "steps": [
+        {"sequence": "opening"}, {"sequence": "warehouse_fight"}, {"menu": "spellbook"}, {"cast": "burning_hands"},
+        {"target": "odzwierny"}
+      ], "expect": {"quest": ["key", "lead_warehouse"], "mode": "combat"}},
+      {"id": "05c-walka-efekt", "title": "Walka: efekt i stan tury", "class": "wizard", "seed": 7, "capture": 0.45, "question": "Co się stało po rzucie i co możesz jeszcze zrobić w tej turze?", "steps": [
+        {"sequence": "opening"}, {"sequence": "warehouse_fight"}, {"menu": "spellbook"}, {"cast": "burning_hands"},
+        {"target": "odzwierny", "click": true}
+      ], "expect": {"quest": ["key", "lead_warehouse"], "mode": "combat"}},
+      {"id": "05d-tura-lis", "title": "Walka: tura Lis", "class": "fighter", "seed": 7, "question": "Czy widzisz, że teraz sterujesz Lis? Co zrobisz jej czarami?", "steps": [
+        {"sequence": "opening"}, {"actor": "lis"}, {"node": "start", "choice": 4}, {"node": "join", "choice": 0},
+        {"sequence": "warehouse_fight"}, {"wait": "companion"}, {"menu": "spellbook"}, {"cast": "magic_missile"},
+        {"target": "odzwierny"}
+      ], "expect": {"quest": ["key", "lead_warehouse"], "mode": "combat", "acting": "lis"}},
+      {"id": "05-wspomnienie", "title": "Wspomnienie bez decyzji", "question": "Kim był Wędrowiec? Czy wiesz, że decyzję możesz podjąć później?", "steps": [
+        {"sequence": "opening"}, {"sequence": "recover_key"}, {"actor": "mirela"},
+        {"node": "wanderer_memory", "choice": 1}
+      ], "expect": {"quest": ["wanderer", "revealed"]}},
+      {"id": "06-oddanie", "title": "Oddanie klucza Mireli", "question": "Kim był Wędrowiec i co oznacza pozostanie na Targu?", "steps": [
+        {"sequence": "opening"}, {"sequence": "recover_key"}, {"actor": "mirela"},
+        {"node": "wanderer_memory", "choice": 0}, {"node": "return", "choice": 0},
+        {"node": "returned", "choice": 0}
+      ], "expect": {"quest": ["wanderer", "done_stayed"], "ending": "returned"}},
+      {"id": "07-przejscie", "title": "Przekroczenie Łuku", "question": "Co postać chce odkryć po drugiej stronie?", "steps": [
+        {"sequence": "opening"}, {"sequence": "recover_key"}, {"actor": "arch"},
+        {"node": "wanderer_memory", "choice": 0}, {"node": "with_key", "choice": 0},
+        {"node": "portal", "choice": 0}
+      ], "expect": {"quest": ["wanderer", "done_crossed"], "ending": "portal"}}
+    ]
+  }
+}

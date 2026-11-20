@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 extends Node
 ## Przełącza ekrany: menu główne, kreator postaci, świat.
 
@@ -6,10 +8,18 @@ var screen: Node
 
 func _ready() -> void:
 	RenderingServer.set_default_clear_color(UI.BG)
+	add_child(DebugOverlay.new())                 # F3 (albo --debug): FPS, draw calle, GPU
 	var args := OS.get_cmdline_user_args()
 	if "--creation" in args:
 		show_creation()
 		return
+	for a in args:
+		if a.begins_with("--story-paths="):   # pipeline.sh story paths: przejścia na danych, raport JSON
+			_story_paths(a.trim_prefix("--story-paths="))
+			return
+		if a.begins_with("--story-balance="):   # pipeline.sh story balance: macierz walk, raport JSON
+			_story_balance(a.trim_prefix("--story-balance="))
+			return
 	if "--quickstart" in args:
 		_quickstart()
 		return
@@ -54,6 +64,77 @@ func _quickstart() -> void:
 	for a in OS.get_cmdline_user_args():
 		if a.begins_with("--class="):
 			cls = a.substr(8)
+	GameState.new_game(quick_character(cls))
+	for a in OS.get_cmdline_user_args():
+		if a.begins_with("--map="):
+			GameState.map_id = a.substr(6)
+	start_world()
+	await _quickstart_flags()
+
+
+## story paths dla każdej klasy (--classes=a,b; --difficulty=normal) do pliku JSON, potem wyjście z gry.
+func _story_paths(out_path: String) -> void:
+	var classes := ["fighter", "rogue", "wizard", "cleric"]
+	for a in OS.get_cmdline_user_args():
+		if a.begins_with("--classes="):
+			classes = Array(a.trim_prefix("--classes=").split(","))
+		if a.begins_with("--difficulty="):
+			Difficulty.current = a.trim_prefix("--difficulty=")
+	var max_states := 300
+	var walks := 200
+	for a in OS.get_cmdline_user_args():
+		if a.begins_with("--max-states="):
+			max_states = int(a.trim_prefix("--max-states="))
+		if a.begins_with("--walks="):
+			walks = int(a.trim_prefix("--walks="))
+	var reports := []
+	var script: GDScript = load("res://tools/dev/story_paths.gd")
+	if script == null or not script.can_instantiate():
+		push_error("STORY_PATHS: nie da się wczytać tools/dev/story_paths.gd")
+		get_tree().quit(1)
+		return
+	for cls in classes:
+		GameState.new_game(quick_character(cls))
+		var explorer = script.new(GameState)
+		explorer.max_states = max_states
+		explorer.random_walks = walks
+		explorer.debug_keys = "--debug-keys" in OS.get_cmdline_user_args()
+		var t0 := Time.get_ticks_msec()
+		var rep: Dictionary = explorer.explore()
+		rep["seconds"] = (Time.get_ticks_msec() - t0) / 1000.0
+		reports.append(rep)
+	var f := FileAccess.open(out_path, FileAccess.WRITE)
+	f.store_string(JSON.stringify(reports, "  "))
+	f.close()
+	print("STORY_PATHS_OK ", out_path)
+	Audio.stop_for_exit()
+	get_tree().quit(0)
+
+
+## story balance: macierz walk (--classes, --difficulties=story,normal, --seeds=16) do pliku JSON, potem wyjście.
+func _story_balance(out_path: String) -> void:
+	var classes := ["fighter", "rogue", "wizard", "cleric"]
+	var diffs: Array = Difficulty.ORDER.duplicate()
+	var seeds := 16
+	for a in OS.get_cmdline_user_args():
+		if a.begins_with("--classes="):
+			classes = Array(a.trim_prefix("--classes=").split(","))
+		if a.begins_with("--difficulties="):
+			diffs = Array(a.trim_prefix("--difficulties=").split(","))
+		if a.begins_with("--seeds="):
+			seeds = int(a.trim_prefix("--seeds="))
+	var script: GDScript = load("res://tools/dev/story_balance.gd")
+	var rows: Array = script.run(GameState, classes, diffs, seeds, quick_character)
+	var f := FileAccess.open(out_path, FileAccess.WRITE)
+	f.store_string(JSON.stringify(rows, "  "))
+	f.close()
+	print("STORY_BALANCE_OK ", out_path)
+	Audio.stop_for_exit()
+	get_tree().quit(0)
+
+
+## Postać szybkiego startu danej klasy (też dla storyboardu i testów).
+static func quick_character(cls: String) -> Creature:
 	var opts := {
 		"name": Loc.t("Wędrowiec"), "species": "human", "background": "soldier", "class": cls,
 		"scores": {"str": 15, "dex": 14, "con": 13, "int": 12, "wis": 10, "cha": 8},
@@ -71,11 +152,10 @@ func _quickstart() -> void:
 		opts.scores = {"str": 14, "dex": 8, "con": 13, "int": 10, "wis": 15, "cha": 12}
 		opts.bonus = {"wis": 2, "cha": 1}
 		opts.background = "acolyte"
-	GameState.new_game(CharacterBuilder.build(opts))
-	for a in OS.get_cmdline_user_args():
-		if a.begins_with("--map="):
-			GameState.map_id = a.substr(6)
-	start_world()
+	return CharacterBuilder.build(opts)
+
+
+func _quickstart_flags() -> void:
 	for a in OS.get_cmdline_user_args():
 		if a.begins_with("--flags="):
 			for f in a.substr(8).split(","):
@@ -91,6 +171,12 @@ func _quickstart() -> void:
 			GameState.apply_effects([{"xp": int(a.substr(5))}])
 			if "--levelup" in OS.get_cmdline_user_args():
 				screen._on_menu("levelup")
+		if a.begins_with("--join="):   # debug: towarzysz w drużynie od startu (np. --join=lis)
+			await get_tree().process_frame
+			GameState.join_party(a.substr(7))
+		if a == "--openmap":
+			await get_tree().process_frame
+			screen._on_menu("map")
 		if a == "--settings":
 			await get_tree().process_frame
 			screen.hud.open_settings()
@@ -104,6 +190,7 @@ func _quickstart() -> void:
 			var xy := a.substr(7).split(",")
 			screen.player_actor.place(Vector2i(int(xy[0]), int(xy[1])))
 			screen.cam.snap_to(screen.player_actor.position)
+			screen._reveal_around(screen.player_actor.cell)
 	# Debug kamery: --camyaw=stopnie --zoom=n --camat=x,y; zrzuty do malowania: --paintshots=katalog
 	var camyaw := 0.0
 	var zoom := 16.0
@@ -131,17 +218,94 @@ func _quickstart() -> void:
 			var xy := camat.split(",")
 			screen.cam.target_pos = Vector3(float(xy[0]) + 0.5, 0, float(xy[1]) + 0.5)
 		screen.cam.set_view(camyaw, zoom)
+	for a in OS.get_cmdline_user_args():
+		if a.begins_with("--storyboard="):
+			var id := a.trim_prefix("--storyboard=")
+			var output := ""
+			for arg in OS.get_cmdline_user_args():
+				if arg.begins_with("--storyboard-output="):
+					output = arg.trim_prefix("--storyboard-output=")
+			if DisplayServer.get_name() != "headless" and output.is_empty():
+				push_error("STORYBOARD: brak katalogu wyjściowego")
+				get_tree().quit(1)
+				return
+			var ok: bool = await preload("res://tools/dev/storyboard_runner.gd").new().run(self, id, output)
+			Audio.stop_for_exit()
+			await get_tree().create_timer(0.2, true, false, true).timeout
+			get_tree().quit(0 if ok else 1)
+			return
+		if a.begins_with("--spellfx="):
+			var ids := a.substr(10).split(",")
+			for id in ids:
+				if Spellcasting.spell(id).is_empty():
+					push_error("SPELLFX: " + id)
+					get_tree().quit(1)
+					return
+			await _preview_spell_fx(ids)
+			return
+
+
+func _preview_spell_fx(ids: PackedStringArray) -> void:
+	var world := screen
+	world.begin_spell_fx_preview()
+	var output := ""
+	for arg in OS.get_cmdline_user_args():
+		if arg.begins_with("--spellfx-capture="):
+			output = arg.trim_prefix("--spellfx-capture=")
+	await get_tree().create_timer(0.35).timeout
+	while is_instance_valid(world) and screen == world:
+		var capture_error := OK
+		for id in ids:
+			if not is_instance_valid(world) or screen != world:
+				return
+			world.player_actor.play_anim("idle")
+			await get_tree().create_timer(0.2).timeout
+			if not is_instance_valid(world) or screen != world:
+				return
+			var animation: Tween = world.preview_spell_fx(id)
+			if not output.is_empty():
+				capture_error = await _capture_spell_fx(id, animation, output)
+			if animation.is_running():
+				await animation.finished
+			if capture_error != OK:
+				break
+			if not output.is_empty() or "--spellfx-once" in OS.get_cmdline_user_args():
+				print("SPELLFX_PREVIEW_OK ", id)
+		if not output.is_empty() or "--spellfx-once" in OS.get_cmdline_user_args():
+			Audio.stop_for_exit()
+			await get_tree().create_timer(0.15).timeout
+			get_tree().quit(0 if capture_error == OK else 1)
+			return
+		await get_tree().create_timer(1.1).timeout
+
+
+func _capture_spell_fx(id: String, animation: Tween, output: String) -> Error:
+	var duration := float(DB.entry("spell_fx", id).seconds)
+	for phase in [18, 50, 83]:
+		while animation.is_running() and animation.get_total_elapsed_time() < duration * phase / 100.0:
+			await RenderingServer.frame_post_draw
+		var path := output.path_join("%s-%02d.png" % [id, phase])
+		var frame := get_viewport().get_texture().get_image()
+		var error := frame.save_png(path)
+		if error != OK:
+			push_error("SPELLFX_CAPTURE: %s (%s)" % [path, error_string(error)])
+			return error
+		print("SPELLFX_FRAME ", path)
+	return OK
 
 
 var _fps_samples: Array[float] = []
+var _fps_from := -1                     # ms pierwszej próbki (wczytywanie bywa dłuższe niż kilka sekund)
 
 
 func _process(_d: float) -> void:
 	if "--fps" in OS.get_cmdline_user_args():   # debug: średnie i minimalne FPS z 8 s po rozgrzewce, potem wyjście
 		var f := Engine.get_process_frames()
 		if f > 120:
+			if _fps_from < 0:
+				_fps_from = Time.get_ticks_msec()
 			_fps_samples.append(1.0 / maxf(_d, 1e-6))
-		if _fps_samples.size() > 0 and Time.get_ticks_msec() > 14000:
+		if _fps_from >= 0 and Time.get_ticks_msec() - _fps_from > 8000:
 			_fps_samples.sort()
 			var avg := 0.0
 			for v in _fps_samples:

@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 extends Control
 ## Menu główne.
 
@@ -102,6 +104,7 @@ const CREDITS := """[b]Zawias: Opowieść z Rdzawego Targu[/b]  ·  vertical sli
 
 [color=#d9a85b]Zasady[/color]
 System Reference Document 5.2 © Wizards of the Coast LLC, licencja Creative Commons Attribution 4.0 (CC-BY-4.0). Świat, postacie i teksty Zawiasu są oryginalne.
+Kod gry: licencja MIT. Assety i treść gry © 2026 Rafal Warzycha, licencja CC-BY-4.0 (mapa głębi malowanego tła: CC-BY-NC-4.0).
 
 [color=#d9a85b]Silnik[/color]
 Godot Engine (licencja MIT) © Godot Engine contributors, Juan Linietsky, Ariel Manzur. Pełne noty licencyjne poniżej.
@@ -116,6 +119,7 @@ Głębia malowanego tła: Depth Anything V2 Large (CC-BY-NC-4.0, wyłącznie do 
 
 [color=#d9a85b]Dźwięk[/color]
 Muzyka: wygenerowana lokalnie ACE-Step 1.5 (MIT).
+Głosy postaci i narratora (angielskie): wygenerowane lokalnie OmniVoice (k2-fsa, Apache 2.0).
 Efekty i ambient: synteza własna.
 """
 
@@ -123,6 +127,7 @@ const CREDITS_EN := """[b]Zawias: A Tale of the Rusty Market[/b]  ·  vertical s
 
 [color=#d9a85b]Rules[/color]
 System Reference Document 5.2 © Wizards of the Coast LLC, licensed under Creative Commons Attribution 4.0 (CC-BY-4.0). The world, characters and texts of Zawias are original.
+Game code: MIT license. Game assets and content © 2026 Rafal Warzycha, CC-BY-4.0 (backdrop depth map: CC-BY-NC-4.0).
 
 [color=#d9a85b]Engine[/color]
 Godot Engine (MIT license) © Godot Engine contributors, Juan Linietsky, Ariel Manzur. Full license notices below.
@@ -137,6 +142,7 @@ Depth of the painted backdrop: Depth Anything V2 Large (CC-BY-NC-4.0, non-commer
 
 [color=#d9a85b]Sound[/color]
 Music: generated locally with ACE-Step 1.5 (MIT).
+Character and narrator voices (English): generated locally with OmniVoice (k2-fsa, Apache 2.0).
 Effects and ambience: own synthesis.
 """
 

@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 extends SceneTree
 ## Mierzy naturalną prędkość chodu animacji (m/s przy speed_scale=1): jak szybko stopa podporowa
 ## przesuwa się do tyłu względem modelu. Użycie: godot --headless -s tools/dev/measure_gait.gd -- <id> [anim...]

@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 extends GutTest
 ## Każdy asset, którego gra użyje, istnieje i daje się wczytać. Wyłapuje figurę zastępczą zamiast modelu
 ## (np. usunięta wyciągnięta tekstura GLB: plik modelu jest, ale load() zwraca null), brakujące portrety i dźwięki.

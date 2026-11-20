@@ -179,6 +179,9 @@
    ]
   },
   "return": {
+   "redirect": [
+    {"if": {"quest_any": ["wanderer", ["", "trace", "record"]]}, "next": "wanderer_memory"}
+   ],
    "speaker": "Mirela",
    "text": "Mirela zamiera, kiedy widzi klucz w twojej dłoni. Jego zęby poruszają się powoli, jakby czegoś szukały. „Masz go… Oddaj. Proszę”.",
    "choices": [
@@ -229,6 +232,16 @@
      "text": "Jeszcze go zatrzymam.",
      "end": true
     }
+   ]
+  },
+  "wanderer_memory": {
+   "narrator_quotes": [0],
+   "speaker": "Mirela",
+   "text": "Klucz parzy cię w dłoń. Przez chwilę widzisz pierwszą bramę Zawiasu. To twoja ręka nacina trzy kreski na zworniku. To ciebie nazywają Wędrowcem i proszą o pozwolenie na przejście. Własnym głosem wypowiadasz przysięgę: „Oddaję bramie imię. Droga należy do tych, którzy nią idą”. Wspomnienie gaśnie. Mirela widzi, że klucz przestał drżeć. „Możesz go oddać. Możesz też sprawdzić, na kogo dziś czeka Łuk”.",
+   "effects": [{"quest": ["wanderer", "revealed"]}],
+   "choices": [
+    {"text": "Porozmawiajmy o kluczu.", "next": "return"},
+    {"text": "Potrzebuję chwili.", "end": true}
    ]
   },
   "truth": {
@@ -350,6 +363,7 @@
     {
      "journal": "Oddałem klucz Mireli. Coś mi jednak mówi, że to nie koniec tej historii."
     },
+    {"quest": ["wanderer", "done_stayed"]},
     {
      "end_game": "returned"
     }

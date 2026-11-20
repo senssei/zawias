@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 extends Node3D
 ## Świat gry: mapa 2.5D, eksploracja, dialogi, walka turowa.
 
@@ -23,6 +25,8 @@ var processing := false
 var selected := {"kind": "", "data": {}}
 var layers := {}                 # nazwa -> MultiMeshInstance3D
 var hover_cell := Vector2i(-999, -999)
+var routes: NpcRoutes            # trasy NPC (pole "route" w mapie)
+var fog: FogOfWar                # mgła wojny w malowanym obszarze (null bez malunku albo z --nofog)
 
 
 func _ready() -> void:
@@ -38,10 +42,16 @@ func _ready() -> void:
 	GameState.log_added.connect(hud.add_log)
 	GameState.state_changed.connect(_on_state_changed)
 	GameState.world_request.connect(_on_world_request)
+	Audio.voice_segment.connect(_on_voice_segment)
+	Audio.voice_done.connect(_on_voice_done)
 	_spawn_actors()
+	routes = NpcRoutes.new(self)
+	routes.setup(actors)
 	for n in ["reach", "path", "area", "hover"]:
 		layers[n] = _make_layer(n)
 	_on_state_changed()
+	hud.setup_map(map, _map_markers, func(c: Vector2i) -> bool: return GameState.is_explored(GameState.map_id, c, grid.width))
+	_reveal_around(player_actor.cell)
 	cam.snap_to(player_actor.position)
 	cam.follow = player_actor
 	try_painted_area()
@@ -49,10 +59,14 @@ func _ready() -> void:
 	Audio.set_ambient(map.get("ambient", ["market", "wind_planar"]))
 	if GameState.journal.size() <= 1 and GameState.quests.is_empty():
 		hud.show_toast(Loc.t("Rdzawy Targ, Zawias"))
-		GameState.add_log(Loc.t("Witaj w Zawiasie. Strażnik Hask stoi niedaleko bramy. Kliknij go, żeby porozmawiać."))
+		GameState.add_log(Loc.t("Kliknij Haska przy bramie, żeby porozmawiać. Kluczarnia Mireli stoi po północnej stronie targu. M otwiera mapę."))
 
 
 func _exit_tree() -> void:
+	if Audio.voice_segment.is_connected(_on_voice_segment):
+		Audio.voice_segment.disconnect(_on_voice_segment)
+		Audio.voice_done.disconnect(_on_voice_done)
+	Audio.stop_voice()
 	if GameState.log_added.is_connected(hud.add_log):
 		GameState.log_added.disconnect(hud.add_log)
 	if GameState.state_changed.is_connected(_on_state_changed):
@@ -226,6 +240,11 @@ func paint_shots(dir: String) -> void:
 
 
 const PAINT_HOUSE_HEIGHT := 2.9   # domy w zrzutach do malowania (makieta gry ma 1,1–1,3 m)
+## Dach w zrzutach do malowania: wysokość = krótszy bok × PAINT_ROOF_PITCH, najwyżej PAINT_ROOF_MAX (m).
+## Wysokie dachy (do 2,2 m) czytają się jako dachy; niskie FLUX i tak malował jako brukowane tarasy. Zasłaniają
+## za to ulice za domami, więc postacie i obiekty stoją tam, gdzie je widać (kontrola: paint_map, hidden_spots).
+var PAINT_ROOF_PITCH := float(OS.get_environment("ZAWIAS_ROOF_PITCH")) if OS.get_environment("ZAWIAS_ROOF_PITCH") != "" else 0.45
+var PAINT_ROOF_MAX := float(OS.get_environment("ZAWIAS_ROOF_MAX")) if OS.get_environment("ZAWIAS_ROOF_MAX") != "" else 2.2
 const PAINT_WALL_HEIGHT := 1.0
 
 
@@ -261,6 +280,48 @@ func _paintify_blockout() -> void:
 				t.basis = Basis().scaled(Vector3(1, hh, 1))
 				t.origin.y = hh / 2.0
 				mm.set_instance_transform(i, t)
+			if kind == 1:
+				_add_paint_roofs(ch, hh, mats[1], g.get_parent())
+
+
+## Spadziste dachy na domach w zrzutach do malowania: płaski wierzch pudła FLUX potrafi namalować jako brukowany
+## taras, który zlewa się z ulicą. Obrys budynku (pola z tym samym znakiem legendy) dzielimy na prostokąty
+## i każdy dostaje dach dwuspadowy z kalenicą wzdłuż dłuższego boku. Tylko obraz, kolizje bez zmian.
+func _add_paint_roofs(ch: String, wall_h: float, mat: Material, parent: Node) -> void:
+	var rows: Array = map.rows
+	var used := {}
+	for y in rows.size():
+		for x in String(rows[y]).length():
+			if String(rows[y])[x] != ch or used.has(Vector2i(x, y)):
+				continue
+			var w := 0
+			while x + w < String(rows[y]).length() and String(rows[y])[x + w] == ch and not used.has(Vector2i(x + w, y)):
+				w += 1
+			var d := 1
+			while y + d < rows.size():
+				var ok := true
+				for k in w:
+					if String(rows[y + d]).length() <= x + k or String(rows[y + d])[x + k] != ch or used.has(Vector2i(x + k, y + d)):
+						ok = false
+						break
+				if not ok:
+					break
+				d += 1
+			for yy in d:
+				for xx in w:
+					used[Vector2i(x + xx, y + yy)] = true
+			var rh := clampf(minf(w, d) * PAINT_ROOF_PITCH, 0.5, PAINT_ROOF_MAX)
+			var pm := PrismMesh.new()
+			var along_x := w > d
+			pm.size = Vector3(d if along_x else w, rh, w if along_x else d)
+			var mi := MeshInstance3D.new()
+			mi.mesh = pm
+			mi.material_override = mat
+			mi.position = Vector3(x + w / 2.0, wall_h + rh / 2.0, y + d / 2.0)
+			if along_x:
+				mi.rotation.y = PI / 2.0
+			mi.set_meta("paint_roof", true)
+			parent.add_child(mi)
 
 
 func _grab(sv: SubViewport, path: String) -> void:
@@ -345,6 +406,13 @@ func setup_painted_area(img: Image, dimg: Image, p: Dictionary) -> void:
 	mat.set_shader_parameter("proj_forward", -basis.z)
 	mat.set_shader_parameter("t0", DEPTH_T0)
 	mat.set_shader_parameter("t1", DEPTH_T1)
+	if not "--nofog" in OS.get_cmdline_user_args():
+		fog = FogOfWar.new(self, grid.width, grid.height)
+		fog.refresh()
+		mat.set_shader_parameter("fog_on", true)
+		mat.set_shader_parameter("fog_mask", fog.texture)
+		mat.set_shader_parameter("fog_grid", Vector2(grid.width, grid.height))
+		fog.update_actors(0.0, true)
 	for g in _blockout_nodes():
 		g.visible = false
 	for r in get_tree().get_nodes_in_group("fx_rock"):
@@ -437,7 +505,23 @@ func _fit_backdrop() -> void:
 	_backdrop.position = -vs * BACKDROP_MARGIN
 
 
+var _spell_fx_preview := false
+
+
+func begin_spell_fx_preview() -> void:
+	_spell_fx_preview = true
+	_hush_all()
+
+
 func _process(_delta: float) -> void:
+	if cam and hud:
+		hud.set_map_yaw(cam.rotation.y)
+	if not _spell_fx_preview:
+		_update_barks(_delta)
+		if routes:
+			routes.update(_delta)
+	if fog:
+		fog.update_actors(_delta)
 	# Lekka paralaksa tła względem ruchu kamery
 	if _backdrop and cam:
 		var vs := get_viewport().get_visible_rect().size
@@ -557,7 +641,7 @@ func _build_map() -> void:
 			for c in cells:
 				_add_lamp(Vector3(c.x + 0.5, 1.8, c.y + 0.5), Color("#ff9a4a"), 3.5)
 	# Lampy targowe
-	for p in [Vector2i(8, 8), Vector2i(19, 7), Vector2i(26, 11), Vector2i(4, 9), Vector2i(12, 11), Vector2i(22, 14), Vector2i(34, 6)]:
+	for p in LAMP_POSTS:
 		_add_lamp(Vector3(p.x + 0.5, 2.2, p.y + 0.5), Color("#ffb066"), 6.0, true)
 	_add_lamp(Vector3(16.5, 2.0, 9.5), UI.PLANAR, 5.0)
 	# Dekoracje (beczki, skrzynie): modele z pipeline'u, blokują pole
@@ -633,6 +717,10 @@ func _add_awning(c: Vector2i) -> void:
 		pole.mesh = cm
 		pole.position = Vector3(c.x + 0.5 + dx, 0.75, c.y + 0.5 + 0.45)
 		add_child(pole)
+
+
+## Latarnie na targu: nie blokują pól, ale trasy NPC je omijają (NpcRoutes.blocked_for).
+const LAMP_POSTS: Array[Vector2i] = [Vector2i(8, 8), Vector2i(19, 7), Vector2i(26, 11), Vector2i(4, 9), Vector2i(12, 11), Vector2i(22, 14), Vector2i(34, 6)]
 
 
 func _add_lamp(p: Vector3, color: Color, rng: float, post := false) -> void:
@@ -748,6 +836,7 @@ func _spawn_actors() -> void:
 		a.npc_data = o
 		a.place(Vector2i(int(o.pos[0]), int(o.pos[1])))
 		actors[o.id] = a
+	_sync_followers(true)
 
 
 func _actor_at(c: Vector2i) -> Actor:
@@ -760,7 +849,7 @@ func _actor_at(c: Vector2i) -> Actor:
 func _occupied(except: Actor = null) -> Dictionary:
 	var d := {}
 	for a in actors.values():
-		if is_instance_valid(a) and a.visible and a != except:
+		if is_instance_valid(a) and a.visible and a != except and not _is_follower(a):
 			d[a.cell] = true
 	return d
 
@@ -770,12 +859,14 @@ func _on_state_changed() -> void:
 		var cell := Vector2i(int(lk.cell[0]), int(lk.cell[1]))
 		grid.set_dynamic_block(cell, not GameState.has_flag(lk.unless_flag))
 	for o in map.get("objects", []):
-		if o.has("hide_if") and actors.has(o.id) and is_instance_valid(actors[o.id]):
-			actors[o.id].visible = not GameState.has_flag(o.hide_if)
+		if actors.has(o.id) and is_instance_valid(actors[o.id]) and (o.has("hide_if") or o.has("if")):
+			# "if": obiekt istnieje tylko w danym stanie gry (np. drzwi, które pojawiają się przy Kluczu bez drzwi)
+			actors[o.id].visible = not GameState.has_flag(o.get("hide_if", "")) and GameState.check(o.get("if", {}))
 	for id_ in GameState.removed_npcs:
 		if actors.has(id_) and is_instance_valid(actors[id_]) and mode != "combat":
 			actors[id_].queue_free()
 			actors.erase(id_)
+	_sync_followers(false)
 	hud.refresh_portrait(GameState.player)
 	var pend := GameState.player.pending_levels
 	if pend > _last_pending:
@@ -796,10 +887,17 @@ func _connect_hud() -> void:
 	hud.item_used.connect(_use_item)
 	hud.weapon_equipped.connect(func(w):
 		var pc := GameState.player
+		if w not in pc.weapons or (mode == "combat" and not _player_can_act()):
+			return
 		pc.weapons.erase(w)
 		pc.weapons.push_front(w)
-		hud.open_inventory(pc))
+		if mode == "combat":
+			_set_selected("", {})
+			hud.build_combat_bar(combat, pc, true)
+		_open_inventory())
+	hud.spellbook_cast.connect(_cast_from_spellbook)
 	hud.end_screen_choice.connect(_on_end_choice)
+	hud.map_travel.connect(_on_map_travel)
 	hud.level_up_chosen.connect(func(ch):
 		var pc := GameState.player
 		for l in Leveling.apply_level(pc, ch):
@@ -827,7 +925,9 @@ func _unhandled_input(ev: InputEvent) -> void:
 			KEY_C: _on_menu("sheet")
 			KEY_L: _on_menu("levelup")
 			KEY_I: _on_menu("inventory")
+			KEY_K: _on_menu("spellbook")
 			KEY_J: _on_menu("journal")
+			KEY_M: _on_menu("map")
 			KEY_R: _on_menu("rest")
 			KEY_F5: _on_menu("save")
 			KEY_F9: _on_menu("load")
@@ -870,8 +970,10 @@ func _on_menu(id_: String) -> void:
 		return
 	match id_:
 		"sheet": hud.open_sheet(GameState.player)
-		"inventory": hud.open_inventory(GameState.player)
+		"inventory": _open_inventory()
+		"spellbook": hud.open_spellbook(_acting(), combat if _player_can_act() else null)
 		"journal": hud.open_journal()
+		"map": hud.open_map()
 		"levelup":
 			if mode == "combat":
 				hud.show_toast(Loc.t("Awans po walce."), UI.BAD)
@@ -884,6 +986,9 @@ func _on_menu(id_: String) -> void:
 				return
 			for l in Rest.short_rest(GameState.player):
 				GameState.add_log(l)
+			for c in GameState.companions:
+				for l in Rest.short_rest(c):
+					GameState.add_log(l)
 			hud.show_toast(Loc.t("Krótki odpoczynek"))
 			_on_state_changed()
 		"save":
@@ -919,6 +1024,23 @@ func _on_end_choice(id_: String) -> void:
 			reload_requested.emit("auto")
 
 
+func _open_inventory() -> void:
+	var can_equip := mode == "explore" or _player_can_act()
+	var can_use := mode == "explore" or (_player_can_act() and int(combat.turn.bonus) > 0)
+	hud.open_inventory(GameState.player, can_equip, can_use)
+
+
+func _cast_from_spellbook(spell_id: String) -> void:
+	if not _player_can_act() or spell_id not in Spellcasting.combat_spells(_acting()):
+		return
+	var error := combat.spell_action_error(_acting(), spell_id)
+	if error != "":
+		hud.show_toast(error, UI.BAD)
+		return
+	hud.close_window()
+	_on_combat_action("spell", {"id": spell_id})
+
+
 func _use_item(item_id: String) -> void:
 	var pc := GameState.player
 	var d := DB.entry("items", item_id)
@@ -933,7 +1055,7 @@ func _use_item(item_id: String) -> void:
 		var h := pc.heal(int(r.total))
 		GameState.add_log(Loc.t("%s pije %s: +%d PW.") % [pc.name, d.name, h])
 		player_actor.float_text("+%d" % h, UI.GOOD)
-	hud.open_inventory(pc)
+	_open_inventory()
 	_on_state_changed()
 
 
@@ -989,6 +1111,9 @@ func _step() -> void:
 		walking = false
 		walk_queue.clear()
 		player_actor.stop_walk()
+		for f in _followers():
+			if f.is_walking():
+				f.stop_walk()
 		if pending_interact and mode == "explore":
 			var t := pending_interact
 			pending_interact = null
@@ -998,17 +1123,25 @@ func _step() -> void:
 	walking = true
 	var next: Vector2i = walk_queue[0]
 	if _occupied().has(next):
-		walk_queue.clear()
-		walking = false
-		player_actor.stop_walk()
-		return
+		# ktoś wszedł na drogę (NPC na trasie): nowa ścieżka do tego samego celu, a gdy jej nie ma, stop
+		var p := grid.find_path(player_actor.cell, walk_queue.back(), _occupied())
+		if p.size() < 2:
+			walk_queue.clear()
+			walking = false
+			player_actor.stop_walk()
+			return
+		walk_queue = p.slice(1)
+		next = walk_queue[0]
 	var first := not player_actor.is_walking()
 	var last := walk_queue.size() == 1
+	var prev := player_actor.cell
 	var tw := player_actor.walk_step(next, _walk_speed / grid.step_cost(next), first, last)
+	_follow(prev, next, _walk_speed / grid.step_cost(next), last)
 	tw.finished.connect(func():
 		walk_queue.pop_front()
 		GameState.player.grid_pos = player_actor.cell
 		GameState.player_pos = player_actor.cell
+		_reveal_around(player_actor.cell)
 		if _check_triggers(player_actor.cell):
 			walking = false
 			walk_queue.clear()
@@ -1016,6 +1149,324 @@ func _step() -> void:
 			player_actor.stop_walk()
 			return
 		_step())
+
+
+# ================================================================== towarzysze
+
+func _is_follower(a: Actor) -> bool:
+	return is_instance_valid(a) and a.has_meta("follower")
+
+
+func _followers() -> Array:
+	return actors.values().filter(func(a): return _is_follower(a))
+
+
+## Aktorzy towarzyszy z GameState.companions: NPC z mapy staje się członkiem drużyny (i odwrotnie po odejściu).
+## at_spawn: po wczytaniu gry towarzysz staje obok gracza zamiast na swoim miejscu z mapy.
+func _sync_followers(at_spawn: bool) -> void:
+	if not is_instance_valid(player_actor):
+		return
+	for c in GameState.companions:
+		var a: Actor = actors.get(c.id)
+		if a == null or not is_instance_valid(a) or _is_follower(a):
+			continue
+		a.set_meta("follower", true)
+		a.creature = c
+		a.set_xray_color(Color(0.45, 0.85, 0.55, 0.45))
+		a.set_highlight(true, UI.GOOD)
+		if at_spawn or CombatGrid.distance(a.cell, player_actor.cell) > 2:
+			a.place(_free_cell_near(player_actor.cell))
+		c.grid_pos = a.cell
+	for a in _followers():
+		if GameState.companion(a.actor_id) == null:
+			a.remove_meta("follower")
+			a.creature = null
+			a.set_highlight(false)
+			a.set_xray_color(Color(0.95, 0.82, 0.55, 0.4))
+
+
+func _free_cell_near(c: Vector2i) -> Vector2i:
+	var occ := _occupied()
+	for r in range(1, 4):
+		for y in range(c.y - r, c.y + r + 1):
+			for x in range(c.x - r, c.x + r + 1):
+				var p := Vector2i(x, y)
+				if p != c and grid.is_open(p) and not occ.has(p):
+					return p
+	return c
+
+
+## Krok gracza z prev na next: towarzysz idzie jego śladem (na pole, które gracz zwolnił), a gdy gracz wchodzi
+## na pole towarzysza, zamieniają się miejscami. Stojący obok gracza nie rusza się (bez tłoczenia).
+func _follow(prev: Vector2i, next: Vector2i, speed: float, last: bool) -> void:
+	var target := prev
+	for f in _followers():
+		var to := Vector2i(-999, -999)
+		if f.cell == next:
+			to = target
+		elif CombatGrid.distance(f.cell, next) > 1:
+			if CombatGrid.distance(f.cell, target) <= 1:
+				to = target
+			else:
+				var path := grid.find_path(f.cell, target, {})
+				if path.size() > 1:
+					to = path[1]
+		if to.x == -999 or to == next:
+			continue
+		var from: Vector2i = f.cell
+		f.walk_step(to, speed, not f.is_walking(), last)
+		f.creature.grid_pos = to
+		target = from
+
+
+# ================================================================== okrzyki
+
+const BARK_RADIUS := 4.5
+const BARK_NPC_COOLDOWN := 45.0      # ta sama postać woła najwyżej co tyle sekund
+const BARK_GLOBAL_COOLDOWN := 8.0    # między okrzykami różnych postaci
+var _bark_tick := 0.0
+var _bark_global := -100.0
+var _bark_last := {}                 # npc -> czas ostatniego okrzyku
+var _bark_said := {}                 # npc -> {indeks: true}, co już padło (najpierw nowe kwestie)
+
+
+## Okrzyki z data/barks.json: postać w pobliżu (z linią wzroku) woła coś pasującego do stanu gry.
+func _update_barks(delta: float) -> void:
+	_bark_tick += delta
+	if _bark_tick < 0.5:
+		return
+	_bark_tick = 0.0
+	if mode != "explore" or hud.is_blocking() or not is_instance_valid(player_actor):
+		return
+	var now := Time.get_ticks_msec() / 1000.0
+	for a in actors.values():
+		if is_instance_valid(a) and a.is_barking():
+			_bark_global = now          # przerwa liczy się od końca poprzedniego okrzyku, dymki się nie nakładają
+			return
+	if now - _bark_global < BARK_GLOBAL_COOLDOWN:
+		return
+	var pick := pick_bark(now)
+	if pick.is_empty():
+		if _try_whisper(now):
+			_bark_global = now
+		return
+	var a: Actor = actors[pick.npc]
+	_bark_global = now
+	_bark_last[pick.npc] = now
+	if not _bark_said.has(pick.npc):
+		_bark_said[pick.npc] = {}
+	_bark_said[pick.npc][pick.index] = true
+	var clips := VoiceLines.clips(Audio.voice_lang, "barks", "%s_%d" % [pick.npc, pick.index])
+	var secs := a.say(pick.text, clips[0].path if not clips.is_empty() else "")
+	hud.bubble(a, a.display_name, pick.text, secs)
+
+
+## Najbliższa postać, która może teraz zawołać, i jej kwestia: {npc, index, text} albo {}.
+func pick_bark(now: float) -> Dictionary:
+	var barks := DB.table("barks")
+	var best := {}
+	var best_d := INF
+	for npc in barks.keys():
+		var a: Actor = actors.get(npc)
+		if a == null or not is_instance_valid(a) or not a.visible or a.is_barking() or a.fogged:
+			continue
+		# towarzysz w drużynie mówi tylko kwestie "companion" (komentarze), NPC na swoim miejscu tylko pozostałe
+		var follower := _is_follower(a)
+		var d := Vector2(a.cell - player_actor.cell).length()
+		if d > BARK_RADIUS or d >= best_d or now - float(_bark_last.get(npc, -1000.0)) < BARK_NPC_COOLDOWN:
+			continue
+		if not grid.has_los(player_actor.cell, a.cell):
+			continue
+		var valid := []
+		for i in barks[npc].size():
+			if bool(barks[npc][i].get("companion", false)) == follower and GameState.check(barks[npc][i].get("if", {})):
+				valid.append(i)
+		if valid.is_empty():
+			continue
+		# najpierw kwestie zależne od stanu gry, potem te, które jeszcze nie padły, potem losowo;
+		# komentarz towarzysza pada tylko raz
+		var said: Dictionary = _bark_said.get(npc, {})
+		var fresh := valid.filter(func(i): return not said.has(i))
+		if follower and fresh.is_empty():
+			continue
+		var pool: Array = fresh if not fresh.is_empty() else valid
+		var cond := pool.filter(func(i): return barks[npc][i].has("if"))
+		var i: int = (cond if not cond.is_empty() else pool).pick_random()
+		best = {"npc": npc, "index": i, "text": str(barks[npc][i].text)}
+		best_d = d
+	return best
+
+
+# ================================================================== szepty i ślady w mgle
+## map.whispers: [{"id", "cell", "text", "radius"?, "if"?}] — póki pole jest nieodkryte, a gracz stoi w promieniu,
+## z mgły dobiega szept (dymek nad polem). map.memories: [{"id", "cell", "text", "journal"?, "effects"?, "if"?}] —
+## pierwsze odkrycie pola dopisuje fragment do dziennika (raz na grę, flaga memory_<id>).
+const WHISPER_RADIUS := 6.0
+const WHISPER_COOLDOWN := 90.0     # ten sam szept najwyżej co tyle sekund
+var _whisper_last := {}
+
+
+func _check_memories() -> void:
+	for m in map.get("memories", []):
+		var flag := "memory_" + str(m.id)
+		var c := Vector2i(int(m.cell[0]), int(m.cell[1]))
+		if GameState.has_flag(flag) or not GameState.is_explored(GameState.map_id, c, grid.width) \
+				or not GameState.check(m.get("if", {})):
+			continue
+		var effects: Array = [{"set_flag": flag}, {"journal": str(m.get("journal", m.text))}]
+		effects.append_array(m.get("effects", []))
+		GameState.apply_effects(effects)
+		_fog_bubble(c, Loc.t("Wspomnienie"), str(m.text))
+
+
+## Szept z mgły: wywoływany z _update_barks, gdy nikt nie woła. true = szept padł.
+func _try_whisper(now: float) -> bool:
+	for w in map.get("whispers", []):
+		var c := Vector2i(int(w.cell[0]), int(w.cell[1]))
+		if GameState.is_explored(GameState.map_id, c, grid.width) or not GameState.check(w.get("if", {})):
+			continue
+		if Vector2(c - player_actor.cell).length() > float(w.get("radius", WHISPER_RADIUS)):
+			continue
+		if now - float(_whisper_last.get(w.id, -1000.0)) < WHISPER_COOLDOWN:
+			continue
+		_whisper_last[w.id] = now
+		_fog_bubble(c, Loc.t("Szept z mgły"), str(w.text))
+		return true
+	return false
+
+
+## Dymek nad polem (bez aktora): kotwica 3D żyje tyle, co dymek.
+func _fog_bubble(c: Vector2i, who: String, text: String) -> void:
+	var anchor := Node3D.new()
+	add_child(anchor)
+	anchor.position = Actor.cell_to_world(c) + Vector3(0, 1.6, 0)
+	var secs := clampf(2.5 + text.length() * 0.05, 3.5, 9.0)
+	hud.bubble(anchor, who, text, secs)
+	GameState.add_log("[i]%s[/i]" % text)
+	get_tree().create_timer(secs + 0.5).timeout.connect(anchor.queue_free)
+
+
+func _hush_all() -> void:
+	for a in actors.values():
+		if is_instance_valid(a):
+			a.hush()
+	if hud:
+		hud.clear_bubbles()
+
+
+# ================================================================== mapa
+
+const REVEAL_RADIUS := 8
+
+
+## Mgła: odkrywa pola w zasięgu wzroku (ulice z linią widzenia, budynki w całości, gdy widać choć ich ścianę).
+func _reveal_around(c: Vector2i) -> void:
+	var cells := []
+	var seen_chars := {}
+	for y in range(c.y - REVEAL_RADIUS, c.y + REVEAL_RADIUS + 1):
+		for x in range(c.x - REVEAL_RADIUS, c.x + REVEAL_RADIUS + 1):
+			var p := Vector2i(x, y)
+			if not grid.in_bounds(p) or Vector2(p - c).length() > REVEAL_RADIUS + 0.5:
+				continue
+			if grid.has_los(c, p):
+				cells.append(p)
+				var ch := grid.tile(p)
+				if grid.legend.get(ch, {}).has("label"):
+					seen_chars[ch] = true
+	# łatanie dziur: pole w zasięgu, którego większość sąsiadów widać (cień straganu, latarni), też odkrywamy,
+	# żeby mgła nie miała postrzępionych wysp na placu
+	var known := {}
+	for p in cells:
+		known[p] = true
+	for _pass in 2:
+		var add := []
+		for y in range(c.y - REVEAL_RADIUS, c.y + REVEAL_RADIUS + 1):
+			for x in range(c.x - REVEAL_RADIUS, c.x + REVEAL_RADIUS + 1):
+				var p := Vector2i(x, y)
+				if known.has(p) or not grid.in_bounds(p) or Vector2(p - c).length() > REVEAL_RADIUS + 0.5:
+					continue
+				var n := 0
+				for d in [Vector2i(-1, -1), Vector2i(0, -1), Vector2i(1, -1), Vector2i(-1, 0), Vector2i(1, 0),
+						Vector2i(-1, 1), Vector2i(0, 1), Vector2i(1, 1)]:
+					if known.has(p + d) or GameState.is_explored(GameState.map_id, p + d, grid.width):
+						n += 1
+				if n >= 5:
+					add.append(p)
+		for p in add:
+			known[p] = true
+			cells.append(p)
+	if not seen_chars.is_empty():
+		for y in grid.height:
+			for x in grid.width:
+				if seen_chars.has(grid.tile(Vector2i(x, y))):
+					cells.append(Vector2i(x, y))
+	GameState.reveal(GameState.map_id, cells, grid.width, grid.height)
+	if fog:
+		fog.refresh()
+	_check_memories()
+
+
+## Cele zadań na mapie: map.quest_markers = {quest: {etap: [id aktora...]}}; "" = zadanie jeszcze nie przyjęte.
+func _quest_targets() -> Dictionary:
+	var out := {}
+	var qm: Dictionary = map.get("quest_markers", {})
+	for q in qm.keys():
+		var stage: String = GameState.quests.get(q, "")
+		for id_ in qm[q].get(stage, []):
+			out[id_] = true
+	return out
+
+
+## Znaczniki dla MapView (gracz, postacie, obiekty, wrogowie w walce, zamknięte drzwi).
+func _map_markers() -> Array:
+	var out := []
+	if not is_instance_valid(player_actor):
+		return out
+	var targets := _quest_targets()
+	for lk in map.get("locks", []):
+		if not GameState.has_flag(lk.unless_flag):
+			out.append({"cell": Vector2i(int(lk.cell[0]), int(lk.cell[1])), "kind": "lock", "name": ""})
+	for id_ in actors.keys():
+		var a: Actor = actors[id_]
+		if not is_instance_valid(a) or not a.visible:
+			continue
+		var kind := "npc"
+		if a.is_object:
+			kind = "object"
+		elif _is_follower(a):
+			kind = "ally"
+		elif a.creature and mode == "combat":
+			if a.creature.hp <= 0:
+				continue
+			kind = "enemy" if a.creature.team == "enemy" else ("ally" if a.creature.team == "party" else "npc")
+		out.append({"cell": a.cell, "kind": kind, "name": a.display_name, "quest": targets.has(id_)})
+	out.append({"cell": player_actor.cell, "kind": "player", "name": ""})
+	return out
+
+
+## Klik na pełnej mapie: idź na pole albo do najbliższego wolnego obok (budynek, stragan).
+func _on_map_travel(cell: Vector2i) -> void:
+	if mode != "explore":
+		hud.show_toast(Loc.t("Nie teraz!"), UI.BAD)
+		return
+	if _actor_at(cell) or grid.is_open(cell):
+		_explore_click(cell)
+		return
+	var best := Vector2i(-999, -999)
+	var best_d := INF
+	for r in range(1, 6):
+		for y in range(cell.y - r, cell.y + r + 1):
+			for x in range(cell.x - r, cell.x + r + 1):
+				var p := Vector2i(x, y)
+				if grid.in_bounds(p) and grid.is_open(p) and not _occupied().has(p):
+					var d := Vector2(p - cell).length() + Vector2(p - player_actor.cell).length() * 0.01
+					if d < best_d:
+						best_d = d
+						best = p
+		if best.x != -999:
+			break
+	if best.x != -999:
+		_explore_click(best)
 
 
 func _check_triggers(cell: Vector2i) -> bool:
@@ -1039,20 +1490,27 @@ func _interact(a: Actor) -> void:
 
 
 ## Dialog -> portret (assets/portraits/<id>.png); domyślnie id dialogu. Węzeł może nadpisać polem "portrait".
-const DIALOGUE_PORTRAITS := {"backdoor": "door"}
+const DIALOGUE_PORTRAITS := {"backdoor": "door", "hidden_door": "door"}   # hidden_door: tymczasowo, docs/todo.md
 
 
 func _open_dialogue(id_: String) -> void:
 	dialogue = DialogueRunner.new(GameState)
 	var pid: String = DIALOGUE_PORTRAITS.get(id_, id_)
 	dialogue.node_shown.connect(func(node, choices):
-		hud.show_dialogue(node.get("speaker", ""), node.get("text", ""), choices, node.get("portrait", pid)))
-	dialogue.check_rolled.connect(func(text, ok):
+		hud.show_dialogue(node.get("speaker", ""), node.get("text", ""), choices, node.get("portrait", pid))
+		Audio.voice_line(id_, dialogue.current_id, node))
+	dialogue.check_rolled.connect(func(text, ok, natural):
 		Audio.sfx("dice")
 		GameState.add_log(text)
+		hud.show_d20(natural, GameState.player.name)
 		hud.show_toast(Loc.t("SUKCES") if ok else Loc.t("PORAŻKA"), UI.GOOD if ok else UI.BAD))
 	dialogue.finished.connect(_on_dialogue_finished)
 	mode = "dialogue"
+	_hush_all()
+	_talker = _dialogue_actor(id_)
+	if _talker and not _talker.is_object:
+		_talker.face_toward(player_actor.position)
+		player_actor.face_toward(_talker.position)
 	Audio.sfx("dialogue", -6.0)
 	_clear_layers()
 	hud.show_tooltip("", Vector2.ZERO)
@@ -1060,7 +1518,34 @@ func _open_dialogue(id_: String) -> void:
 		_on_dialogue_finished()
 
 
+## Postać, z którą toczy się dialog (NPC z polem "dialogue" albo aktor o tym id).
+func _dialogue_actor(id_: String) -> Actor:
+	for a in actors.values():
+		if is_instance_valid(a) and (a.npc_data.get("dialogue", "") == id_ or a.actor_id == id_):
+			return a
+	return null
+
+
+var _talker: Actor
+
+
+## Głos: rozmówca gra animację mówienia tylko podczas swoich kwestii (nie przy narratorze).
+func _on_voice_segment(who: String) -> void:
+	if is_instance_valid(_talker) and not _talker.is_object:
+		_talker.set_talking(who == "speaker")
+	hud.set_voice_speaker(who)
+
+
+func _on_voice_done() -> void:
+	if is_instance_valid(_talker):
+		_talker.set_talking(false)
+	hud.set_voice_speaker("")
+
+
 func _on_dialogue_finished() -> void:
+	Audio.stop_voice()
+	_on_voice_done()
+	_talker = null
 	hud.hide_dialogue()
 	dialogue = null
 	mode = "explore"
@@ -1132,6 +1617,7 @@ func _update_hover(screen: Vector2) -> void:
 # ================================================================== walka
 
 func start_combat(enc_id: String) -> void:
+	_hush_all()
 	if mode == "combat":
 		return
 	var enc := DB.entry("encounters", enc_id)
@@ -1152,7 +1638,10 @@ func start_combat(enc_id: String) -> void:
 	var pc := GameState.player
 	pc.grid_pos = player_actor.cell
 	var enemies: Array = []
+	var skip := Difficulty.solo_skip(enc, 1 + _followers().size())
 	for s in enc.get("spawn", []):
+		if s.id in skip:
+			continue
 		var m := CharacterBuilder.create_monster(s.monster, s.id, s.get("name", ""))
 		m.grid_pos = Vector2i(int(s.pos[0]), int(s.pos[1]))
 		var a := Actor.new()
@@ -1168,8 +1657,11 @@ func start_combat(enc_id: String) -> void:
 		var a: Actor = actors[id_]
 		if not is_instance_valid(a) or a.npc_data.get("encounter", "") != enc_id:
 			continue
-		if a.npc_data.get("flees", false):
-			GameState.add_log(Loc.t("%s cofa się w pęknięcie rzeczywistości i znika!") % a.display_name)
+		if a.npc_data.get("flees", false) or id_ in skip:
+			if id_ in skip:   # skalowanie solo: ten wróg walczy tylko z drużyną
+				GameState.add_log(Loc.t("%s czmycha w cień, zanim zaczyna się walka.") % a.display_name)
+			else:
+				GameState.add_log(Loc.t("%s cofa się w pęknięcie rzeczywistości i znika!") % a.display_name)
 			a.die()
 			actors.erase(id_)
 			if not id_ in GameState.removed_npcs:
@@ -1180,14 +1672,28 @@ func start_combat(enc_id: String) -> void:
 			m.grid_pos = a.cell
 			a.creature = m
 			enemies.append(m)
+	var party: Array = [pc]
+	for f in _followers():
+		f.creature.grid_pos = f.cell
+		party.append(f.creature)
+		f.show_hp(true)
 	# Postacie niebiorące udziału blokują pola
-	var combatant_ids := enemies.map(func(e): return e.id)
+	var combatant_ids := (enemies + party).map(func(e): return e.id)
 	for a in actors.values():
 		if is_instance_valid(a) and a.visible and not a.actor_id in combatant_ids:
 			grid.set_dynamic_block(a.cell, true)
+	# pole walki odkryte: wrogowie i ich najbliższe otoczenie nie stoją we mgle
+	var seen := []
 	for e in enemies:
 		actors[e.id].show_hp(true)
 		actors[e.id].set_highlight(true, UI.BAD)
+		for dy in range(-2, 3):
+			for dx in range(-2, 3):
+				if grid.has_los(e.grid_pos, e.grid_pos + Vector2i(dx, dy)):
+					seen.append(e.grid_pos + Vector2i(dx, dy))
+	GameState.reveal(GameState.map_id, seen, grid.width, grid.height)
+	if fog:
+		fog.refresh()
 	player_actor.show_hp(true)
 	var surprised := enc.has("surprise_unless_flag") and not GameState.has_flag(enc.surprise_unless_flag)
 	if enc.has("intro"):
@@ -1198,8 +1704,10 @@ func start_combat(enc_id: String) -> void:
 	hud.show_tooltip("", Vector2.ZERO)
 	hud.show_combat(true)
 	combat = CombatManager.new(grid)
+	combat.control_party = Audio.control_companions
+	combat.entropy = enc.get("entropy", false)
 	combat.event.connect(_on_combat_event)
-	combat.start([pc], enemies, surprised)
+	combat.start(party, enemies, surprised)
 
 
 func _on_combat_event(e: Dictionary) -> void:
@@ -1230,8 +1738,19 @@ func _play_event(e: Dictionary) -> void:
 	match e.type:
 		"log":
 			GameState.add_log(e.text)
+		"d20":
+			var natural := int(e.natural)
+			var roller := _actor_for(e.id)
+			if roller and (natural == 1 or natural == 20):
+				hud.show_d20(natural, roller.display_name)
+				await get_tree().create_timer(0.45).timeout
 		"initiative":
 			hud.set_turn_order(combat.order, "", combat.round_num)
+		"entropy":
+			var a := _actor_for(e.id)
+			if a:
+				a.float_text(Loc.t("Rdza!") if e.kind == "rust" else Loc.t("Zacięcie!"), UI.BAD)
+				await get_tree().create_timer(0.35).timeout
 		"turn":
 			hud.set_turn_order(combat.order, e.id, int(e.round))
 			var a := _actor_for(e.id)
@@ -1260,21 +1779,8 @@ func _play_event(e: Dictionary) -> void:
 					Audio.sfx("sword_hit" if hit else "miss", 0.0 if hit else -3.0)
 		"spell":
 			var a := _actor_for(e.id)
-			var cell := Vector2i(int(e.cell[0]), int(e.cell[1]))
-			var sp := Spellcasting.spell(e.spell)
-			var col := UI.PLANAR
-			match sp.get("damage_type", ""):
-				"fire": col = Color("#ff7a2a")
-				"cold": col = Color("#8ad8ff")
-				"radiant": col = Color("#fff2a8")
-				"force": col = Color("#c9a0ff")
-				"necrotic": col = Color("#5a8a4a")
-			if sp.type in ["heal", "buff"]:
-				col = UI.GOOD
 			if a:
-				a.play_anim("cast", "attack")
-				Audio.spell(sp)
-				await _projectile(a.position, Actor.cell_to_world(cell), col)
+				await _play_spell_fx(a, e.spell, e.cell, e.get("recipients", []), int(e.get("slot", 0)), e.get("hit", true), e.get("area_cells", [])).finished
 		"hp":
 			var a := _actor_for(e.id)
 			if a:
@@ -1311,6 +1817,24 @@ func _play_event(e: Dictionary) -> void:
 			_finish_combat(e.victory, int(e.xp))
 
 
+func _play_spell_fx(actor: Actor, id: String, cell: Vector2i, recipients: Array = [], slot := 0, hit := true, area_cells: Array = []) -> Tween:
+	var spell := Spellcasting.spell(id)
+	if spell.type != "reaction":
+		actor.play_anim("cast", "attack")
+	Audio.spell(spell)
+	var points := recipients.map(func(point): return Actor.cell_to_world(point))
+	return SpellFX.play(self, id, actor.position, Actor.cell_to_world(cell), points, slot, hit, area_cells.map(func(point): return Actor.cell_to_world(point)))
+
+
+func preview_spell_fx(id: String) -> Tween:
+	var spell := Spellcasting.spell(id)
+	var cell := player_actor.cell
+	if spell.get("target", "") in ["enemy", "area"]:
+		cell += Vector2i(mini(3, int(spell.get("range", 3))), 0)
+	return _play_spell_fx(player_actor, id, cell, [], 0, true,
+		CombatManager.spell_area_cells(grid, id, player_actor.cell, cell))
+
+
 func _projectile(from: Vector3, to: Vector3, color: Color) -> Signal:
 	var m := MeshInstance3D.new()
 	var sm := SphereMesh.new()
@@ -1333,15 +1857,24 @@ func _projectile(from: Vector3, to: Vector3, color: Color) -> Signal:
 
 func _player_can_act() -> bool:
 	return mode == "combat" and combat != null and combat.active and not processing \
-		and combat.current() == GameState.player
+		and combat.is_controlled(combat.current())
+
+
+## Postać, którą gracz teraz steruje w walce (gracz albo towarzysz w swojej turze); poza walką gracz.
+func _acting() -> Creature:
+	if _player_can_act():
+		return combat.current()
+	return GameState.player
 
 
 func _after_events() -> void:
 	if mode != "combat" or combat == null:
 		return
 	if _player_can_act():
-		hud.build_combat_bar(combat, GameState.player, true)
-		cam.follow = player_actor
+		var c := _acting()
+		hud.build_combat_bar(combat, c, true)
+		var a := _actor_for(c.id)
+		cam.follow = a if a else player_actor
 		_refresh_combat_overlay()
 	hud.refresh_portrait(GameState.player)
 
@@ -1358,7 +1891,7 @@ func _refresh_combat_overlay() -> void:
 	if not _player_can_act():
 		hud.set_hint("")
 		return
-	var pc := GameState.player
+	var pc := _acting()
 	match selected.kind:
 		"":
 			var reach := combat.reachable_for(pc)
@@ -1379,7 +1912,7 @@ func _refresh_combat_overlay() -> void:
 func _on_combat_action(kind: String, data: Dictionary) -> void:
 	if not _player_can_act():
 		return
-	var pc := GameState.player
+	var pc := _acting()
 	match kind:
 		"end_turn":
 			_set_selected("", {})
@@ -1395,7 +1928,7 @@ func _on_combat_action(kind: String, data: Dictionary) -> void:
 			else:
 				_set_selected("spell", data)
 		"action":
-			if data.id == "divine_spark":
+			if data.id in ["divine_spark", "help", "stabilize"]:
 				_set_selected("target_action", data)
 				return
 			_report(combat.do_action(pc, data.id))
@@ -1412,7 +1945,7 @@ func _report(err: String) -> void:
 func _combat_click(cell: Vector2i) -> void:
 	if not _player_can_act():
 		return
-	var pc := GameState.player
+	var pc := _acting()
 	var target := combat.creature_at(cell)
 	match selected.kind:
 		"attack":
@@ -1422,8 +1955,10 @@ func _combat_click(cell: Vector2i) -> void:
 			_report(combat.cast(pc, selected.data.id, cell))
 			_set_selected("", {})
 		"target_action":
-			_report(combat.do_action(pc, selected.data.id, target))
-			_set_selected("", {})
+			var error := combat.do_action(pc, selected.data.id, target)
+			_report(error)
+			if error == "":
+				_set_selected("", {})
 		_:
 			if target and target.is_hostile_to(pc):
 				var opt := _default_attack(pc, target)
@@ -1450,7 +1985,7 @@ func _combat_hover(cell: Vector2i, screen: Vector2) -> void:
 	if not _player_can_act():
 		hud.show_tooltip("", screen)
 		return
-	var pc := GameState.player
+	var pc := _acting()
 	var target := combat.creature_at(cell)
 	_draw_layer("path", [])
 	_draw_layer("area", [])
@@ -1458,24 +1993,7 @@ func _combat_hover(cell: Vector2i, screen: Vector2) -> void:
 	if selected.kind == "spell":
 		var sp := Spellcasting.spell(selected.data.id)
 		if sp.has("area"):
-			var cells := []
-			var area: Dictionary = sp.area
-			for y in range(cell.y - 3, cell.y + 4):
-				for x in range(cell.x - 3, cell.x + 4):
-					var p := Vector2i(x, y)
-					if not grid.is_open(p):
-						continue
-					if area.shape == "sphere" and CombatGrid.distance(p, cell) <= int(area.radius):
-						cells.append(p)
-			if area.shape == "cone":
-				var dir := Vector2(cell - pc.grid_pos).normalized()
-				for y in range(pc.grid_pos.y - 3, pc.grid_pos.y + 4):
-					for x in range(pc.grid_pos.x - 3, pc.grid_pos.x + 4):
-						var p := Vector2i(x, y)
-						var d := CombatGrid.distance(pc.grid_pos, p)
-						if d >= 1 and d <= int(area.length) and grid.is_open(p) and dir.dot(Vector2(p - pc.grid_pos).normalized()) >= 0.7:
-							cells.append(p)
-			_draw_layer("area", cells)
+			_draw_layer("area", CombatManager.spell_area_cells(grid, selected.data.id, pc.grid_pos, cell))
 		var err := combat.can_cast(pc, selected.data.id, cell)
 		var tgt_txt := ""
 		for t in combat.spell_targets(pc, selected.data.id, cell):
@@ -1537,6 +2055,25 @@ func _finish_combat(victory: bool, xp: int) -> void:
 	pc.concentration = ""
 	for k in ["prone", "blinded"]:
 		pc.conditions.erase(k)
+	if victory and pc.dead:
+		victory = false          # towarzysze wygrali, ale gracz nie przeżył
+	for c in [pc] + GameState.companions:
+		var fa := _actor_for(c.id)
+		if fa and fa != player_actor:
+			fa.show_hp(false)
+		if not victory or c.dead:
+			continue
+		c.effects.clear()
+		c.concentration = ""
+		if c.hp <= 0:
+			c.hp = 1
+			c.stable = false
+			c.death_saves = {"success": 0, "fail": 0}
+			c.conditions.erase("unconscious")
+			c.conditions.erase("prone")
+			if fa:
+				fa.set_downed(false)
+			GameState.add_log(Loc.t("%s podnosi się z trudem (1 PW).") % c.name)
 	combat = null
 	Audio.play_music("explore", 2.5)
 	if victory:

@@ -14,7 +14,9 @@
         {"text": "Oddaj klucz albo osobiście rozplotę każdy twój pęknięty kawałek.", "once": true,
          "check": {"skill": "intimidation", "dc": 16, "success": "scared", "fail": "angry"}},
         {"text": "Dość gadania.", "next": "angry"},
-        {"text": "Wyjdę już.", "end": true}
+        {"text": "Wyjdę już.", "end": true},
+        {"text": "[Lis] Pozwól mówić Lis. „Echo spisało ten klucz jako możliwość, która jeszcze nie zaistniała. Zniszczysz coś, co i tak się rozpada”.", "if": {"in_party": "lis"}, "once": true,
+         "check": {"skill": "persuasion", "dc": 15, "adv_if": {"in_party": "lis"}, "success": "convinced", "fail": "angry"}}
       ]
     },
     "why": {
@@ -25,14 +27,14 @@
     "convinced": {
       "speaker": "Sever",
       "text": "Sever milknie. Pył przestaje sypać mu się z palców. Potem śmieje się sucho, jakby coś w nim pękło. „Możliwość, która gnije, zanim się narodzi… Masz rację. Niech sam się rozpadnie”. Rzuca ci klucz. „Weź go. Patrz, jak umiera”.",
-      "effects": [{"give_item": "key_without_door"}, {"set_flag": "key_obtained"}, {"set_flag": "sever_convinced"}, {"quest": ["key", "has_key"]}, {"xp": 150},
+      "effects": [{"give_item": "key_without_door"}, {"set_flag": "key_obtained"}, {"set_flag": "sever_convinced"}, {"set_reputation": ["unravelers", "friendly"]}, {"quest": ["key", "has_key"]}, {"xp": 150},
                   {"journal": "Przekonałem Severa, a on oddał mi klucz bez walki."}],
       "choices": [{"text": "[Weź klucz]", "end": true}]
     },
     "scared": {
       "speaker": "Sever",
       "text": "Pęknięcia na twarzy Severa ciemnieją. „Strach to też rozpad. Interesujące”. Rzuca ci klucz. „Bierz. I tak wróci do pyłu”.",
-      "effects": [{"give_item": "key_without_door"}, {"set_flag": "key_obtained"}, {"quest": ["key", "has_key"]}, {"xp": 150},
+      "effects": [{"give_item": "key_without_door"}, {"set_flag": "key_obtained"}, {"set_reputation": ["unravelers", "wary"]}, {"quest": ["key", "has_key"]}, {"xp": 150},
                   {"journal": "Zastraszyłem Severa i oddał mi klucz."}],
       "choices": [{"text": "[Weź klucz]", "end": true}]
     },

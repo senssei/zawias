@@ -9,8 +9,17 @@
         {"text": "Kim są ci z pieczęcią pióra? Zapisani?", "next": "factions"},
         {"text": "Coś cię gryzie. Widzę to po tobie.", "once": true, "check": {"skill": "insight", "dc": 12, "success": "insight_ok", "fail": "insight_fail"}},
         {"text": "Jak tu przeżyć pierwszy dzień?", "next": "tips"},
-        {"text": "Bywaj.", "end": true}
+        {"text": "Bywaj.", "end": true},
+        {"text": "[Oddaj kontrakt Kwita] Oczyść wschodni zaułek z ludzi Rozplataczy.", "if": {"has_item": "kwit_contract", "not_flag": "ambush_done"}, "next": "clear_alley"},
+        {"text": "Czy brama zawsze zostawia taki ślad na dłoni?", "if": {"not_quest": "wanderer", "not_flag": "key_obtained"}, "next": "wanderer_trace"},
+        {"text": "[Zapisani są ci przychylni] Kwit mówi, że płacę w terminie. Wyślesz patrol do wschodniego zaułka?", "if": {"reputation": ["inscribed", "friendly"], "flag": "asked_about_key", "not_flag": "ambush_done"}, "next": "patrol_alley"}
       ]
+    },
+    "patrol_alley": {
+      "speaker": "Hask",
+      "text": "Hask gwiżdże na dwóch strażników z pieczęcią pióra. „Kancelaria nie lubi, gdy jej dłużnikom coś się dzieje. Zaułek będzie czysty, zanim dojdziesz do magazynu”.",
+      "effects": [{"set_flag": "ambush_done"}, {"journal": "Hask wysłał patrol Zapisanych do wschodniego zaułka. Droga do tylnych drzwi magazynu jest wolna."}],
+      "choices": [{"text": "Dziękuję.", "next": "start"}]
     },
     "where": {
       "speaker": "Hask",
@@ -40,6 +49,23 @@
       "speaker": "Hask",
       "text": "„Gryzie mnie to, że zadajesz za dużo pytań”. Hask poprawia chwyt na włóczni.",
       "choices": [{"text": "Dobrze, już dobrze.", "next": "start"}]
+    },
+    "wanderer_trace": {
+      "speaker": "Hask",
+      "text": "Hask odwraca twoją dłoń. Na skórze biegną trzy jasne kreski, dokładnie takie jak nacięcia na wewnętrznej stronie bramy. „Ten znak widzę tylko na zworniku. Jest tam od zawsze. Pokaż go Lis, w Archiwum Echa”.",
+      "effects": [{"quest": ["wanderer", "trace"]}],
+      "choices": [{"text": "Pokażę go Lis.", "next": "start"}]
+    },
+    "clear_alley": {
+      "speaker": "Hask",
+      "text": "Hask sprawdza pieczęć i chowa pergamin pod napierśnik. „Jedna przysługa. Zgoda”. Gwiżdże na patrol. Strażnicy ruszają na wschód i wracają po chwili. „Zbiry się rozbiegły. Zaułek jest wolny aż do tylnych drzwi magazynu”.",
+      "effects": [
+        {"take_item": "kwit_contract"},
+        {"set_flag": "ambush_done"},
+        {"journal": "Oddałem Haskowi kontrakt Kwita. Patrol przepędził zbirów ze wschodniego zaułka. Mogę bezpiecznie dojść do tylnych drzwi magazynu."},
+        {"set_flag": "kwit_contract_redeemed"}
+      ],
+      "choices": [{"text": "[Odejdź]", "end": true}]
     },
     "tips": {
       "speaker": "Hask",

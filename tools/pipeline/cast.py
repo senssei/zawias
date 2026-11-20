@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 """Wsadowe generowanie obsady: opis → koncept → model 3D → rig + animacje → assets/actors/<id>.glb.
 
 Kolejność jest ułożona pod jedną kartę graficzną:

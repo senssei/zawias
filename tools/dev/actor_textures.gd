@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 extends SceneTree
 ## Wypisuje tekstury, których faktycznie używają modele z assets/actors (do sprzątania osieroconych plików).
 ## godot --headless -s tools/dev/actor_textures.gd

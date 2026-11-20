@@ -6,15 +6,23 @@
       "speaker": "Odźwierny",
       "text": "Mężczyzna w szacie, z której celowo wyprute są nitki, opiera się o drzwi magazynu. Na jego szyi wisi zardzewiała blaszka. „Wszystko się rozpada, przybyszu. Twoje plany też. Czego chcesz?”",
       "choices": [
-        {"text": "Przychodzę rozmawiać z Severem. O kluczu.", "if": {"quest_any": ["key", ["started", "lead_warehouse"]]}, "once": true,
+        {"text": "Przychodzę rozmawiać z Severem. O kluczu.", "if": {"quest_any": ["key", ["started", "lead_warehouse"]], "reputation_not": ["unravelers", "wary"]}, "once": true,
          "check": {"skill": "persuasion", "dc": 13, "success": "let_in", "fail": "refuse"}},
-        {"text": "Mam wiadomość dla Severa od kogoś z góry.", "once": true,
+        {"text": "Mam wiadomość dla Severa od kogoś z góry.", "if": {"reputation_not": ["inscribed", "wary"]}, "once": true,
          "check": {"skill": "deception", "dc": 12, "success": "let_in", "fail": "fight_node"}},
         {"text": "Pokazuję Żeton Rdzy. „Bracia z zaułka przesyłają pozdrowienia”.", "if": {"has_item": "rust_token"}, "once": true,
-         "check": {"skill": "deception", "dc": 8, "success": "let_in", "fail": "fight_node"}},
+         "check": {"skill": "deception", "dc": 8, "success": "let_in_token", "fail": "fight_node"}},
         {"text": "Zejdź mi z drogi albo sam cię rozplotę.", "next": "fight_node"},
-        {"text": "Nic. Już idę.", "end": true}
+        {"text": "Nic. Już idę.", "end": true},
+        {"text": "Mam wiadomość dla Severa od kogoś z góry. [Patrol Zapisanych łazi za tobą]", "if": {"reputation": ["inscribed", "wary"]}, "once": true,
+         "check": {"skill": "deception", "dc": 17, "success": "let_in", "fail": "fight_node"}}
       ]
+    },
+    "let_in_token": {
+      "speaker": "Odźwierny",
+      "text": "Odźwierny obraca żeton w palcach i uśmiecha się po raz pierwszy. „Bracia z zaułka… Dobrze. Swoich nie zatrzymuję. Sever jest w środku”.",
+      "effects": [{"set_flag": "front_open"}, {"set_reputation": ["unravelers", "friendly"]}, {"journal": "Odźwierny uznał mnie za swojego, kiedy pokazałem Żeton Rdzy. Rozplatacze są mi przychylni."}],
+      "choices": [{"text": "[Wejdź]", "end": true}]
     },
     "let_in": {
       "speaker": "Odźwierny",
@@ -25,6 +33,7 @@
     "refuse": {
       "speaker": "Odźwierny",
       "text": "„Sever nie rozmawia z obcymi. Odejdź, póki jesteś w jednym kawałku”.",
+      "effects": [{"journal": "Odźwierny nie wpuścił mnie do magazynu. Od strony wschodniego zaułka są jeszcze tylne drzwi. Mogę też wejść siłą."}],
       "choices": [
         {"text": "W takim razie wejdę bez zaproszenia.", "next": "fight_node"},
         {"text": "[Odejdź]", "end": true}

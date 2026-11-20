@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 """Malowany obszar dla całej mapy: makieta z gry -> malunek FLUX.2 -> usunięcie rekwizytów -> głębia -> assets/.
 
 Użycie (Python z venv ComfyUI):
@@ -10,7 +12,8 @@ Kroki (wyniki w tools/pipeline/work/paint_<map_id>/):
   paint  kafelki w skali kadru gry (cała mapa naraz rozjeżdża układ budynków): FLUX.2 klein przemalowuje makietę
          z rekwizytami (lepiej trzyma kompozycję), potem usuwa stragany, latarnie, skrzynie i łuki (zostają w 3D)
   stitch sklejenie szwami najmniejszej różnicy (image quilting) -> painted.png (scale x rozdzielczość projektora)
-  depth  Depth Anything V2 + kalibracja do makiety (paint_depth.py), kopia do assets/backgrounds/<map_id>_*
+  depth  Depth Anything V2 + kalibracja do makiety (paint_depth.py), dachy bez plam rdzy (derust_roofs.py),
+         kopia do assets/backgrounds/<map_id>_*
 
 Każdy kafelek jest oceniany (udział pustki na platformie z makiety); powyżej --void-thr malowany ponownie
 (do --retries prób, zostaje najlepsza). --fix --from paint: przemaluj tylko kafelki, które nie przechodzą progu.
@@ -35,9 +38,11 @@ from comfy_gen import req, upload  # noqa: E402
 STEPS = ["shots", "paint", "stitch", "depth", "check"]
 
 DEFAULT_THEME = ("a rusty market district on a floating platform in a planar ring-city: ornate art nouveau shops and "
-                 "houses with rust-red and verdigris metal roofs, brass ornaments, warm glowing windows and doors, "
-                 "weathered stone walls along the platform edge, grey cobblestones with a few dry orange-brown rust "
-                 "stains (no red liquid, no puddles), dark violet planar void with faint purple mist around the platform")
+                 "houses with rich facade ornaments, dormers and chimneys, steep pitched roofs of rust-red and terracotta "
+                 "clay tiles (warm red-brown, clean, strongly contrasting with the light grey streets), brass ornaments, "
+                 "warm glowing windows and doors, weathered stone walls along the platform edge, light grey cobblestone "
+                 "streets with a few dry orange-brown rust stains on the ground only (no red liquid, no puddles), "
+                 "dark violet planar void with faint purple mist around the platform")
 
 PAINT_PROMPT = ("Repaint image 1 as a finished hand-painted isometric fantasy RPG background in the style of classic "
                 "painted 1990s isometric RPGs: {theme}. Every large block in image 1 is a building, every low border "
@@ -246,6 +251,7 @@ def _key_cells(m):
     keys = {tuple(m["player_start"])}
     for n in m.get("npcs", []) + m.get("objects", []):
         keys.add(tuple(n["pos"]))
+        keys |= {tuple(p) for p in n.get("route", {}).get("points", [])}
     for t in m.get("triggers", []):
         keys |= {tuple(c) for c in t["cells"]}
     for lk in m.get("locks", []):
@@ -301,9 +307,10 @@ def hidden_spots(m, hidden):
     """Postacie i obiekty stojące tam, gdzie w trybie malowanym zasłania je budynek (widać tylko sylwetkę)."""
     out = []
     for n in m.get("npcs", []) + m.get("objects", []):
-        h = hidden.get(tuple(n["pos"]), 0.0)
-        if h > 0.5:
-            out.append({"id": n["id"], "pos": n["pos"], "hidden": round(float(h), 2)})
+        for pos in [n["pos"]] + n.get("route", {}).get("points", []):   # także przystanki tras NPC
+            h = hidden.get(tuple(pos), 0.0)
+            if h > 0.5:
+                out.append({"id": n["id"], "pos": pos, "hidden": round(float(h), 2)})
     return out
 
 
@@ -397,6 +404,7 @@ def main():
     ap.add_argument("--only", default="", help="tylko te kafelki (np. 2,5), reszta z poprzedniego przebiegu")
     ap.add_argument("--from", dest="start", choices=STEPS, default="shots")
     ap.add_argument("--theme", default="")
+    ap.add_argument("--keep-roof-rust", action="store_true", help="bez czyszczenia dachów z plam rdzy (derust_roofs.py)")
     ap.add_argument("--godot", default=shutil.which("godot") or os.path.expanduser("~/.local/bin/godot"))
     ap.add_argument("--server", default=os.environ.get("COMFY_URL", "http://127.0.0.1:8188"))
     a = ap.parse_args()
@@ -487,6 +495,16 @@ def main():
         free_vram(a.server)
         tiled_depth(a, W, boxes, tw, th, src)
         dst = os.path.join(ROOT, "assets", "backgrounds")
+        if not a.keep_roof_rust:
+            # plamy rdzy z bruku lądują też na miedzianych dachach (zamaluj patyną), a płaskie dachy FLUX maluje jak
+            # bruk (przebarw na łupek z ciemnym gzymsem, żeby nie zlewały się z ulicą); tylko kolor, głębia bez zmian
+            from derust_roofs import derust
+            import cv2
+            import numpy as np
+            img = cv2.imread(src, cv2.IMREAD_UNCHANGED)
+            res, _, _ = derust(img[..., :3].copy(), blockout_png=W("blockout.png"))
+            cv2.imwrite(W("painted_clean.png"), np.concatenate([res, img[..., 3:]], axis=2) if img.shape[2] == 4 else res)
+            src = W("painted_clean.png")
         shutil.copy(src, os.path.join(dst, f"{a.map_id}_paint.png"))
         shutil.copy(W("depth.png"), os.path.join(dst, f"{a.map_id}_depth.png"))
         shutil.copy(W("projector.json"), os.path.join(dst, f"{a.map_id}_paint.json"))

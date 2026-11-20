@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 class_name DialogueRunner
 extends RefCounted
 ## Graf dialogowy z JSON: węzły, wybory z warunkami, testy umiejętności i efekty.
@@ -9,7 +11,7 @@ extends RefCounted
 ## Węzeł może mieć "redirect": [{"if": {...}, "next": "id"}] i wtedy przekierowuje automatycznie.
 
 signal node_shown(node: Dictionary, choices: Array)
-signal check_rolled(text: String, success: bool)
+signal check_rolled(text: String, success: bool, natural: int)
 signal finished
 
 var data := {}
@@ -102,7 +104,7 @@ func choose(index: int) -> void:
 	state.apply_effects(ch.get("effects", []))
 	if ch.has("check"):
 		var res := roll_check(ch.check)
-		check_rolled.emit(res.text, res.success)
+		check_rolled.emit(res.text, res.success, int(res.natural))
 		state.apply_effects(ch.check.get("success_effects" if res.success else "fail_effects", []))
 		goto(ch.check.success if res.success else ch.check.fail)
 		return

@@ -25,6 +25,9 @@ Rdzawy Targ do Rozplataczy, frakcji przekonanej, że wszystko się rozpada, i ż
   linia wzroku, Weapon Mastery, Atak z zaskoczenia, Tarcza, koncentracja, rzuty przeciw śmierci.
 - **Dialogi z testami umiejętności** i Heroiczną inspiracją. Jeden quest, trzy drogi, dwa zakończenia.
 - **Awans z wyborami** (PW: średnia albo rzut, podklasa, nowe czary), portrety w dialogach, muzyka i efekty.
+- **Głosy postaci i narrator** (angielskie, generowane lokalnie; mówiąca postać gestykuluje) i **mapa**: minimapa obracająca się z kamerą oraz pełna mapa (M)
+  z mgłą nieodkrytych miejsc, celami zadania i przejściem po kliknięciu. Postacie na targu wołają do przechodzącego
+  gracza (z głosem), a archiwistka Lis może dołączyć jako towarzyszka sterowana przez AI.
 - **Malowany obszar**: architektura to malunek (wygenerowany lokalnie z makiety 3D) z mapą głębi, więc postacie
   i rekwizyty 3D chodzą przed nim i za nim i rzucają cienie. Postać zasłoniętą przez budynek widać jako sylwetkę.
 - **Polski i angielski** (zmiana w Ustawieniach), dwa poziomy trudności (domyślna *Opowieść*, bo slice jest solowy,
@@ -37,7 +40,7 @@ Renderer to OpenGL 3.3 (Godot *Compatibility*). Plik dla Windows nie jest podpis
 o potwierdzenie przy pierwszym uruchomieniu („Więcej informacji” → „Uruchom mimo to”).
 
 **Sterowanie**: LPM ruch, rozmowa, atak i cel; PPM anuluje. WASD/strzałki przesuwają kamerę, kółko przybliża.
-C karta postaci, I ekwipunek, J dziennik, L awans, R krótki odpoczynek, F5/F9 zapis i wczytanie,
+C karta postaci, I ekwipunek, K księga czarów, J dziennik, M mapa, L awans, R krótki odpoczynek, F5/F9 zapis i wczytanie,
 Spacja koniec tury, 1–9 wybory w dialogu, Esc zamyka okno.
 
 ## Uruchomienie ze źródeł
@@ -79,15 +82,19 @@ Taktyka testowa jest prosta, więc człowiek wypada lepiej. `tests/unit/test_sli
 
 ## Jak powstały assety
 
-Grafika, modele, portrety i muzyka zostały wygenerowane **lokalnie** otwartymi modelami (bez usług w chmurze),
+Grafika, modele, portrety, muzyka i głosy postaci zostały wygenerowane **lokalnie** otwartymi modelami (bez usług w chmurze),
 a potem oczyszczone, zrigowane i sprawdzone skryptami z [`tools/pipeline`](tools/pipeline/README.md):
-FLUX.2 [klein] 4B, TRELLIS.2, Depth Anything V2, ACE-Step 1.5; efekty to synteza w numpy. Animacje: Quaternius,
+FLUX.2 [klein] 4B, TRELLIS.2, Depth Anything V2, ACE-Step 1.5, OmniVoice (angielskie głosy postaci); efekty to synteza w numpy. Animacje: Quaternius,
 Universal Animation Library (CC0). Świat, postacie i teksty są oryginalne.
 
 ## Licencje
 
-- Kod: [MIT](LICENSE). Assety gry (modele, tekstury, portrety, muzyka, malunek) są częścią niekomercyjnego wydania, patrz niżej.
+- Kod: [MIT](LICENSE). Assety i treść gry (modele, tekstury, portrety, malunek, muzyka, głosy, efekty, dialogi,
+  mapy, dokumentacja): [CC-BY-4.0](LICENSES/CC-BY-4.0.txt), z wyjątkiem mapy głębi niżej.
+- Każdy plik ma licencję SPDX: nagłówek w kodzie, [`REUSE.toml`](REUSE.toml) dla reszty (układ
+  [REUSE](https://reuse.software), teksty licencji w [`LICENSES/`](LICENSES)). Kontrola: `python3 tools/dev/spdx_check.py`.
 - Zasady: System Reference Document 5.2 © Wizards of the Coast LLC, [CC-BY-4.0](LICENSE-SRD.md).
-- Głębia malunku: Depth Anything V2 **Large**, CC-BY-NC-4.0, więc to wydanie jest **niekomercyjne**.
+- Głębia malunku (`assets/backgrounds/*_depth.png`): powstała z Depth Anything V2 **Large** (CC-BY-NC-4.0), więc ten
+  plik ma licencję CC-BY-NC-4.0, a całe wydanie jest **niekomercyjne**.
   Wydanie komercyjne wymaga przeliczenia głębi modelem Small (Apache 2.0).
 - Zależności: Godot (MIT), GUT (MIT), Quaternius UAL (CC0). Pełna lista: „Autorzy i licencje” w menu głównym.

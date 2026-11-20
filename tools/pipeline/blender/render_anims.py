@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 """Renderuje klatkę z każdej animacji zriggowanej postaci (kontrola jakości).
 Użycie: blender -b --python render_anims.py -- <postać.glb> <katalog_wyjściowy> [--at 0.4]
 """

@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 class_name UI
 extends RefCounted
 ## Pomocnicze konstruktory interfejsu i wspólny motyw (rdza, mosiądz, fiolet planów).
@@ -93,7 +95,7 @@ static func settings_panel() -> VBoxContainer:
 	var v := vbox(10)
 	var ml := Engine.get_main_loop() as SceneTree
 	var au: Node = ml.root.get_node_or_null("Audio") if ml else null
-	for pair in [["Master", Loc.t("Głośność ogólna")], ["Music", Loc.t("Muzyka")], ["Ambient", Loc.t("Otoczenie")], ["SFX", Loc.t("Efekty")]]:
+	for pair in [["Master", Loc.t("Głośność ogólna")], ["Music", Loc.t("Muzyka")], ["Ambient", Loc.t("Otoczenie")], ["SFX", Loc.t("Efekty")], ["Voice", Loc.t("Głosy postaci")]]:
 		var bus: String = pair[0]
 		var row := hbox(12)
 		var l := label(pair[1], 17)
@@ -134,6 +136,12 @@ static func settings_panel() -> VBoxContainer:
 		else:
 			Difficulty.current = did
 		ddesc.text = Loc.t(Difficulty.preset().desc) + Loc.t(" Zmiana działa od następnej walki."))
+	var cc := CheckBox.new()
+	cc.text = Loc.t("Steruj towarzyszami w walce")
+	cc.tooltip_text = Loc.t("Wyłączone: towarzysze walczą sami. Zmiana działa od następnej walki.")
+	cc.button_pressed = au.control_companions if au else true
+	cc.toggled.connect(func(on): if au: au.set_control_companions(on))
+	v.add_child(cc)
 	var lrow := hbox(12)
 	var ll := label(Loc.t("Język") + " / Language", 17)
 	ll.custom_minimum_size.x = 200
@@ -161,6 +169,35 @@ static func settings_panel() -> VBoxContainer:
 	fs.button_pressed = DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN
 	fs.toggled.connect(func(on): if au: au.set_fullscreen(on))
 	v.add_child(fs)
+	var vrow := hbox(12)
+	var vl := label(Loc.t("Język głosów"), 17)
+	vl.custom_minimum_size.x = 200
+	vrow.add_child(vl)
+	var vopt := OptionButton.new()
+	vopt.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+	var vlangs: Array = Loc.LANGS.keys()
+	for i in vlangs.size():
+		vopt.add_item(Loc.LANGS[vlangs[i]], i)
+		vopt.set_item_disabled(i, not vlangs[i] in VoiceLines.voice_langs())
+		if au and vlangs[i] == au.voice_lang:
+			vopt.select(i)
+	vopt.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	vopt.tooltip_text = Loc.t("Tekst dialogów zostaje w języku gry i służy za napisy.")
+	vopt.item_selected.connect(func(i): if au: au.set_voice_lang(vlangs[i]))
+	vrow.add_child(vopt)
+	v.add_child(vrow)
+	var nar := CheckBox.new()
+	nar.text = Loc.t("Narrator czyta opisy w dialogach")
+	nar.button_pressed = au.narrator if au else true
+	nar.toggled.connect(func(on): if au: au.set_narrator(on))
+	v.add_child(nar)
+	var tts := CheckBox.new()
+	tts.text = Loc.t("Synteza mowy systemu, gdy kwestia nie ma nagrania")
+	tts.tooltip_text = Loc.t("Głos systemu operacyjnego czyta wypowiedzi postaci, dla których nie wygenerowano nagrań.")
+	tts.button_pressed = au.tts_fallback if au else false
+	tts.disabled = not DisplayServer.has_feature(DisplayServer.FEATURE_TEXT_TO_SPEECH)
+	tts.toggled.connect(func(on): if au: au.set_tts_fallback(on))
+	v.add_child(tts)
 	return v
 
 

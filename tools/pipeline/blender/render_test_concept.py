@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 """Renderuje prosty „koncept” postaci (A-pose, przód, białe tło) do testów generatora 3D.
 Użycie: blender -b --python render_test_concept.py -- out.png
 """

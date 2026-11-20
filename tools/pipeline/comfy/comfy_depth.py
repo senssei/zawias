@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 """Mapa głębi (Depth Anything V2, względna: jaśniej = bliżej) dla obrazu przez ComfyUI.
 
 Użycie: comfy_depth.py <wejście.png> <wyjście.png> [--resolution 1024] [--ckpt depth_anything_v2_vitl.pth]

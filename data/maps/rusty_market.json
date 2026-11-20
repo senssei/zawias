@@ -61,7 +61,9 @@
       "solid": true,
       "height": 1.2,
       "color": "#5a3a22",
-      "label": "Stary magazyn", "paint_height": 1.6, "paint_kind": "wall"
+      "label": "Stary magazyn",
+      "paint_height": 1.6,
+      "paint_kind": "wall"
     },
     "=": {
       "solid": true,
@@ -132,7 +134,20 @@
       ],
       "color": "#7a8fa6",
       "dialogue": "hask",
-      "title": "strażnik Zapisanych"
+      "title": "strażnik Zapisanych",
+      "route": {
+        "points": [
+          [
+            3,
+            10
+          ]
+        ],
+        "wait": [
+          5,
+          10
+        ],
+        "mode": "pingpong"
+      }
     },
     {
       "id": "kwit",
@@ -143,7 +158,20 @@
       ],
       "color": "#a6a6c8",
       "dialogue": "kwit",
-      "title": "notariusz"
+      "title": "notariusz",
+      "route": {
+        "points": [
+          [
+            7,
+            5
+          ]
+        ],
+        "wait": [
+          8,
+          15
+        ],
+        "mode": "pingpong"
+      }
     },
     {
       "id": "mirela",
@@ -160,12 +188,25 @@
       "id": "dorn",
       "name": "Dorn",
       "pos": [
-        6,
-        11
+        5,
+        9
       ],
       "color": "#b8785a",
       "dialogue": "dorn",
-      "title": "karczmarz"
+      "title": "karczmarz",
+      "route": {
+        "points": [
+          [
+            9,
+            9
+          ]
+        ],
+        "wait": [
+          6,
+          12
+        ],
+        "mode": "pingpong"
+      }
     },
     {
       "id": "lis",
@@ -176,7 +217,24 @@
       ],
       "color": "#6fbfb0",
       "dialogue": "lis",
-      "title": "archiwistka Echa"
+      "title": "archiwistka Echa",
+      "companion": {
+        "class": "wizard",
+        "species": "human",
+        "background": "sage",
+        "scores": {
+          "str": 8,
+          "dex": 14,
+          "con": 13,
+          "int": 15,
+          "wis": 12,
+          "cha": 10
+        },
+        "bonus": {
+          "int": 2,
+          "con": 1
+        }
+      }
     },
     {
       "id": "pchla",
@@ -187,7 +245,36 @@
       ],
       "color": "#c7b36b",
       "dialogue": "pchla",
-      "title": "ulicznik"
+      "title": "ulicznik",
+      "route": {
+        "points": [
+          [
+            23,
+            12
+          ],
+          [
+            17,
+            12
+          ],
+          [
+            14,
+            9
+          ],
+          [
+            20,
+            6
+          ],
+          [
+            24,
+            6
+          ]
+        ],
+        "wait": [
+          3,
+          7
+        ],
+        "mode": "loop"
+      }
     },
     {
       "id": "odzwierny",
@@ -230,7 +317,7 @@
       "id": "mefit",
       "name": "Mefit Rdzy",
       "pos": [
-        36,
+        33,
         16
       ],
       "color": "#c46a2a",
@@ -250,6 +337,14 @@
       "shape": "arch"
     },
     {
+      "id": "hidden_door",
+      "name": "Drzwi, których nie ma",
+      "pos": [21, 3],
+      "dialogue": "hidden_door",
+      "shape": "door",
+      "if": {"flag": "key_obtained"}
+    },
+    {
       "id": "backdoor",
       "name": "Tylne drzwi",
       "pos": [
@@ -264,7 +359,7 @@
       "id": "chest",
       "name": "Skrzynia Severa",
       "pos": [
-        37,
+        35,
         13
       ],
       "dialogue": "chest",
@@ -276,16 +371,12 @@
       "id": "ambush",
       "cells": [
         [
-          30,
+          37,
           6
         ],
         [
-          31,
-          6
-        ],
-        [
-          32,
-          6
+          37,
+          7
         ]
       ],
       "if": {
@@ -359,5 +450,44 @@
         17
       ]
     }
-  ]
+  ],
+  "whispers": [
+    {"id": "alley", "cell": [37, 8], "radius": 7, "text": "Z mgły na wschodzie dochodzi szuranie i szept: „Trzy kreski… To znowu ty?”"},
+    {"id": "warehouse", "cell": [33, 15], "radius": 6, "text": "Zza ścian magazynu niesie się monotonny szept: „Rozpleć, rozpleć, aż nie zostanie imię”."},
+    {"id": "arch", "cell": [16, 9], "radius": 8, "text": "Spod Łuku wieje ciepłe powietrze. Ktoś szepcze imię, które kiedyś było twoje, ale wiatr rozwiewa je, zanim je rozpoznasz."}
+  ],
+  "memories": [
+    {"id": "arch_ruts", "cell": [16, 10], "text": "Pod Łukiem bruk jest wytarty w trzy równoległe bruzdy, jakby ktoś latami stawał tu w tym samym miejscu.",
+     "journal": "Pod Łukiem bruk ma trzy wytarte bruzdy. Ktoś bardzo długo stał tu na straży."},
+    {"id": "pool", "cell": [23, 9], "text": "W wodzie odbija się brama, której nie ma za twoimi plecami. Kiedy mrugasz, odbicie znika.",
+     "journal": "W sadzawce na targu zobaczyłem odbicie bramy, której tam nie ma."},
+    {"id": "alley_marks", "cell": [37, 9], "text": "Na murze zaułka widać trzy wyblakłe nacięcia, takie same jak znak na twojej dłoni.",
+     "journal": "Na murze wschodniego zaułka ktoś wyciął ten sam znak, który noszę na dłoni."},
+    {"id": "warehouse_dust", "cell": [33, 14], "text": "W pyle na podłodze magazynu ktoś rysował trzy kreski, raz po raz, jakby uczył się ich na pamięć.",
+     "journal": "Rozplatacze rysują w pyle mój znak. Ktoś z nich wie, kim byłem."}
+  ],
+  "quest_markers": {
+    "wanderer": {
+      "trace": ["lis"]
+    },
+    "key": {
+      "": [
+        "hask",
+        "mirela"
+      ],
+      "started": [
+        "kwit",
+        "pchla",
+        "lis"
+      ],
+      "lead_warehouse": [
+        "odzwierny",
+        "backdoor"
+      ],
+      "has_key": [
+        "mirela",
+        "arch"
+      ]
+    }
+  }
 }

@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: 2026 Rafal Warzycha
+# SPDX-License-Identifier: MIT
 extends Node
 ## Język gry (autoload „Loc”). Polski jest językiem źródłowym: napisy w kodzie i danych są po polsku,
 ## a tłumaczenie to nakładka:

@@ -1,3 +1,5 @@
+// SPDX-FileCopyrightText: 2026 Rafal Warzycha
+// SPDX-License-Identifier: MIT
 shader_type spatial;
 // Makieta „czytelna dla malarza” (tylko zrzuty do malowania): bruk, tynk z oknami, miedziany dach, kamienny mur.
 // kind: 0 bruk, 1 dom, 2 mur, 3 bruk z rdzą
@@ -18,9 +20,9 @@ void fragment() {
 		col = mix(vec3(0.16), vec3(v, v, v * 1.05), mortar);
 		if (kind == 3) col = mix(col, vec3(0.55, 0.25, 0.10), 0.55);
 	} else if (kind == 1) {
-		if (n.y > 0.5) {                           // dach: pasy blachy w kolorze śniedzi
+		if (n.y > 0.5) {                           // dach: rzędy rdzawoczerwonej dachówki (kontrast z szarym brukiem)
 			float stripe = step(0.15, fract(w.x * 3.0 + w.z * 3.0));
-			col = mix(vec3(0.18, 0.30, 0.28), vec3(0.32, 0.55, 0.50), stripe * (0.7 + 0.3 * h21(floor(w.xz * 2.0))));
+			col = mix(vec3(0.30, 0.10, 0.06), vec3(0.62, 0.24, 0.12), stripe * (0.7 + 0.3 * h21(floor(w.xz * 2.0))));
 		} else {                                   // ściana: tynk + rząd okien co 1 m, ciemniejszy cokół
 			float u = abs(n.x) > 0.5 ? w.z : w.x;
 			float fu = fract(u);
