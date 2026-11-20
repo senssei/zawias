@@ -36,6 +36,7 @@
     "arcana_fail": {
       "speaker": "Lis",
       "text": "Litery uciekają spod twojego wzroku i zbijają się w kącie strony. Lis zamyka księgę. „Nie każda opowieść chce być czytana”.",
+      "effects": [{"journal": "Zapiski o kluczu wymknęły mi się spod wzroku. Może Mirela powie, co ten klucz naprawdę otwiera, albo runy na Łuku bez drzwi."}],
       "choices": [{"text": "Szkoda.", "next": "start"}]
     },
     "story": {

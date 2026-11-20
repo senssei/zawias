@@ -366,6 +366,16 @@
       "shape": "chest"
     }
   ],
+  "loot": [
+    {"id": "loot_rain_barrel", "name": "Beczka na deszczówkę", "pos": [7, 17], "shape": "barrel",
+     "text": "Na dnie beczki, pod warstwą rdzawej wody, ktoś przywiązał sakiewkę.", "effects": [{"gold": 8}]},
+    {"id": "loot_warehouse_crate", "name": "Skrzynka pod magazynem", "pos": [29, 11], "shape": "crate",
+     "text": "Między szmatami leży zakorkowana fiolka z czerwonym płynem.", "effects": [{"give_item": "potion_healing"}]},
+    {"id": "loot_courier_bag", "name": "Porzucona torba", "pos": [37, 10], "shape": "satchel",
+     "text": "Torba kuriera Zapisanych, rozcięta nożem. Ktoś przeszukał ją przed tobą, ale przeoczył kilka monet w podszewce.", "effects": [{"gold": 12}]},
+    {"id": "loot_office_barrel", "name": "Beczka przy Kancelarii", "pos": [1, 5], "shape": "barrel",
+     "text": "Pod pokrywą leżą zapomniane monety, pewnie czyjaś łapówka, która nie dotarła do adresata.", "effects": [{"gold": 5}]}
+  ],
   "triggers": [
     {
       "id": "ambush",
@@ -387,13 +397,6 @@
     }
   ],
   "decor": [
-    {
-      "id": "barrel",
-      "pos": [
-        1,
-        5
-      ]
-    },
     {
       "id": "barrel",
       "pos": [
@@ -430,24 +433,10 @@
       ]
     },
     {
-      "id": "crate",
-      "pos": [
-        29,
-        11
-      ]
-    },
-    {
       "id": "barrel",
       "pos": [
         29,
         13
-      ]
-    },
-    {
-      "id": "barrel",
-      "pos": [
-        7,
-        17
       ]
     }
   ],

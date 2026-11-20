@@ -396,12 +396,18 @@
 "Cel zadania": "Quest target",
 "Zamknięte": "Locked",
 "Obiekty": "Objects",
-"Kliknij miejsce na mapie, żeby tam pójść. Ciemne pola są jeszcze nieodkryte.": "Click a place on the map to walk there. Dark areas are still unexplored.",
 "Narrator czyta opisy w dialogach": "Narrator reads the descriptions in dialogue",
 "Steruj towarzyszami w walce": "Control companions in combat",
 "Wyłączone: towarzysze walczą sami. Zmiana działa od następnej walki.": "Off: companions fight on their own. Takes effect from the next fight.",
 "%s dołącza do drużyny.": "%s joins the party.",
 "%s odchodzi z drużyny.": "%s leaves the party.",
 "%s osiąga poziom %d.": "%s reaches level %d.",
-"%s podnosi się z trudem (1 PW).": "%s gets up with difficulty (1 HP)."
+"%s podnosi się z trudem (1 PW).": "%s gets up with difficulty (1 HP).",
+"%s: nic tu już nie ma.": "%s: nothing left here.",
+"Łup: %s": "Loot: %s",
+"Łupy": "Loot",
+"Kliknij miejsce na mapie, żeby tam pójść. Ciemne pola skrywa mgła ze Szczeliny: rzednieje tam, gdzie spojrzysz.": "Click a place on the map to go there. Dark areas are hidden by mist from the Rift: it thins wherever you look.",
+"SUKCES Z NADDATKIEM": "SUCCESS, AND MORE",
+"SUKCES, ALE…": "SUCCESS, BUT…",
+"PORAŻKA, ALE…": "FAILURE, BUT…"
 }

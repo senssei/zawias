@@ -12,7 +12,8 @@
         {"text": "Bywaj.", "end": true},
         {"text": "[Oddaj kontrakt Kwita] Oczyść wschodni zaułek z ludzi Rozplataczy.", "if": {"has_item": "kwit_contract", "not_flag": "ambush_done"}, "next": "clear_alley"},
         {"text": "Czy brama zawsze zostawia taki ślad na dłoni?", "if": {"not_quest": "wanderer", "not_flag": "key_obtained"}, "next": "wanderer_trace"},
-        {"text": "[Zapisani są ci przychylni] Kwit mówi, że płacę w terminie. Wyślesz patrol do wschodniego zaułka?", "if": {"reputation": ["inscribed", "friendly"], "flag": "asked_about_key", "not_flag": "ambush_done"}, "next": "patrol_alley"}
+        {"text": "[Zapisani są ci przychylni] Kwit mówi, że płacę w terminie. Wyślesz patrol do wschodniego zaułka?", "if": {"reputation": ["inscribed", "friendly"], "flag": "asked_about_key", "not_flag": "ambush_done"}, "next": "patrol_alley"},
+        {"text": "Czemu poza targiem wszystko tonie w tej fioletowej mgle?", "next": "fog"}
       ]
     },
     "patrol_alley": {
@@ -20,6 +21,12 @@
       "text": "Hask gwiżdże na dwóch strażników z pieczęcią pióra. „Kancelaria nie lubi, gdy jej dłużnikom coś się dzieje. Zaułek będzie czysty, zanim dojdziesz do magazynu”.",
       "effects": [{"set_flag": "ambush_done"}, {"journal": "Hask wysłał patrol Zapisanych do wschodniego zaułka. Droga do tylnych drzwi magazynu jest wolna."}],
       "choices": [{"text": "Dziękuję.", "next": "start"}]
+    },
+    "fog": {
+      "speaker": "Hask",
+      "text": "„Mgła ze Szczeliny. Zawias wisi nad pustką między planami, a pustka wciska się wszędzie, gdzie nikt nie patrzy. Miasto trzyma się kupy tylko dlatego, że ktoś je pamięta. Moja brama, mój targ, mój zaułek. Co zobaczysz i zapamiętasz, to stoi. Reszta to opar i domysły, więc nowi widzą głównie mgłę”. Hask mruży oczy. „Tylko że wokół ciebie jest jej jakoś dziwnie dużo. Jakby miasto cię nie pamiętało”.",
+      "effects": [{"journal": "Hask mówi, że fioletowa mgła to pustka ze Szczeliny między planami. Rzednieje tam, gdzie ktoś patrzy i pamięta. Wokół mnie jest jej podejrzanie dużo, jakby miasto mnie nie pamiętało."}],
+      "choices": [{"text": "W takim razie będę patrzeć uważnie.", "next": "start"}]
     },
     "where": {
       "speaker": "Hask",
@@ -48,6 +55,7 @@
     "insight_fail": {
       "speaker": "Hask",
       "text": "„Gryzie mnie to, że zadajesz za dużo pytań”. Hask poprawia chwyt na włóczni.",
+      "effects": [{"journal": "Hask coś wie, ale Zapisani nie lubią pytań. Na targu chętniej gadają inni: notariusz Kwit albo mały Pchła."}],
       "choices": [{"text": "Dobrze, już dobrze.", "next": "start"}]
     },
     "wanderer_trace": {

@@ -7,7 +7,8 @@
       "text": "Zardzewiałe, okute drzwi z ciężkim zamkiem. Zza nich dochodzi ciche chrobotanie, jakby ktoś drapał pazurami metal.",
       "choices": [
         {"text": "Otwórz zamek wytrychem.", "if": {"has_item": "thieves_tools", "not_flag": "lock_failed"},
-         "check": {"skill": "sleight_of_hand", "dc": 13, "success": "picked", "fail": "lock_fail"}},
+         "check": {"skill": "sleight_of_hand", "dc": 13, "success": "picked", "fail": "lock_fail",
+          "gain_effects": [{"set_flag": "overheard_guards"}, {"journal": "Zamek nie puścił, ale przez szparę podsłuchałem strażników: warta przy skrzyni zmienia się, gdy bije dzwon. Łatwiej będzie przemknąć."}]}},
         {"text": "Wyważ drzwi barkiem.", "if": {"not_flag": "force_failed"},
          "check": {"ability": "str", "dc": 15, "success": "forced", "fail": "force_fail"}},
         {"text": "[Odejdź]", "end": true}
@@ -19,7 +20,7 @@
       "effects": [{"set_flag": "back_open"}],
       "choices": [
         {"text": "Zakradnij się do skrzyni i wyjmij klucz.",
-         "check": {"skill": "stealth", "dc": 13, "success": "stolen", "fail": "caught"}},
+         "check": {"skill": "stealth", "dc": 13, "adv_if": {"flag": "overheard_guards"}, "success": "stolen", "fail": "caught"}},
         {"text": "Wycofaj się po cichu i zostaw drzwi uchylone.", "end": true}
       ]
     },

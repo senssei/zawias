@@ -953,10 +953,10 @@ func open_map() -> void:
 	legend.fit_content = true
 	legend.scroll_active = false
 	legend.add_theme_font_size_override("normal_font_size", 15)
-	legend.text = "[color=#5fa8d3]●[/color] %s    [color=#e8c98a]●[/color] %s    [color=%s]◇[/color] %s    [color=#e0634f]✕[/color] %s    [color=#a39a8c]■[/color] %s" % [
-		Loc.t("Ty"), Loc.t("Postacie"), UI.BRASS.to_html(false), Loc.t("Cel zadania"), Loc.t("Zamknięte"), Loc.t("Obiekty")]
+	legend.text = "[color=#5fa8d3]●[/color] %s    [color=#e8c98a]●[/color] %s    [color=%s]◇[/color] %s    [color=#e0634f]✕[/color] %s    [color=#a39a8c]■[/color] %s    [color=#f2c14e]✦[/color] %s" % [
+		Loc.t("Ty"), Loc.t("Postacie"), UI.BRASS.to_html(false), Loc.t("Cel zadania"), Loc.t("Zamknięte"), Loc.t("Obiekty"), Loc.t("Łupy")]
 	window_body.add_child(legend)
-	window_body.add_child(UI.label_w(Loc.t("Kliknij miejsce na mapie, żeby tam pójść. Ciemne pola są jeszcze nieodkryte."), 14, UI.MUTED))
+	window_body.add_child(UI.label_w(Loc.t("Kliknij miejsce na mapie, żeby tam pójść. Ciemne pola skrywa mgła ze Szczeliny: rzednieje tam, gdzie spojrzysz."), 14, UI.MUTED))
 
 
 func open_end_screen(title: String, text: String, buttons: Array) -> void:

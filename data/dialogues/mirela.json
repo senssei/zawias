@@ -292,6 +292,7 @@
   "truth_fail": {
    "speaker": "Mirela",
    "text": "„Otwiera to, co ma otworzyć. Jestem kluczarką, a nie filozofką”. Wyciąga rękę.",
+   "effects": [{"journal": "Mirela nie chce powiedzieć, co otwiera Klucz bez drzwi. Runy na Łuku bez drzwi albo zapiski Lis w Archiwum Echa mogą to zdradzić."}],
    "choices": [
     {
      "text": "Oto twój klucz.",

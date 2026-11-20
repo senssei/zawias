@@ -25,11 +25,9 @@ Otwarte prace. Zrobione przenosimy do ADR-ów albo dokumentacji, a stąd usuwamy
 
 Kolejność: 1, potem 2, a 3 i 4 przy następnym rozdziale. Każda dostaje ADR przed wdrożeniem.
 
-- [ ] **1. Stopień sukcesu: korzyść i cena.** Wynik o 5 i więcej ponad ST daje korzyść, a o 5 i więcej poniżej
-  ST komplikację, ale też coś w zamian. Nowe gałęzie testu obok `success_effects`/`fail_effects`, np.
-  `success_cost` i `fail_gain`. Przykłady: przekonujesz Odźwiernego, ale zapamiętuje twoją twarz (reputacja);
-  nie otwierasz zamka, ale słyszysz rozmowę za drzwiami (trop). Realizuje zasadę 4. Koszt: dane i
-  rozszerzenie `DialogueRunner.roll_check`.
+- [x] **1. Stopień sukcesu: korzyść i cena.** Wdrożone 2026-11-20 jako cztery pasy według zapasu: korzyść,
+  cena, coś w zamian, zwykła porażka ([ADR 0008](decisions/0008-degree-of-success.md)). Dalej: więcej testów
+  z pasami w kolejnych dialogach.
 - [ ] **2. Motywacje postaci: siła, wada, pragnienie, lęk.** Gracz wybiera po jednej w kreatorze, a dialogi mają
   opcje odblokowane motywacją (warunek jak `class` czy `skill_prof`). Działanie zgodne z motywacją daje
   Heroiczną inspirację. Pasuje do tematu tożsamości: obecne motywacje zderzają się w finale z tym, kim był
@@ -54,14 +52,9 @@ Fantasy Flight / Edge. Wdrażamy pod własnymi nazwami (np. „cena” zamiast �
 - [x] `story lint`
 - [x] `story keys`
 - [x] `story paths`
-- [ ] Decyzja: czy magazyn ma być dostępny na 1. poziomie bez PD (groźba wobec Odźwiernego działa od startu;
-  wykrył to `story paths`)
 - [x] `story balance` (macierz poziom × klasa × solo/Lis × spotkanie, `--strict` łapie odwróconą kolejność poziomów)
-- [x] `story report` (do obejrzenia i dopracowania wyglądu)
-- [ ] Decyzja balansowa: z Lis zasadzka na 1. poziomie jest trudniejsza niż solo (czarodziej Normalny 10/16
-  zamiast 13/16), bo skalowanie solo się wyłącza, a Lis ma mało PW
-- [ ] Decyzja balansowa: łotrzyk i kapłan solo mają magazyn łatwiejszy na Normalnym niż na Opowieści
-  (mefit walczy na Opowieści, ADR 0001)
+- [x] Decyzje o 1. poziomie: magazyn jako skrót z ostrzeżeniem, Lis bez zmian, mefit bez zmian ([ADR 0007](decisions/0007-level-one-risks.md))
+- [x] `story report` (karty stanu, decyzje, mapa cieplna balansu, porażki bez wskazówki)
 - [ ] Brief i rozszerzona mapa odkryć dla rozdziału „Kto rozporządza przejściami?”
 - [ ] **Pipeline cutscenek.** Scenariusz sceny w danych: ujęcia, kamera, kto mówi i kwestie z dialogów,
   ruch aktorów, efekty, muzyka i dźwięk. Z niego powstaje animatik (kadry jak w `storyboard review`, z głosami),

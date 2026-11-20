@@ -30,3 +30,11 @@ tools/pipeline/pipeline.sh story check
 `data/story_arcs.json` przypisuje etapy do scen dialogowych, które je ustawiają. Przy kolejnym rozdziale najpierw zapisz odkrycie i wynikającą z niego decyzję. Dodaj scenę w polskim JSON, zaktualizuj manifest osi i etap dziennika, a potem przejdź scenę z tropem i bez niego. Po akceptacji tekstu przygotuj nakładkę angielską i nagrania.
 
 W playteście zapytaj gracza, kiedy podejrzewał związek z Wędrowcem, co ostatecznie go o tym przekonało i dlaczego oddał klucz lub przekroczył Łuk. Oddzielnie sprawdź, czy osoba, która pominęła Haska i Lis, rozumie finał bez dodatkowego wyjaśnienia.
+
+## Mgła ze Szczeliny
+
+Fioletowa mgła wojny ma uzasadnienie w świecie. To pustka ze Szczeliny między planami, która wciska się tam, gdzie
+nikt nie patrzy. Miasto stoi, bo ktoś je pamięta, więc mgła rzednieje tam, gdzie postać spojrzy. Wokół Wędrowca
+jest jej więcej niż wokół innych przybyszów, bo oddając bramie imię, Wędrowiec wypadł z pamięci miasta. Hask mówi
+o tym przy bramie (`hask/fog`). Szepty z mgły i ślady w niej to więc miasto, które próbuje go sobie przypomnieć.
+

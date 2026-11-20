@@ -836,7 +836,57 @@ func _spawn_actors() -> void:
 		a.npc_data = o
 		a.place(Vector2i(int(o.pos[0]), int(o.pos[1])))
 		actors[o.id] = a
+	for l in map.get("loot", []):
+		_spawn_loot(l)
 	_sync_followers(true)
+
+
+# ================================================================== łupy (pole "loot" mapy)
+## Pojemniki do przeszukania i przedmioty na ziemi: {"id", "name", "pos", "shape": barrel|crate|satchel,
+## "text" (opis znaleziska), "effects" (jak w dialogach: gold, give_item, journal...)}. Przeszukany = flaga looted_<id>.
+const LOOT_XRAY := Color(1.0, 0.8, 0.3, 0.5)
+const LOOT_XRAY_EMPTY := Color(0.85, 0.75, 0.6, 0.2)
+const LOOT_MODELS := ["barrel", "crate"]
+
+
+static func loot_flag(id_: String) -> String:
+	return "looted_" + id_
+
+
+func _spawn_loot(l: Dictionary) -> void:
+	var shape: String = l.get("shape", "satchel")
+	var looted := GameState.has_flag(loot_flag(l.id))
+	if looted and shape == "satchel":
+		return                                   # przedmiot z ziemi zabrany: nic nie zostaje
+	var a := Actor.new()
+	add_child(a)
+	a.is_object = true
+	a.setup(l.id, l.name, Color("#7c7469"), shape)
+	if shape in LOOT_MODELS:
+		a.try_load_model([shape], PROP_DIR, 0.0)
+	a.npc_data = l.duplicate()
+	a.npc_data["loot"] = true
+	a.set_xray_color(LOOT_XRAY_EMPTY if looted else LOOT_XRAY)
+	a.place(Vector2i(int(l.pos[0]), int(l.pos[1])))
+	actors[l.id] = a
+
+
+func _take_loot(a: Actor) -> void:
+	var flag := loot_flag(a.actor_id)
+	if GameState.has_flag(flag):
+		GameState.add_log(Loc.t("%s: nic tu już nie ma.") % a.display_name)
+		return
+	Audio.sfx("chest_open", -3.0)
+	var text: String = a.npc_data.get("text", "")
+	if text != "":
+		GameState.add_log(text)
+	GameState.apply_effects(a.npc_data.get("effects", []) + [{"set_flag": flag}])
+	hud.show_toast(Loc.t("Łup: %s") % a.display_name, UI.BRASS)
+	if a.shape == "satchel":
+		actors.erase(a.actor_id)
+		a.queue_free()
+	else:
+		a.set_xray_color(LOOT_XRAY_EMPTY)
 
 
 func _actor_at(c: Vector2i) -> Actor:
@@ -1431,7 +1481,11 @@ func _map_markers() -> Array:
 		if not is_instance_valid(a) or not a.visible:
 			continue
 		var kind := "npc"
-		if a.is_object:
+		if a.npc_data.get("loot", false):
+			if GameState.has_flag(loot_flag(a.actor_id)):
+				continue                         # przeszukany: znika z mapy
+			kind = "loot"
+		elif a.is_object:
 			kind = "object"
 		elif _is_follower(a):
 			kind = "ally"
@@ -1480,6 +1534,9 @@ func _check_triggers(cell: Vector2i) -> bool:
 
 
 func _interact(a: Actor) -> void:
+	if a.npc_data.get("loot", false):
+		_take_loot(a)
+		return
 	var dlg: String = a.npc_data.get("dialogue", "")
 	if a.is_object:
 		Audio.sfx({"chest": "chest_open", "arch": "portal"}.get(a.actor_id, "ui_open"), -3.0)
@@ -1499,11 +1556,11 @@ func _open_dialogue(id_: String) -> void:
 	dialogue.node_shown.connect(func(node, choices):
 		hud.show_dialogue(node.get("speaker", ""), node.get("text", ""), choices, node.get("portrait", pid))
 		Audio.voice_line(id_, dialogue.current_id, node))
-	dialogue.check_rolled.connect(func(text, ok, natural):
+	dialogue.check_rolled.connect(func(text, ok, natural, band):
 		Audio.sfx("dice")
 		GameState.add_log(text)
 		hud.show_d20(natural, GameState.player.name)
-		hud.show_toast(Loc.t("SUKCES") if ok else Loc.t("PORAŻKA"), UI.GOOD if ok else UI.BAD))
+		hud.show_toast(_check_toast(ok, band), UI.GOOD if ok and band != "cost" else (UI.BRASS if band != "" else UI.BAD)))
 	dialogue.finished.connect(_on_dialogue_finished)
 	mode = "dialogue"
 	_hush_all()
@@ -1516,6 +1573,18 @@ func _open_dialogue(id_: String) -> void:
 	hud.show_tooltip("", Vector2.ZERO)
 	if not dialogue.start(id_):
 		_on_dialogue_finished()
+
+
+## Napis po teście; pas pokazujemy tylko wtedy, gdy coś robi (docs/decisions/0008).
+static func _check_toast(ok: bool, band: String) -> String:
+	match band:
+		"boon":
+			return Loc.t("SUKCES Z NADDATKIEM")
+		"cost":
+			return Loc.t("SUKCES, ALE…")
+		"gain":
+			return Loc.t("PORAŻKA, ALE…")
+	return Loc.t("SUKCES") if ok else Loc.t("PORAŻKA")
 
 
 ## Postać, z którą toczy się dialog (NPC z polem "dialogue" albo aktor o tym id).

@@ -48,3 +48,5 @@ Option 3, plus more XP for the ambush (100 → 250) so the combat route enters t
   level 2 at the warehouse). At acceptance it measured 10/12 and 9/12.
 - To re-measure, temporarily loop `_fight` over classes and seeds as described above; the test player is weaker
   than a human, so treat results as a lower bound and confirm in playtests.
+- 2026-11-20: re-measured with 64 seeds and a statistical threshold; Story stays easier or within noise.
+  Numbers and the level-1 questions are in [ADR 0007](0007-level-one-risks.md).

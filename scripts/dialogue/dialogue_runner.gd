@@ -6,12 +6,14 @@ extends RefCounted
 ##
 ## Format: {"start": "id", "nodes": {"id": {"speaker", "text", "effects": [], "choices": [
 ##   {"text", "next", "if": {...}, "effects": [], "once": bool,
-##    "check": {"skill"|"ability", "dc", "success", "fail"}, "end": true}
+##    "check": {"skill"|"ability", "dc", "success", "fail", "success_effects", "fail_effects",
+##              "boon_effects", "cost_effects", "gain_effects"}, "end": true}
+## Stopień sukcesu (docs/decisions/0008): boon = sukces o 5+, cost = sukces o 0–4, gain = porażka o 1–4.
 ## ]}}}
 ## Węzeł może mieć "redirect": [{"if": {...}, "next": "id"}] i wtedy przekierowuje automatycznie.
 
 signal node_shown(node: Dictionary, choices: Array)
-signal check_rolled(text: String, success: bool, natural: int)
+signal check_rolled(text: String, success: bool, natural: int, band: String)   # band: "" gdy pas nic nie robi
 signal finished
 
 var data := {}
@@ -104,8 +106,11 @@ func choose(index: int) -> void:
 	state.apply_effects(ch.get("effects", []))
 	if ch.has("check"):
 		var res := roll_check(ch.check)
-		check_rolled.emit(res.text, res.success, int(res.natural))
+		var band := check_band(res)
+		var extra: Array = ch.check.get(band + "_effects", []) if band != "fail" else []
+		check_rolled.emit(res.text, res.success, int(res.natural), band if not extra.is_empty() else "")
 		state.apply_effects(ch.check.get("success_effects" if res.success else "fail_effects", []))
+		state.apply_effects(extra)
 		goto(ch.check.success if res.success else ch.check.fail)
 		return
 	if ch.get("end", false) or not ch.has("next"):
@@ -138,3 +143,21 @@ func roll_check(chk: Dictionary) -> Dictionary:
 		res = res2
 	res.text = text
 	return res
+
+
+const BOON_MARGIN := 5   # sukces o tyle i więcej = korzyść; porażka o mniej = coś w zamian
+
+
+## Pas wyniku testu według zapasu (suma − ST): "boon" | "cost" | "gain" | "fail".
+static func check_band(res: Dictionary) -> String:
+	var margin := int(res.total) - int(res.dc)
+	if res.success:
+		return "boon" if margin >= BOON_MARGIN else "cost"
+	return "gain" if margin > -BOON_MARGIN else "fail"
+
+
+## Naturalny wynik k20, który da w teście zapas `margin` (do wymuszania rzutów w narzędziach).
+static func natural_for_margin(pc: Creature, chk: Dictionary, margin: int) -> int:
+	var bonus := Checks.skill_bonus(pc, chk.skill) if chk.has("skill") else pc.mod(chk.ability)
+	return clampi(int(chk.dc) + margin - bonus, 1, 20)
+

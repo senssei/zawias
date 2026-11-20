@@ -256,7 +256,7 @@ func _walk(r: DialogueRunner, dlg: String, node: String, snap: Dictionary, steps
 	for ch in r.visible_choices():
 		var i: int = ch.index
 		_seen_choices["%s/%s/%d" % [dlg, node, i]] = true
-		var variants: Array = [SUCCESS, FAIL] if ch.choice.has("check") else [[]]
+		var variants: Array = _check_variants(ch.choice) if ch.choice.has("check") else [[]]
 		for dice in variants:
 			_restore(snap)
 			r.current_id = node
@@ -271,7 +271,7 @@ func _walk(r: DialogueRunner, dlg: String, node: String, snap: Dictionary, steps
 			Dice.clear_forced()
 			gs.world_request.disconnect(on_req)
 			r.finished.disconnect(on_fin)
-			var step := "%s:%s#%d%s" % [dlg, node, i, ("+" if dice == SUCCESS else "-") if not dice.is_empty() else ""]
+			var step := "%s:%s#%d%s" % [dlg, node, i, _variant_mark(dice)]
 			var combat := ""
 			var ending := ""
 			for e in requests:
@@ -447,3 +447,33 @@ func _dialogue_ids() -> Array:
 			if e.get("dialogue", "") != "" and not e.dialogue in out:
 				out.append(e.dialogue)
 	return out
+
+
+## Rzuty do sprawdzenia przy teście: k20 = 20 i 1, a przy pasach cost/gain także sukces i porażka o włos
+## (docs/decisions/0008). Wynik wymuszony sześć razy, bo przewaga i Heroiczna inspiracja biorą kolejne kości.
+func _check_variants(choice: Dictionary) -> Array:
+	var out: Array = [SUCCESS, FAIL]
+	var chk: Dictionary = choice.check
+	if chk.has("cost_effects"):
+		out.append(_repeat(DialogueRunner.natural_for_margin(gs.player, chk, 1)))
+	if chk.has("gain_effects"):
+		out.append(_repeat(DialogueRunner.natural_for_margin(gs.player, chk, -1)))
+	return out
+
+
+static func _repeat(n: int) -> Array:
+	var a := []
+	for k in 6:
+		a.append(n)
+	return a
+
+
+static func _variant_mark(dice: Array) -> String:
+	if dice.is_empty():
+		return ""
+	if dice == SUCCESS:
+		return "+"
+	if dice == FAIL:
+		return "-"
+	return "~"
+

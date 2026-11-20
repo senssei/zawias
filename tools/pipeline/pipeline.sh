@@ -46,7 +46,7 @@
 #       klucze tłumaczeń i nagrań okrzyków zgodne z polskim tekstem (przesunięte, nieaktualne, bez źródła)
 #   ./pipeline.sh story paths [--classes a,b] [--difficulty normal] [--max-states 300] [--walks 200] [--json plik]
 #       przejścia gry w Godot: finały, PD i poziom przed walkami, ślepe zaułki, wybory niewidoczne w żadnym przebiegu
-#   ./pipeline.sh story balance [--classes a,b] [--seeds 16] [--json plik] [--strict]
+#   ./pipeline.sh story balance [--classes a,b] [--seeds 64] [--json plik] [--strict]
 #       macierz walk: poziom trudności × klasa × solo/z Lis × spotkanie (tabela Markdown do ADR)
 #   ./pipeline.sh story report --out <katalog> [--paths-json p] [--balance-json b]
 #       jedna strona HTML do przeglądu: kontrole, oś, frakcje, porażki, przejścia, balans, decyzje

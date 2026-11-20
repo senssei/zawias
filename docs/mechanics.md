@@ -11,6 +11,12 @@ How the game plays, with pointers to the code and data that implement each rule.
 - **Heroic Inspiration** (humans: `resourceful`, also the `inspiration` effect) is spent automatically on a failed
   check and rerolls it once (`DialogueRunner.roll_check`). A long rest restores it.
 - `once` choices disappear after use; the failure branch must leave another way forward (see Journal below).
+- **Degree of success** ([ADR 0008](decisions/0008-degree-of-success.md)). The margin (total − DC) picks a band:
+  success by 5+ is a *boon*, success by 0–4 a *cost*, failure by 1–4 a *gain*, failure by 5+ a plain failure.
+  A check may add `boon_effects`, `cost_effects` and `gain_effects`; the toast names the band only when it does
+  something ("SUCCESS, AND MORE", "SUCCESS, BUT…", "FAILURE, BUT…"). Rusty Market uses it at the Doorkeeper
+  (cost: Unravelers wary; boon: Heroic Inspiration), the back-door lock (gain: advantage on the stealth check
+  inside), Kwit's trade (cost: 5 gp) and the Arch runes (gain: a journal clue).
 - A natural 1 or 20 shows a badge with the roller's name (`HUD.show_d20`), in dialogue and in combat. With a window
   open (map, journal) the badge moves below or above it.
 
@@ -55,6 +61,12 @@ warehouse loses the rust mephit on Normal. [ADR 0001](decisions/0001-solo-encoun
 
 ## Exploration and fog of war
 
+**In the story** the fog is the void of the Rift seeping into the city. Zawias holds together because people
+remember it, so the mist thins wherever someone looks and remembers; newcomers mostly see mist. Hask explains it at
+the gate (`hask/fog`) and adds a hook: there is oddly much of it around the player, as if the city did not
+remember them, because the Wanderer gave the gate their name ([wanderer.md](wanderer.md)). The map's hint line
+says the same in one sentence.
+
 - **Revealing.** On every step the cells within 8 tiles in line of sight are revealed (`World._reveal_around`).
   Seeing a wall of a named building reveals the whole building. Cells hidden behind a stall or lamp are patched:
   a cell with at least 5 of 8 revealed neighbours is revealed too. The state is saved (`GameState.explored`).
@@ -65,6 +77,14 @@ warehouse loses the rust mephit on Normal. [ADR 0001](decisions/0001-solo-encoun
   a faint moving haze. NPCs, objects and 3D props on unexplored cells are hidden but stay in the world (map,
   routes, clicks work). `--nofog` turns it off. [ADR 0002](decisions/0002-fog-of-war-3d.md).
 
+## Loot
+
+Containers and dropped items from the map's `loot` list (Rusty Market: two barrels, a crate, a courier's bag;
+29 gold and one potion of healing in total). They show on the map and minimap as gold four-pointed stars until
+searched, and behind buildings as a gold silhouette (`xray.gdshader` with `push` 0.15 m instead of 1 m, because the
+painted cobbles can sit a little above the real floor and would hide a low object together with its silhouette).
+Searching takes no check and no time; the combat sims never loot, so balance numbers exclude it.
+
 ## Factions
 
 Three factions (`data/factions.json`), each `wary`, `neutral` or `friendly`. The journal shows each faction's
@@ -74,9 +94,13 @@ attitude, who they are and what the attitude changes right now. [ADR 0005](decis
 |---|---|---|---|---|
 | Inscribed (Kwit, Hask) | paying Kwit | Kwit's contract bluff exposed | cheaper potion; Hask's patrol clears the east alley on request (no fight, no XP) | risk surcharge; a patrol tails you, so the Doorkeeper's "message from above" lie is DC 17 instead of 12 |
 | Echo (Lis) | telling Lis your story | none yet | advantage on reading the key records | (Archive closed: no source yet) |
-| Unravelers (Doorkeeper, Sever) | Rust Token shown at the door; Sever convinced | Sever intimidated; warehouse fight won | with the Rust Token, being caught at the chest or back door ends without a fight | the Doorkeeper no longer listens to persuasion |
+| Unravelers (Doorkeeper, Sever) | Rust Token shown at the door; Sever convinced | Sever intimidated; warehouse fight won; threatening the Doorkeeper and backing off | with the Rust Token, being caught at the chest or back door ends without a fight | the Doorkeeper no longer listens to persuasion |
 
 NPCs also call out lines that depend on the attitude (Hask, Kwit, Doorkeeper, Lis).
+
+**Threat shortcut.** Threatening the Doorkeeper works from level 1 (the warehouse is tuned for level 2). He whistles
+for help first (`odzwierny/threat`): fight now, or back off at the cost of the Unravelers turning wary.
+[ADR 0007](decisions/0007-level-one-risks.md).
 
 ## Whispers and memories in the fog
 

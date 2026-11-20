@@ -169,6 +169,11 @@ class StoryCheck:
                     for result in ("success", "fail"):
                         transition(f"{entry}/check/{result}", check.get(result), outgoing)
                         self.effects(f"{entry}/check/{result}_effects", check.get(f"{result}_effects"))
+                    for band in ("boon", "cost", "gain"):   # stopień sukcesu (docs/decisions/0008)
+                        self.effects(f"{entry}/check/{band}_effects", check.get(f"{band}_effects"))
+                    for key in check:
+                        if key.endswith("_effects") and key.split("_")[0] not in ("success", "fail", "boon", "cost", "gain"):
+                            self.errors.append(f"{entry}/check/{key}: nieznany pas testu")
 
         reachable = self.reachable(edges, starts)
         for node in sorted(nodes.keys() - reachable):
@@ -202,6 +207,17 @@ class StoryCheck:
                 self.condition(f"{location}/if", entry.get("if"))
                 if "route" in entry:
                     self.condition(f"{location}/route/if", entry["route"].get("if"))
+        for index, entry in enumerate(data.get("loot", [])):
+            location = f"{path}/loot/{index}"
+            if not entry.get("id") or not entry.get("name") or not isinstance(entry.get("pos"), list):
+                self.errors.append(f"{location}: wymagane pola id, name i pos")
+                continue
+            if entry["id"] in actors:
+                self.errors.append(f"{location}: identyfikator {entry['id']} już zajęty")
+            actors.add(entry["id"])
+            if entry.get("shape", "satchel") not in ("barrel", "crate", "satchel"):
+                self.errors.append(f"{location}/shape: nieznany kształt {entry.get('shape')}")
+            self.effects(f"{location}/effects", entry.get("effects"))
         for group in ("whispers", "memories"):
             for index, entry in enumerate(data.get(group, [])):
                 location = f"{path}/{group}/{index}"
@@ -295,10 +311,13 @@ class StoryCheck:
                 out.extend(node.get("effects", []))
                 for choice in node.get("choices", []):
                     out.extend(choice.get("effects", []))
+                    for key, value in choice.get("check", {}).items():
+                        if key.endswith("_effects"):
+                            out.extend(value)
         for encounter in self.encounters.values():
             out.extend(encounter.get("on_victory", []))
         for data in self.maps.values():
-            for entry in data.get("memories", []):
+            for entry in data.get("memories", []) + data.get("loot", []):
                 out.extend(entry.get("effects", []))
         return out
 
@@ -403,13 +422,24 @@ def balance_rows(classes, seeds, out=None):
         return json.loads(path.read_text(encoding="utf-8"))
 
 
+def clearly_worse(a, b):
+    """Czy wynik a jest gorszy od b o więcej niż 2 błędy standardowe (test różnicy proporcji, wspólne p).
+
+    Przy 16 ziarnach 14/16 kontra 16/16 to szum; dopiero przy 64 ziarnach różnice rzędu 10 punktów są istotne."""
+    na, nb = max(a["n"], 1), max(b["n"], 1)
+    pa, pb = a["wins"] / na, b["wins"] / nb
+    p = (a["wins"] + b["wins"]) / (na + nb)
+    se = (p * (1 - p) * (1 / na + 1 / nb)) ** 0.5
+    return se > 0 and pb - pa > 2 * se
+
+
 def balance_problems(rows):
-    """Odwrócona kolejność poziomów: Opowieść trudniejsza od Normalnego (z tolerancją 1 wygranej)."""
+    """Odwrócona kolejność poziomów: Opowieść wyraźnie trudniejsza od Normalnego (clearly_worse)."""
     cells = {(r["encounter"], r["class"], r["party"], r["difficulty"]): r for r in rows}
     out = []
     for (enc, cls, party, diff), r in cells.items():
         normal = cells.get((enc, cls, party, "normal"))
-        if diff == "story" and normal and r["wins"] + 1 < normal["wins"]:
+        if diff == "story" and normal and clearly_worse(r, normal):
             out.append(f"{enc} · {cls} · {party}: Opowieść {r['wins']}/{r['n']} < Normalny {normal['wins']}/{normal['n']}")
     return sorted(out)
 
@@ -505,7 +535,7 @@ def paths_command(args, check):
 def main():
     parser = argparse.ArgumentParser(prog="pipeline.sh story")
     parser.add_argument("command", choices=["check", "arc", "voice", "lint", "keys", "paths", "balance", "report"])
-    parser.add_argument("--seeds", type=int, default=16, help="balance: ziarna na komórkę macierzy")
+    parser.add_argument("--seeds", type=int, default=64, help="balance: ziarna na komórkę macierzy")
     parser.add_argument("--out", help="report: katalog raportu HTML")
     parser.add_argument("--paths-json", help="report: gotowy JSON z story paths (bez uruchamiania)")
     parser.add_argument("--balance-json", help="report: gotowy JSON z story balance (bez uruchamiania)")

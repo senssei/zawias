@@ -435,6 +435,20 @@
    }
   ]
  },
+ "barks/lis_10": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "This wall remembers you better than the Archive does. The key can feel it.",
+    "file": "lis_10_0.ogg",
+    "voice": "lis",
+    "sig": "c6b6c8a225b5",
+    "seconds": 5.45,
+    "seed": 505,
+    "wer": 0.0
+   }
+  ]
+ },
  "barks/lis_2": {
   "segments": [
    {
@@ -929,6 +943,40 @@
    }
   ]
  },
+ "hask/fog": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "Mist from the Rift. Zawias hangs over the void between the planes, and the void creeps in wherever nobody is looking. The city holds together only because someone remembers it. My gate, my market, my alley. What you see and remember stays standing. The rest is vapour and guesswork, so newcomers mostly see mist.",
+    "file": "fog_0.ogg",
+    "voice": "hask",
+    "sig": "d487def15cf2",
+    "seconds": 16.74,
+    "seed": 202,
+    "wer": 0.037
+   },
+   {
+    "who": "narrator",
+    "text": "Hask narrows his eyes.",
+    "file": "fog_1.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 1.97,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Only there's oddly much of it around you. As if the city doesn't remember you.",
+    "file": "fog_2.ogg",
+    "voice": "hask",
+    "sig": "d487def15cf2",
+    "seconds": 4.05,
+    "seed": 202,
+    "wer": 0.0
+   }
+  ]
+ },
  "hask/insight_fail": {
   "segments": [
    {
@@ -1064,6 +1112,92 @@
     "voice": "hask",
     "sig": "d487def15cf2",
     "seconds": 14.25
+   }
+  ]
+ },
+ "hidden_door/faded": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Only a pale crack in the shape of a door marks the wall. Without the key it is just stone.",
+    "file": "faded_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 6.12,
+    "seed": 909,
+    "wer": 0.0
+   }
+  ]
+ },
+ "hidden_door/inside_again": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The door stands in the wall as if it had always been there. The guardroom is silent and smells of cold ash.",
+    "file": "inside_again_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 7.43,
+    "seed": 909,
+    "wer": 0.0
+   }
+  ]
+ },
+ "hidden_door/opened": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The key turns in the air and the door becomes real. Behind it is a cramped guardroom: a cold hearth, a bench and a ledger of crossings open at the last page. The last entry is in your handwriting:",
+    "file": "opened_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 13.67,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "I refused passage to the Curator. The gate is not for those who want to close it behind them.",
+    "file": "opened_1.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 6.41,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "narrator",
+    "text": "Beneath it someone has added in fresher ink:",
+    "file": "opened_2.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 3.23,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "I remember. — C.",
+    "file": "opened_3.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 1.7,
+    "seed": 909,
+    "wer": 0.333
+   }
+  ]
+ },
+ "hidden_door/start": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The Key Without a Door tugs in your hand toward the smooth wall between the Keyworks and the warehouses. Like frost, the outline of a door appears on the stone, a door that wasn't there a moment ago.",
+    "file": "start_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 13.89,
+    "seed": 909,
+    "wer": 0.0
    }
   ]
  },
@@ -2000,6 +2134,30 @@
     "voice": "odzwierny",
     "sig": "ca7b9a659634",
     "seconds": 4.49
+   }
+  ]
+ },
+ "odzwierny/threat": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The Doorkeeper doesn't reach for a weapon. He whistles through his teeth, two short notes. Behind the door the talking stops, and then come footsteps, a lot of footsteps.",
+    "file": "threat_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 12.17,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Unravel me, you say? Come on, then. Let's see who falls apart first.",
+    "file": "threat_1.ogg",
+    "voice": "odzwierny",
+    "sig": "ca7b9a659634",
+    "seconds": 4.51,
+    "seed": 707,
+    "wer": 0.0
    }
   ]
  },

@@ -47,7 +47,7 @@ var shape := "humanoid"
 var _model_base_pos := Vector3.ZERO
 var _model_base_scale := Vector3.ONE
 const XRAY_SHADER := preload("res://shaders/xray.gdshader")
-var _xray: ShaderMaterial              # sylwetka za przeszkodą (postacie, nie obiekty)
+var _xray: ShaderMaterial              # sylwetka za przeszkodą (postacie, drzwi, skrzynie i łupy)
 
 
 static func cell_to_world(c: Vector2i) -> Vector3:
@@ -71,6 +71,12 @@ func setup(id_: String, name_: String, color: Color, shape := "humanoid") -> voi
 			_build_box(Vector3(0.9, 1.6, 0.25), Color("#4a3a2c"))
 		"chest":
 			_build_box(Vector3(0.7, 0.45, 0.5), Color("#6d4523"))
+		"barrel":
+			_build_box(Vector3(0.5, 0.75, 0.5), Color("#5a3a28"))
+		"crate":
+			_build_box(Vector3(0.6, 0.55, 0.6), Color("#6d4523"))
+		"satchel":
+			_build_sack()
 		"mephit":
 			_build_mephit()
 		_:
@@ -110,11 +116,15 @@ func setup(id_: String, name_: String, color: Color, shape := "humanoid") -> voi
 	_hp_label.no_depth_test = true
 	_hp_label.visible = false
 	add_child(_hp_label)
-	if shape in ["humanoid", "mephit", "chest", "door"]:
+	if shape in ["humanoid", "mephit", "chest", "door", "barrel", "crate", "satchel"]:
 		_xray = ShaderMaterial.new()
 		_xray.shader = XRAY_SHADER
 		if shape in ["chest", "door"]:
 			_xray.set_shader_parameter("color", Color(0.85, 0.75, 0.6, 0.35))
+		if shape in ["barrel", "crate", "satchel"]:
+			# niskie, wypukłe łupy: malowany bruk bywa kilkadziesiąt cm „nad” podłogą, a przesunięcie 1 m
+			# (dla postaci) chowałoby wtedy i bryłę, i sylwetkę
+			_xray.set_shader_parameter("push", 0.15)
 		_apply_xray()
 
 
@@ -173,6 +183,34 @@ func _build_mephit() -> void:
 		wing.position = Vector3(0.35 * side, 1.2, 0)
 		wing.rotation.z = -0.6 * side
 		_idle_root.add_child(wing)
+
+
+## Worek (przedmiot na ziemi): spłaszczona kula i przewiązana szyjka, około 40 cm. Niższe bryły giną w szumie
+## głębi malowanego bruku.
+func _build_sack() -> void:
+	var mat := StandardMaterial3D.new()
+	mat.albedo_color = Color("#7a4f2e")
+	mat.roughness = 0.9
+	var body := MeshInstance3D.new()
+	var sm := SphereMesh.new()
+	sm.radius = 0.24
+	sm.height = 0.34
+	body.mesh = sm
+	body.material_override = mat
+	body.position.y = 0.17
+	_idle_root.add_child(body)
+	var neck := MeshInstance3D.new()
+	var cm := CylinderMesh.new()
+	cm.top_radius = 0.09
+	cm.bottom_radius = 0.06
+	cm.height = 0.1
+	neck.mesh = cm
+	var tie := StandardMaterial3D.new()
+	tie.albedo_color = Color("#a9843a")
+	neck.material_override = tie
+	neck.position.y = 0.38
+	_idle_root.add_child(neck)
+	_body = body
 
 
 func _build_box(sz: Vector3, color: Color) -> void:

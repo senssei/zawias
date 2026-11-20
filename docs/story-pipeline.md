@@ -108,9 +108,9 @@ Służy do przeglądu przed playtestem i do decyzji zapisywanych w ADR.
 1. ~~`story lint`~~: wdrożony 2026-11-19.
 2. ~~`story keys`~~: wdrożony 2026-11-19 (źródła w `i18n/<lang>/data.source.json`, test `tools/pipeline/test_story_keys.py`).
 3. ~~`story paths`~~: wdrożony 2026-11-19 (przeszukiwanie wszerz z limitem i losowe przejścia ukierunkowane na pokrycie).
-4. ~~`story balance`~~: wdrożony 2026-11-19 (symulacja w `tools/dev/combat_sim.gd`, wspólna z `test_slice.gd`; około 5 s).
+4. ~~`story balance`~~: wdrożony 2026-11-19 (symulacja w `tools/dev/combat_sim.gd`, wspólna z `test_slice.gd`; około 5 s). Próg problemu od 2026-11-20: różnica ponad 2 błędy standardowe (`story.clearly_worse`), a nie stała „1 wygrana”; domyślnie 64 ziarna na komórkę.
 5. Brief i rozszerzona mapa odkryć przy następnym rozdziale („Kto rozporządza przejściami?”).
-6. ~~`story report`~~: wdrożony 2026-11-19 (`pipeline.sh story report --out <katalog>`); do sprawdzenia na ekranie.
+6. ~~`story report`~~: wdrożony 2026-11-19 (`pipeline.sh story report --out <katalog>`); wygląd dopracowany 2026-11-20 (karty stanu, decyzje z odnośnikami, mapa cieplna balansu, porażki bez wskazówki). Szybka iteracja: `--paths-json` i `--balance-json` z wcześniejszych `story paths --json` i `story balance --json`.
 
 Lokalny LLM (wzorzec z `cast_llm.py`) może szkicować warianty scen z briefu. Wynik i tak przechodzi lint, testy
 dróg i redakcję przed nagraniem.

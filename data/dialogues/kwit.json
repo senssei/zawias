@@ -21,7 +21,7 @@
       "effects": [{"set_flag": "asked_about_key"}],
       "choices": [
         {"text": "Proszę, dziesięć sztuk.", "if": {"gold": 10}, "next": "lead", "effects": [{"gold": -10}, {"set_reputation": ["inscribed", "friendly"]}]},
-        {"text": "Zaproponuję inną umowę: powiem ci, kto zadaje pytania o ciebie.", "once": true, "check": {"skill": "persuasion", "dc": 13, "success": "lead", "fail": "no_deal"}},
+        {"text": "Zaproponuję inną umowę: powiem ci, kto zadaje pytania o ciebie.", "once": true, "check": {"skill": "persuasion", "dc": 13, "success": "lead", "fail": "no_deal", "cost_effects": [{"log": "Kwit przystaje na wymianę, ale i tak dolicza „opłatę manipulacyjną”."}, {"gold": -5}]}},
         {"text": "Przysyła mnie Kustoszka. Nie każ jej czekać.", "once": true, "check": {"skill": "deception", "dc": 15, "success": "lead_scared", "fail": "no_deal"}},
         {"text": "Może później.", "next": "start"}
       ]

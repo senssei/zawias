@@ -263,6 +263,8 @@ func apply_effect(e: Dictionary) -> void:
 	if e.has("take_item"):
 		player.inventory.erase(e.take_item)
 		add_log(Loc.t("Oddajesz: %s") % DB.entry("items", e.take_item).get("name", e.take_item))
+	if e.has("log"):
+		add_log(e.log)
 	if e.has("journal") and not e.journal in journal:   # ta sama porażka drugi raz nie dubluje wpisu
 		journal.append(e.journal)
 		add_log(Loc.t("[Dziennik]") + " " + e.journal)

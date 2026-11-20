@@ -9,7 +9,7 @@
       "speaker": "Łuk bez drzwi",
       "text": "Kamienny łuk, wyższy od dwóch ludzi, stoi pośrodku targu. Pod nim nie ma niczego, tylko targ widziany z drugiej strony. Kupcy omijają go szerokim łukiem, choć nikt nie pamięta dlaczego.",
       "choices": [
-        {"text": "Przyjrzyj się runom na kamieniu.", "once": true, "check": {"skill": "arcana", "dc": 10, "success": "runes", "fail": "runes_fail"}},
+        {"text": "Przyjrzyj się runom na kamieniu.", "once": true, "check": {"skill": "arcana", "dc": 10, "success": "runes", "fail": "runes_fail", "gain_effects": [{"journal": "Runy na Łuku się rozmyły, ale jedno słowo zostało mi w głowie: „uwierz”."}]}},
         {"text": "[Odejdź]", "end": true}
       ]
     },

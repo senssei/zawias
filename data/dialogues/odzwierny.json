@@ -7,12 +7,14 @@
       "text": "Mężczyzna w szacie, z której celowo wyprute są nitki, opiera się o drzwi magazynu. Na jego szyi wisi zardzewiała blaszka. „Wszystko się rozpada, przybyszu. Twoje plany też. Czego chcesz?”",
       "choices": [
         {"text": "Przychodzę rozmawiać z Severem. O kluczu.", "if": {"quest_any": ["key", ["started", "lead_warehouse"]], "reputation_not": ["unravelers", "wary"]}, "once": true,
-         "check": {"skill": "persuasion", "dc": 13, "success": "let_in", "fail": "refuse"}},
+         "check": {"skill": "persuasion", "dc": 13, "success": "let_in", "fail": "refuse",
+          "boon_effects": [{"log": "Otwierając drzwi, Odźwierny mruczy pod nosem, że Sever od tygodnia nie śpi przez ten klucz. Wchodzisz pewniejszym krokiem."}, {"inspiration": true}],
+          "cost_effects": [{"log": "Odźwierny wpuszcza cię, ale długo i uważnie przygląda się twojej twarzy."}, {"set_reputation": ["unravelers", "wary"]}]}},
         {"text": "Mam wiadomość dla Severa od kogoś z góry.", "if": {"reputation_not": ["inscribed", "wary"]}, "once": true,
          "check": {"skill": "deception", "dc": 12, "success": "let_in", "fail": "fight_node"}},
         {"text": "Pokazuję Żeton Rdzy. „Bracia z zaułka przesyłają pozdrowienia”.", "if": {"has_item": "rust_token"}, "once": true,
          "check": {"skill": "deception", "dc": 8, "success": "let_in_token", "fail": "fight_node"}},
-        {"text": "Zejdź mi z drogi albo sam cię rozplotę.", "next": "fight_node"},
+        {"text": "Zejdź mi z drogi albo sam cię rozplotę.", "next": "threat"},
         {"text": "Nic. Już idę.", "end": true},
         {"text": "Mam wiadomość dla Severa od kogoś z góry. [Patrol Zapisanych łazi za tobą]", "if": {"reputation": ["inscribed", "wary"]}, "once": true,
          "check": {"skill": "deception", "dc": 17, "success": "let_in", "fail": "fight_node"}}
@@ -35,8 +37,16 @@
       "text": "„Sever nie rozmawia z obcymi. Odejdź, póki jesteś w jednym kawałku”.",
       "effects": [{"journal": "Odźwierny nie wpuścił mnie do magazynu. Od strony wschodniego zaułka są jeszcze tylne drzwi. Mogę też wejść siłą."}],
       "choices": [
-        {"text": "W takim razie wejdę bez zaproszenia.", "next": "fight_node"},
+        {"text": "W takim razie wejdę bez zaproszenia.", "next": "threat"},
         {"text": "[Odejdź]", "end": true}
+      ]
+    },
+    "threat": {
+      "speaker": "Odźwierny",
+      "text": "Odźwierny nie sięga po broń. Gwiżdże przez zęby, krótko, dwa razy. Za drzwiami milkną rozmowy, a potem słychać kroki, dużo kroków. „Rozplotę, mówisz? Chodź. Zobaczymy, kto się pierwszy rozpadnie”.",
+      "choices": [
+        {"text": "[Walcz]", "effects": [{"start_combat": "warehouse"}], "end": true},
+        {"text": "Cofam się. Jeszcze nie teraz.", "effects": [{"set_reputation": ["unravelers", "wary"]}, {"journal": "Zagroziłem Odźwiernemu i wycofałem się, kiedy za drzwiami magazynu zaroiło się od Rozplataczy. Teraz pamięta moją twarz. Zostają tylne drzwi od wschodniego zaułka albo wejście siłą, gdy będę silniejszy."}], "end": true}
       ]
     },
     "fight_node": {

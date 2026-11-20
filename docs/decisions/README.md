@@ -21,3 +21,5 @@ Template: copy [template.md](template.md).
 | [0004](0004-player-controlled-companions.md) | Player-controlled companions in combat, AI as an option | Accepted |
 | [0005](0005-visible-faction-consequences.md) | Visible faction consequences, mostly in data | Accepted |
 | [0006](0006-unraveler-entropy.md) | Unraveler entropy in the warehouse fight | Accepted |
+| [0007](0007-level-one-risks.md) | Level-one risks stay: warehouse threat shortcut, full fights with Lis | Accepted |
+| [0008](0008-degree-of-success.md) | Degree of success: boon, cost and gain on dialogue checks | Accepted |

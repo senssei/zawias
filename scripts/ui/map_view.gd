@@ -9,7 +9,7 @@ extends Control
 
 signal cell_clicked(cell: Vector2i)
 
-## Znacznik: {"cell": Vector2i, "kind": "player"|"npc"|"object"|"enemy"|"ally"|"lock", "name": String, "quest": bool}
+## Znacznik: {"cell": Vector2i, "kind": "player"|"npc"|"object"|"loot"|"enemy"|"ally"|"lock", "name": String, "quest": bool}
 var markers_fn: Callable
 var map: Dictionary
 var rotate_with_camera := false
@@ -29,6 +29,7 @@ const FOG := Color(0.07, 0.05, 0.05)
 const MARK := {
 	"player": Color("#5fa8d3"), "npc": Color("#e8c98a"), "object": Color("#a39a8c"),
 	"enemy": Color("#e0634f"), "ally": Color("#8fcf7a"), "lock": Color("#e0634f"),
+	"loot": Color("#f2c14e"),
 }
 
 
@@ -202,6 +203,15 @@ func _draw() -> void:
 				draw_line(p + Vector2(-d, d), p + Vector2(d, -d), col, 2.0)
 			"object":
 				draw_rect(Rect2(p - Vector2(r, r) * 0.7, Vector2(r, r) * 1.4), col)
+			"loot":
+				# złota czteroramienna gwiazdka: nie myli się z kaflami (na obróconej minimapie kwadraty to romby)
+				var k := maxf(r * 1.1, 6.0)
+				var star := PackedVector2Array()
+				for i in 8:
+					var ang := i * PI / 4.0 - PI / 2.0
+					star.append(p + Vector2(cos(ang), sin(ang)) * (k if i % 2 == 0 else k * 0.38))
+				draw_colored_polygon(star, col)
+				draw_polyline(star + PackedVector2Array([star[0]]), Color(0, 0, 0, 0.85), 1.0)
 			_:
 				draw_circle(p, r, col)
 				draw_arc(p, r, 0, TAU, 16, Color(0, 0, 0, 0.7), 1.0)

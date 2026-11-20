@@ -207,6 +207,49 @@ func test_failed_check_starts_combat():
 	assert_true(reqs.any(func(e): return e.get("start_combat", "") == "warehouse"))
 
 
+## Stopień sukcesu (docs/decisions/0008): pasy według zapasu, efekty tylko ze swojego pasa, sygnał z pasem.
+func test_check_bands():
+	assert_eq(DialogueRunner.check_band({"success": true, "total": 18, "dc": 13}), "boon")
+	assert_eq(DialogueRunner.check_band({"success": true, "total": 13, "dc": 13}), "cost")
+	assert_eq(DialogueRunner.check_band({"success": false, "total": 9, "dc": 13}), "gain")
+	assert_eq(DialogueRunner.check_band({"success": false, "total": 8, "dc": 13}), "fail")
+	gs.quests["key"] = "lead_warehouse"
+	gs.player.heroic_inspiration = false
+	var chk := {"skill": "persuasion", "dc": 13}
+	var bands := []
+	# sukces o włos: Odźwierny wpuszcza, ale zapamiętuje twarz
+	var r := DialogueRunner.new(gs)
+	r.check_rolled.connect(func(_t, _ok, _n, band): bands.append(band))
+	r.start("odzwierny")
+	Dice.force([DialogueRunner.natural_for_margin(gs.player, chk, 0)])
+	_choose_text(r, "rozmawiać z Severem")
+	assert_eq(r.current_id, "let_in")
+	assert_eq(gs.faction_attitude("unravelers"), "wary", "cena: nieufność Rozplataczy")
+	assert_false(gs.player.heroic_inspiration)
+	# wyraźny sukces: inspiracja, reputacja bez zmian
+	gs.reputation.erase("unravelers")
+	gs.flags.erase("front_open")
+	gs.flags.erase("dlg_odzwierny_start_0")   # wybór jednorazowy ("once")
+	r = DialogueRunner.new(gs)
+	r.check_rolled.connect(func(_t, _ok, _n, band): bands.append(band))
+	r.start("odzwierny")
+	Dice.force([20])
+	_choose_text(r, "rozmawiać z Severem")
+	assert_true(gs.player.heroic_inspiration, "korzyść: Heroiczna inspiracja")
+	assert_ne(gs.faction_attitude("unravelers"), "wary")
+	# porażka o włos przy zamku: podsłuchana warta daje przewagę w środku
+	gs.player.heroic_inspiration = false
+	r = DialogueRunner.new(gs)
+	r.check_rolled.connect(func(_t, _ok, _n, band): bands.append(band))
+	r.start("backdoor")
+	var lock := {"skill": "sleight_of_hand", "dc": 13}
+	Dice.force([DialogueRunner.natural_for_margin(gs.player, lock, -1)])
+	_choose_text(r, "wytrych")
+	assert_eq(r.current_id, "lock_fail")
+	assert_true(gs.has_flag("overheard_guards"), "coś w zamian: podsłuchana warta")
+	assert_eq(bands, ["cost", "boon", "gain"])
+
+
 func test_heroic_inspiration_reroll():
 	gs.player.heroic_inspiration = true
 	var r := DialogueRunner.new(gs)

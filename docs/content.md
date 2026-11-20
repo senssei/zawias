@@ -32,7 +32,7 @@ portrait is `assets/portraits/<id>.png` (a node can override it with `"portrait"
 
 - `starts`: the first entry whose `if` holds picks the opening node; otherwise `start`.
 - Choice keys: `text`, `next`, `end`, `if` (show only when the condition holds), `once`, `effects`, `redirect`,
-  `check`: `skill` or `ability`, `dc`, `success` / `fail` (next node), `success_effects` / `fail_effects`, optional `adv_if`.
+  `check`: `skill` or `ability`, `dc`, `success` / `fail` (next node), `success_effects` / `fail_effects`, optional `adv_if`, and optional degree-of-success bands `boon_effects` (success by 5+), `cost_effects` (success by 0–4), `gain_effects` (failure by 1–4); see [ADR 0008](decisions/0008-degree-of-success.md). The effect `log` adds a plain line to the log.
 - Node keys: `speaker`, `text`, `choices`, `effects` (applied when the node is shown), `portrait`.
 
 ### Conditions (`if`)
@@ -115,6 +115,12 @@ optional `label`, `paint_height`, `paint_kind`. Other keys: `player_start`, `npc
 model, monster, encounter, title, color), `objects` (arch, chest, door: id, name, pos, dialogue, shape), `locks`,
 `triggers`, `decor` (barrels and crates from `assets/props`). Changing buildings or props means re-painting the
 map (see [painted-area.md](painted-area.md)).
+
+`loot` lists searchable containers and items on the ground:
+`{"id", "name", "pos", "shape": "barrel"|"crate"|"satchel", "text", "effects"}`. Clicking one logs `text`, applies
+`effects` (as in dialogue: `gold`, `give_item`, `journal`...) once and sets the flag `looted_<id>`. Barrels and
+crates use the prop models and stay empty; a satchel (procedural sack) disappears. A loot spot on a former `decor`
+cell needs no re-painting, because props are 3D anyway. `story check` validates ids, shapes and effects.
 
 `quest_markers` shows quest targets on the map: `{"<quest>": {"<stage>": ["<npc or object id>", ...]}}`, where
 the stage `""` means the quest has not started yet. Legend entries with a `label` are named on the map, and the

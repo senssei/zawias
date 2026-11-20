@@ -131,6 +131,38 @@ func test_map_click_on_building_walks_to_nearest_free_cell():
 	assert_lt(Vector2(goal - Vector2i(3, 2)).length(), 4.5, "obok budynku")
 
 
+## Łupy (pole "loot" mapy): znacznik na mapie do przeszukania, efekty jednorazowe, sylwetka x-ray,
+## torba z ziemi znika, pojemnik zostaje pusty; stan wraca z zapisu.
+func test_loot_markers_take_and_save():
+	var w := _world()
+	await wait_frames(3)
+	var gs := _gs()
+	var loot: Array = w._map_markers().filter(func(m): return m.kind == "loot")
+	assert_eq(loot.size(), w.map.get("loot", []).size(), "każdy łup ma znacznik")
+	var bag: Actor = w.actors["loot_courier_bag"]
+	assert_not_null(bag._xray, "łup ma sylwetkę za budynkami")
+	var gold: int = gs.player.gold
+	w._interact(bag)
+	assert_eq(gs.player.gold, gold + 12, "złoto z torby")
+	assert_false(w.actors.has("loot_courier_bag"), "torba zabrana z ziemi")
+	w._interact(w.actors["loot_warehouse_crate"])
+	assert_true("potion_healing" in gs.player.inventory, "mikstura ze skrzynki")
+	var crate: Actor = w.actors["loot_warehouse_crate"]
+	var potions: int = gs.player.inventory.count("potion_healing")
+	w._interact(crate)
+	assert_eq(gs.player.inventory.count("potion_healing"), potions, "drugi raz pusto")
+	var ids: Array = w._map_markers().filter(func(m): return m.kind == "loot").map(func(m): return m.name)
+	assert_eq(ids.size(), loot.size() - 2, "przeszukane znikają z mapy")
+	var d: Dictionary = JSON.parse_string(JSON.stringify(gs.to_dict()))
+	gs.new_game(CharacterBuilder.build(OPTS))
+	gs.from_dict(d)
+	var w2: Node3D = load("res://scripts/world/world.gd").new()
+	add_child_autofree(w2)
+	await wait_frames(3)
+	assert_false(w2.actors.has("loot_courier_bag"), "po wczytaniu torby nie ma")
+	assert_true(w2.actors.has("loot_warehouse_crate"), "pusta skrzynka stoi dalej")
+
+
 ## Mgła wojny 3D: maska ma odkryte pola jasne, nieodkryte ciemne; NPC we mgle ukryty, po odkryciu widoczny.
 ## Łatanie dziur: pole otoczone odkrytymi (cień straganu) też jest odkryte.
 func test_fog_of_war_mask_and_actors():
