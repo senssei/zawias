@@ -26,6 +26,7 @@ class StoryCheck:
         self.factions = self.load("data/factions.json")
         self.arcs = self.load("data/story_arcs.json")
         self.barks = self.load("data/barks.json")
+        self.motivations = self.load("data/motivations.json")
         self.stages = self.quest_stages()
         self.npcs = {
             npc["id"] for map_data in self.maps.values()
@@ -106,8 +107,16 @@ class StoryCheck:
         for key in ("reputation", "reputation_not"):
             if key in value:
                 self.reputation(f"{location}/{key}", value[key])
+        if "motivation" in value:
+            self.motivation(f"{location}/motivation", value["motivation"])
         if "near" in value and (not isinstance(value["near"], list) or len(value["near"]) != 3):
             self.errors.append(f"{location}/near: oczekiwano [x, y, promień]")
+
+    def motivation(self, location, value):
+        """„kategoria:opcja” z data/motivations.json (ADR 0009)."""
+        cat, _, opt = str(value).partition(":")
+        if opt not in self.motivations.get(cat, {}).get("options", {}):
+            self.errors.append(f"{location}: nieznana motywacja {value}")
 
     def effects(self, location, values):
         for index, effect in enumerate(values or []):
@@ -163,6 +172,8 @@ class StoryCheck:
                 if "next" in choice:
                     destinations = set() if choice.get("end") or "check" in choice else outgoing
                     transition(f"{entry}/next", choice["next"], destinations)
+                if "motivation" in choice:
+                    self.motivation(f"{entry}/motivation", choice["motivation"])
                 if "check" in choice:
                     check = choice["check"]
                     self.condition(f"{entry}/check/adv_if", check.get("adv_if"))

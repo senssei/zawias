@@ -10,7 +10,7 @@ var st := {
 	"name": Loc.t("Wędrowiec"), "species": "human", "background": "soldier", "class": "fighter",
 	"scores": {"str": 15, "dex": 14, "con": 13, "int": 10, "wis": 10, "cha": 8},
 	"bonus_mode": "2-1", "plus2": "str", "plus1": "con",
-	"skills": [], "extra_skill": "", "choice": "",
+	"skills": [], "extra_skill": "", "choice": "", "motivations": {},
 }
 
 var _ability_box: VBoxContainer
@@ -83,9 +83,10 @@ func _ready() -> void:
 	_skills_box = UI.vbox(2)
 	c2.add_child(_skills_box)
 
-	# --- kolumna 3: podsumowanie
+	# --- kolumna 3: motywacje i podsumowanie
 	var c3 := _column(cols, 0)
 	c3.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	c3.add_child(_motivation_box())
 	_summary = RichTextLabel.new()
 	_summary.bbcode_enabled = true
 	_summary.fit_content = true
@@ -117,6 +118,44 @@ func _column(parent: Control, w: int) -> VBoxContainer:
 	var v := UI.vbox(6)
 	v.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	scroll.add_child(v)
+	return v
+
+
+## Motywacje (ADR 0009): po jednej opcji z każdej kategorii, w dwóch kolumnach; opis wybranej pod spodem.
+func _motivation_box() -> Control:
+	if st.motivations.is_empty():
+		st.motivations = CharacterBuilder.default_motivations()
+	var v := UI.vbox(4)
+	v.add_child(UI.label(Loc.t("Motywacje"), 15, UI.MUTED))
+	var grid := GridContainer.new()
+	grid.columns = 4
+	grid.add_theme_constant_override("h_separation", 8)
+	v.add_child(grid)
+	var desc := UI.label_w("", 13, UI.MUTED)
+	var table := DB.table("motivations")
+	var cats := table.keys()
+	cats.sort_custom(func(a, b): return int(table[a].get("order", 0)) < int(table[b].get("order", 0)))
+	var describe := func(cat: String):
+		var o: Dictionary = table[cat].options[st.motivations[cat]]
+		desc.text = "%s: %s" % [o.name, o.desc]
+	for cat in cats:
+		grid.add_child(UI.label(table[cat].name, 14, UI.TEXT))
+		var ob := OptionButton.new()
+		ob.auto_translate_mode = Node.AUTO_TRANSLATE_MODE_DISABLED
+		var ids: Array = table[cat].options.keys()
+		for i in ids.size():
+			ob.add_item(table[cat].options[ids[i]].name, i)
+			if ids[i] == st.motivations[cat]:
+				ob.select(i)
+		ob.item_selected.connect(func(i):
+			st.motivations[cat] = ids[i]
+			describe.call(cat)
+			_refresh())
+		ob.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+		grid.add_child(ob)
+	describe.call(cats[2])
+	v.add_child(desc)
+	v.add_child(UI.label_w(Loc.t("Opcje zgodne z motywacją pojawiają się w rozmowach; odegranie ich, także wady, daje Heroiczną inspirację."), 12, UI.MUTED))
 	return v
 
 
@@ -185,7 +224,7 @@ func _opts() -> Dictionary:
 		"name": st.name if st.name.strip_edges() != "" else Loc.t("Bezimienny"),
 		"species": st.species, "background": st.background, "class": st["class"],
 		"scores": st.scores, "bonus": bonus, "skills": st.skills,
-		"extra_skill": st.extra_skill, "choice": st.choice,
+		"extra_skill": st.extra_skill, "choice": st.choice, "motivations": st.motivations,
 	}
 
 
@@ -351,6 +390,13 @@ static func sheet_bbcode(c: Creature) -> String:
 		c.hp, c.max_hp, c.ac(), Abilities.fmt_mod(c.initiative_bonus()), c.speed, c.prof_bonus()]
 	if c.heroic_inspiration:
 		s += Loc.t("[color=#9b7fd1]★ Heroiczna inspiracja[/color]\n")
+	if not c.motivations.is_empty():
+		var mt := DB.table("motivations")
+		var parts := []
+		for cat in ["strength", "flaw", "desire", "fear"]:
+			if c.motivations.has(cat) and mt.has(cat):
+				parts.append("%s: %s" % [mt[cat].name, mt[cat].options.get(c.motivations[cat], {}).get("name", c.motivations[cat])])
+		s += "[color=#a89584]%s[/color]\n" % "  ·  ".join(parts)
 	s += "\n"
 	for ab in Abilities.LIST:
 		var save_mark := "●" if ab in c.save_profs else "○"

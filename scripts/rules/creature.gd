@@ -32,6 +32,7 @@ var armor_profs: Array = []
 var features: Array = []
 var resources := {}             # id -> {"cur": int, "max": int, "recharge": "short"|"long"}
 var choices := {}               # wybory z kreacji, np. {"fighting_style": "defense"}
+var motivations := {}           # {"strength": "loyalty", "flaw": "greed", ...} (data/motivations.json, ADR 0009)
 
 var max_hp := 1
 var hp := 1
@@ -300,7 +301,7 @@ const _FIELDS := [
 	"id", "name", "kind", "team", "is_player", "template_id", "tags",
 	"species_id", "background_id", "class_id", "subclass_id", "level", "xp", "xp_value", "pending_levels",
 	"scores", "save_profs", "skill_profs", "expertise", "weapon_profs", "armor_profs",
-	"features", "resources", "choices", "max_hp", "hp", "temp_hp", "hit_die", "hit_dice",
+	"features", "resources", "choices", "motivations", "max_hp", "hp", "temp_hp", "hit_die", "hit_dice",
 	"speed", "darkvision", "resistances", "vulnerabilities", "immunities", "condition_immunities",
 	"armor_id", "shield", "weapons", "mastery", "inventory", "gold",
 	"spell_ability", "spell_ability_overrides", "cantrips", "spells", "slots", "concentration",

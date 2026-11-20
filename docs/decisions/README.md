@@ -23,3 +23,4 @@ Template: copy [template.md](template.md).
 | [0006](0006-unraveler-entropy.md) | Unraveler entropy in the warehouse fight | Accepted |
 | [0007](0007-level-one-risks.md) | Level-one risks stay: warehouse threat shortcut, full fights with Lis | Accepted |
 | [0008](0008-degree-of-success.md) | Degree of success: boon, cost and gain on dialogue checks | Accepted |
+| [0009](0009-motivations.md) | Character motivations: strength, flaw, desire, fear | Accepted |

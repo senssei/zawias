@@ -250,6 +250,92 @@ func test_check_bands():
 	assert_eq(bands, ["cost", "boon", "gain"])
 
 
+## Motywacje (docs/decisions/0009): wybór w kreatorze, opcje widoczne tylko przy swojej motywacji,
+## inspiracja raz na opcję (także za wadę), zapis.
+func test_motivations():
+	var pc := CharacterBuilder.build({"name": "M", "species": "human", "background": "soldier", "class": "fighter",
+		"scores": {"str": 15, "dex": 14, "con": 13, "int": 10, "wis": 10, "cha": 8},
+		"motivations": {"flaw": "greed", "desire": "nonsense"}})
+	assert_eq(pc.motivations.flaw, "greed")
+	assert_eq(pc.motivations.desire, CharacterBuilder.default_motivations().desire, "nieznana opcja = domyślna")
+	assert_eq(pc.motivations.size(), 4)
+	gs.player.motivations = pc.motivations.duplicate()
+	gs.player.heroic_inspiration = false
+	assert_true(gs.check({"motivation": "flaw:greed"}))
+	assert_false(gs.check({"motivation": "flaw:anger"}))
+	var r := DialogueRunner.new(gs)
+	r.start("mirela")
+	r.goto("reward")
+	var texts: Array = r.visible_choices().map(func(c): return c.text)
+	assert_true(texts.any(func(t): return t.begins_with("[Chciwość]")), "opcja wady widoczna z prefiksem")
+	assert_false(texts.any(func(t): return t.begins_with("[Dom]")), "cudza motywacja ukryta")
+	_choose_text(r, "jałmużna")
+	assert_eq(r.current_id, "reward_no")
+	assert_true(gs.player.heroic_inspiration, "odegrana wada daje inspirację")
+	gs.player.heroic_inspiration = false
+	r.goto("reward")
+	_choose_text(r, "jałmużna")
+	assert_false(gs.player.heroic_inspiration, "drugi raz ta sama opcja nie daje")
+	var d: Dictionary = JSON.parse_string(JSON.stringify(gs.player.to_dict()))
+	assert_eq(Creature.from_dict(d).motivations.get("flaw", ""), "greed", "motywacje w zapisie")
+
+
+func test_dorn_remembers_the_wanderer():
+	gs.player.motivations = {"strength": "loyalty", "flaw": "pride", "desire": "home", "fear": "oblivion"}
+	gs.player.gold = 10
+	var r := DialogueRunner.new(gs)
+	r.start("dorn")
+	assert_eq(r.current_id, "grudge", "pierwsza rozmowa: Dorn rozpoznaje znak")
+	_choose_text(r, "Jaki znak")
+	assert_eq(gs.quest_stage("wanderer"), "trace", "Dorn to drugie źródło śladu")
+	r.start("dorn")
+	assert_eq(r.current_id, "start", "żal tylko raz")
+	r.goto("grudge")
+	assert_false(r.visible_choices().any(func(c): return "Jaki znak" in c.text), "znak już znany")
+	_choose_text(r, "[Pycha]")
+	assert_true(gs.has_flag("dorn_cold"))
+	_choose_text(r, "Wróćmy")
+	_choose_text(r, "4 sz.")
+	assert_eq(gs.player.gold, 6, "pycha: łóżko podwójnie")
+	gs.quests["wanderer"] = "revealed"
+	r.start("dorn")
+	_choose_text(r, "To byłem ja")
+	assert_false(gs.has_flag("dorn_cold"), "wyznanie przywraca zwykłą cenę")
+	_choose_text(r, "Dziękuję")
+	_choose_text(r, "2 sz.")
+	assert_eq(gs.player.gold, 4)
+
+
+func test_remaining_motivations():
+	gs.player.motivations = {"strength": "cunning", "flaw": "greed", "desire": "wealth", "fear": "helplessness"}
+	gs.quests["key"] = "started"
+	var r := DialogueRunner.new(gs)
+	r.start("kwit")
+	_choose_text(r, "Mirelę okradziono")
+	_choose_text(r, "[Przebiegłość]")
+	assert_eq(gs.quest_stage("key"), "lead_warehouse", "przebiegłość: trop za darmo")
+	gs.quests["key"] = "started"
+	r.start("pchla")
+	_choose_text(r, "[Bezradność]")
+	assert_eq(r.current_id, "scared")
+	r.start("mirela")
+	r.goto("truth")
+	_choose_text(r, "[Bogactwo]")
+	assert_true(gs.has_flag("reward_plus"), "bogactwo: nagroda 150")
+	_choose_text(r, "Wróćmy")
+	assert_false(r.visible_choices().any(func(c): return "[Bogactwo]" in c.text), "raz")
+	gs.player.motivations = {"strength": "loyalty", "flaw": "pride", "desire": "freedom", "fear": "closed_doors"}
+	gs.player.inventory.append("key_without_door")
+	r.start("hidden_door")
+	_choose_text(r, "[Zamknięte drzwi]")
+	assert_eq(r.current_id, "listen")
+	gs.quests["wanderer"] = "revealed"
+	r.start("arch")
+	assert_eq(r.current_id, "with_key")
+	_choose_text(r, "[Wolność]")
+	assert_eq(r.current_id, "freedom")
+
+
 func test_heroic_inspiration_reroll():
 	gs.player.heroic_inspiration = true
 	var r := DialogueRunner.new(gs)

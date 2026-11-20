@@ -87,9 +87,22 @@ static func build(opts: Dictionary) -> Creature:
 		elif pick == "thaumaturge":
 			_add(c.cantrips, "light")
 
+	c.motivations = default_motivations()
+	for cat in opts.get("motivations", {}):
+		if DB.table("motivations").get(cat, {}).get("options", {}).has(opts.motivations[cat]):
+			c.motivations[cat] = opts.motivations[cat]
+
 	Leveling.grant_level(c, 1)
 	c.xp = 0
 	return c
+
+
+## Pierwsza opcja z każdej kategorii (data/motivations.json); kreator pozwala zmienić.
+static func default_motivations() -> Dictionary:
+	var out := {}
+	for cat in DB.table("motivations"):
+		out[cat] = DB.table("motivations")[cat].options.keys()[0]
+	return out
 
 
 static func create_monster(monster_id: String, instance_id: String, display_name: String = "") -> Creature:

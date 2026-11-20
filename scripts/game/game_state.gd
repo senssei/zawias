@@ -125,6 +125,25 @@ func has_flag(f: String) -> bool:
 	return flags.get(f, false)
 
 
+## Motywacja „kategoria:opcja”, np. "flaw:greed" (ADR 0009).
+var any_motivation := false   # narzędzia (story paths): każda opcja motywacji widoczna, żeby przejść też te gałęzie
+
+
+func has_motivation(m: String) -> bool:
+	if any_motivation:
+		return true
+	var parts := m.split(":")
+	return player != null and parts.size() == 2 and player.motivations.get(parts[0], "") == parts[1]
+
+
+## Nazwa opcji motywacji do napisów, np. "Chciwość".
+static func motivation_name(m: String) -> String:
+	var parts := m.split(":")
+	if parts.size() != 2:
+		return m
+	return str(DB.table("motivations").get(parts[0], {}).get("options", {}).get(parts[1], {}).get("name", parts[1]))
+
+
 func quest_stage(q: String) -> String:
 	return quests.get(q, "")
 
@@ -161,6 +180,8 @@ func check(cond) -> bool:
 		for f in d.flags:
 			if not has_flag(f):
 				return false
+	if d.has("motivation") and not has_motivation(d.motivation):
+		return false
 	if d.has("any_flag"):
 		var ok := false
 		for f in d.any_flag:

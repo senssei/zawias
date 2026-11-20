@@ -34,6 +34,7 @@ var player_portrait: TextureRect
 const PORTRAIT_DIR := "res://assets/portraits/"
 var dlg_text: RichTextLabel
 var dlg_choices: VBoxContainer
+const DIALOGUE_MARGIN := 10.0
 var window: PanelContainer
 var window_body: VBoxContainer
 var window_title: Label
@@ -565,10 +566,20 @@ func show_dialogue(speaker: String, text: String, choices: Array, portrait_id :=
 		var idx: int = ch.index
 		b.pressed.connect(func(): dialogue_choice.emit(idx))
 		dlg_choices.add_child(b)
+	_fit_dialogue.call_deferred()
 
 
 func dialogue_append(text: String, success: bool) -> void:
 	dlg_text.append_text("\n\n[color=%s]%s[/color]" % ["#8fcf7a" if success else "#e0634f", text])
+	_fit_dialogue.call_deferred()
+
+
+## Panel dialogu stoi dolną krawędzią nad dołem ekranu i rośnie w górę, gdy przybywa tekstu albo opcji.
+func _fit_dialogue() -> void:
+	await get_tree().process_frame   # RichTextLabel z fit_content zna wysokość dopiero po układzie
+	var h := dialogue_panel.get_combined_minimum_size().y
+	dialogue_panel.offset_bottom = -DIALOGUE_MARGIN
+	dialogue_panel.offset_top = -DIALOGUE_MARGIN - h
 
 
 func hide_dialogue() -> void:

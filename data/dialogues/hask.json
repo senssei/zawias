@@ -13,7 +13,8 @@
         {"text": "[Oddaj kontrakt Kwita] Oczyść wschodni zaułek z ludzi Rozplataczy.", "if": {"has_item": "kwit_contract", "not_flag": "ambush_done"}, "next": "clear_alley"},
         {"text": "Czy brama zawsze zostawia taki ślad na dłoni?", "if": {"not_quest": "wanderer", "not_flag": "key_obtained"}, "next": "wanderer_trace"},
         {"text": "[Zapisani są ci przychylni] Kwit mówi, że płacę w terminie. Wyślesz patrol do wschodniego zaułka?", "if": {"reputation": ["inscribed", "friendly"], "flag": "asked_about_key", "not_flag": "ambush_done"}, "next": "patrol_alley"},
-        {"text": "Czemu poza targiem wszystko tonie w tej fioletowej mgle?", "next": "fog"}
+        {"text": "Czemu poza targiem wszystko tonie w tej fioletowej mgle?", "next": "fog"},
+        {"text": "Co się dzieje z tymi, których miasto zapomni?", "motivation": "fear:oblivion", "next": "oblivion"}
       ]
     },
     "patrol_alley": {
@@ -27,6 +28,11 @@
       "text": "„Mgła ze Szczeliny. Zawias wisi nad pustką między planami, a pustka wciska się wszędzie, gdzie nikt nie patrzy. Miasto trzyma się kupy tylko dlatego, że ktoś je pamięta. Moja brama, mój targ, mój zaułek. Co zobaczysz i zapamiętasz, to stoi. Reszta to opar i domysły, więc nowi widzą głównie mgłę”. Hask mruży oczy. „Tylko że wokół ciebie jest jej jakoś dziwnie dużo. Jakby miasto cię nie pamiętało”.",
       "effects": [{"journal": "Hask mówi, że fioletowa mgła to pustka ze Szczeliny między planami. Rzednieje tam, gdzie ktoś patrzy i pamięta. Wokół mnie jest jej podejrzanie dużo, jakby miasto mnie nie pamiętało."}],
       "choices": [{"text": "W takim razie będę patrzeć uważnie.", "next": "start"}]
+    },
+    "oblivion": {
+      "speaker": "Hask",
+      "text": "Hask milknie na chwilę. „Rozpływają się. Najpierw imię, potem twarz, na końcu cień. Widziałem raz, jak ktoś przestał być. Stał przy bramie i pytał, czy ktoś go zna”. Spogląda na twoją dłoń. „Dlatego pilnuję, żeby ludzie się tu zapisywali”.",
+      "choices": [{"text": "Zapamiętam to.", "next": "start"}]
     },
     "where": {
       "speaker": "Hask",

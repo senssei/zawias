@@ -23,7 +23,8 @@
         {"text": "Proszę, dziesięć sztuk.", "if": {"gold": 10}, "next": "lead", "effects": [{"gold": -10}, {"set_reputation": ["inscribed", "friendly"]}]},
         {"text": "Zaproponuję inną umowę: powiem ci, kto zadaje pytania o ciebie.", "once": true, "check": {"skill": "persuasion", "dc": 13, "success": "lead", "fail": "no_deal", "cost_effects": [{"log": "Kwit przystaje na wymianę, ale i tak dolicza „opłatę manipulacyjną”."}, {"gold": -5}]}},
         {"text": "Przysyła mnie Kustoszka. Nie każ jej czekać.", "once": true, "check": {"skill": "deception", "dc": 15, "success": "lead_scared", "fail": "no_deal"}},
-        {"text": "Może później.", "next": "start"}
+        {"text": "Może później.", "next": "start"},
+        {"text": "Zapisz to sobie, Kwit: „Zapisani wiedzieli o kradzieży i milczeli”. Ciekawe, ile takie zdanie waży w waszym rejestrze.", "motivation": "strength:cunning", "once": true, "next": "cunning"}
       ]
     },
     "lead": {
@@ -31,6 +32,12 @@
       "text": "Kwit zapisuje coś, odkłada pióro i po raz pierwszy patrzy ci w oczy. „Rdzawy pył zostawiają Rozplatacze. Siedzą w starym magazynie na wschodnim krańcu targu. Ich przywódca, Sever, gada o „rozplataniu obietnic”. Klucz to obietnica. Resztę sobie dopowiedz”.",
       "effects": [{"quest": ["key", "lead_warehouse"]}, {"xp": 50}, {"journal": "Kwit twierdzi, że za kradzieżą stoją Rozplatacze z magazynu na wschodzie i ich przywódca Sever."}],
       "choices": [{"text": "Dziękuję.", "next": "start"}]
+    },
+    "cunning": {
+      "speaker": "Kwit",
+      "text": "Pióro zatrzymuje się w pół litery. Kwit długo patrzy na kleks. „Zdanie, pod którym nikt się nie podpisał, nic nie waży”. Odkłada pióro. „Ale nie będę sprawdzał, ilu znajdziesz chętnych. Rozplatacze. Stary magazyn na wschodzie. Ich przywódca nazywa się Sever. Tej rozmowy nie zapisuję”.",
+      "effects": [{"quest": ["key", "lead_warehouse"]}, {"xp": 50}, {"journal": "Podsunąłem Kwitowi zdanie, którego nie chciałby widzieć w rejestrze. Za darmo wskazał magazyn Rozplataczy na wschodzie i ich przywódcę Severa."}],
+      "choices": [{"text": "Miło się z tobą robi interesy.", "next": "start"}]
     },
     "lead_scared": {
       "speaker": "Kwit",

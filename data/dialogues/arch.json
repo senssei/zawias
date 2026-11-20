@@ -36,8 +36,14 @@
       "text": "Klucz w twojej dłoni robi się gorący. Jego zęby obracają się, nieruchomieją i wskazują na zwornik łuku. Powietrze pod łukiem drży jak tafla wody.",
       "choices": [
         {"text": "Unieś klucz i przekręć go w powietrzu pod łukiem.", "next": "portal"},
-        {"text": "Jeszcze nie.", "end": true}
+        {"text": "Jeszcze nie.", "end": true},
+        {"text": "Żadna przysięga mnie już nie trzyma. Tamta też nie.", "motivation": "desire:freedom", "once": true, "next": "freedom"}
       ]
+    },
+    "freedom": {
+      "speaker": "Łuk bez drzwi",
+      "text": "Łuk nie odpowiada, ale drżenie pod nim cichnie, jakby słuchał. Przypominasz sobie słowa przysięgi: „Droga należy do tych, którzy nią idą”. To nie była klatka, tylko drzwi, które zostawiłeś otwarte dla innych. Teraz ty stoisz po tej stronie i nikt nie może ci powiedzieć »nie dziś«.",
+      "choices": [{"text": "Unieś klucz i przekręć go w powietrzu pod łukiem.", "next": "portal"}, {"text": "Jeszcze nie.", "end": true}]
     },
     "wanderer_memory": {
       "speaker": "Łuk bez drzwi",

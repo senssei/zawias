@@ -73,6 +73,7 @@ func _collect(v) -> void:
 ## Przechodzi grę od bieżącego stanu GameState: przeszukiwanie wszerz z limitem stanów i losowe przejścia
 ## (stanów jest wykładniczo dużo, kilkadziesiąt niezależnych faktów). Zwraca raport (słownik gotowy do JSON).
 func explore() -> Dictionary:
+	gs.any_motivation = true   # opcje motywacji (ADR 0009) zależą od kreatora: przechodzimy wszystkie
 	var start := _snap()
 	_bfs()
 	rng.seed = 7
@@ -81,6 +82,7 @@ func explore() -> Dictionary:
 		_restore(start)
 		_random_walk()
 	_restore(start)
+	gs.any_motivation = false
 	return _report()
 
 

@@ -4,9 +4,9 @@ Otwarte prace. Zrobione przenosimy do ADR-ów albo dokumentacji, a stąd usuwamy
 
 ## Fabuła (według [zasad pisania](writing-rules.md))
 
-- [ ] **NPC, którzy znali Wędrowca.** Ktoś na Targu pamięta dawną decyzję Wędrowca, na przykład komu kiedyś
-  odmówił przejścia, i ma do gracza żal. Przeszłość staje się wtedy osobista. (zasada 2)
-- [ ] **Przysięgi i kłamstwa.** Gra zapisuje, czy postać dotrzymuje słowa (Mireli, Kwitowi), i wraca do tego
+- [x] **NPC, którzy znali Wędrowca.** Dorn pamięta przez babkę, którą strażnik zawrócił spod bramy (`dorn/grudge`,
+  wyznanie w `dorn/confess`). Dalej: ktoś, kto Wędrowcowi zawdzięcza przejście, w kolejnym rozdziale. (zasada 2)
+- [ ] **Przysięgi i kłamstwa.** Gra zapisuje, czy postać dotrzymuje słowa (Mireli, Kwitowi, Dornowi: `promise_dorn`), i wraca do tego
   w finale, który i tak dotyczy przysięgi. (zasady 3, 8)
 - [ ] **Porażka z treścią.** Przegrana walka czasem przenosi gracza „za bramę” albo do wspomnienia zamiast na
   ekran porażki. (zasada 4)
@@ -28,10 +28,9 @@ Kolejność: 1, potem 2, a 3 i 4 przy następnym rozdziale. Każda dostaje ADR p
 - [x] **1. Stopień sukcesu: korzyść i cena.** Wdrożone 2026-11-20 jako cztery pasy według zapasu: korzyść,
   cena, coś w zamian, zwykła porażka ([ADR 0008](decisions/0008-degree-of-success.md)). Dalej: więcej testów
   z pasami w kolejnych dialogach.
-- [ ] **2. Motywacje postaci: siła, wada, pragnienie, lęk.** Gracz wybiera po jednej w kreatorze, a dialogi mają
-  opcje odblokowane motywacją (warunek jak `class` czy `skill_prof`). Działanie zgodne z motywacją daje
-  Heroiczną inspirację. Pasuje do tematu tożsamości: obecne motywacje zderzają się w finale z tym, kim był
-  Wędrowiec („dlaczego oddałeś imię?”). Zasady 1 i 8.
+- [x] **2. Motywacje postaci: siła, wada, pragnienie, lęk.** Wdrożone 2026-11-20 ([ADR 0009](decisions/0009-motivations.md)):
+  wybór w kreatorze, opcje w dialogach, inspiracja za odegranie. Każda z 16 opcji ma już
+  scenę na Targu. Dalej: finał, który zestawia motywacje z tym, kim był Wędrowiec.
 - [ ] **3. Napięcie w konfliktach słownych.** Osobny tor wytrzymałości w dłuższych sporach (Sever, Kustoszka
   w kolejnym rozdziale). Każdy argument rani przeciwnika albo ciebie, a przegrana oznacza ustępstwo, nie śmierć.
   Zasady 3 i 8.

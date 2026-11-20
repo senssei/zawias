@@ -20,6 +20,19 @@ How the game plays, with pointers to the code and data that implement each rule.
 - A natural 1 or 20 shows a badge with the roller's name (`HUD.show_d20`), in dialogue and in combat. With a window
   open (map, journal) the badge moves below or above it.
 
+## Motivations
+
+Character creation adds four picks from `data/motivations.json`: a strength, a flaw, a desire and a fear
+([ADR 0009](decisions/0009-motivations.md)). A dialogue choice with `"motivation": "category:option"` appears only
+for that motivation, labelled "[Name] …", and grants Heroic Inspiration once per choice (flaws included; their
+consequences still apply). The condition `{"motivation": "category:option"}` works everywhere. The character sheet
+lists the four picks.
+
+Dorn the innkeeper remembers the Wanderer through his grandmother, whom the warden turned away from the gate. On
+the first talk he sees the three lines on the player's hand (`dorn/grudge`, a second source of the `trace`
+stage). Pride or distrust makes him charge 4 gp instead of 2 for a bed (`dorn_cold`); after the memory
+(`wanderer` stage `revealed`) the player can confess (`dorn/confess`), which restores the normal price.
+
 ## Experience and levels
 
 - Level thresholds follow SRD 5.2: 300 XP for level 2, 900 for level 3 (`Abilities.XP_THRESHOLDS`).

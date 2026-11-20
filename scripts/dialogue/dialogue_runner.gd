@@ -6,6 +6,7 @@ extends RefCounted
 ##
 ## Format: {"start": "id", "nodes": {"id": {"speaker", "text", "effects": [], "choices": [
 ##   {"text", "next", "if": {...}, "effects": [], "once": bool,
+##    "motivation": "kategoria:opcja" (widoczny tylko przy tej motywacji, daje inspirację; ADR 0009),
 ##    "check": {"skill"|"ability", "dc", "success", "fail", "success_effects", "fail_effects",
 ##              "boon_effects", "cost_effects", "gain_effects"}, "end": true}
 ## Stopień sukcesu (docs/decisions/0008): boon = sukces o 5+, cost = sukces o 0–4, gain = porażka o 1–4.
@@ -78,6 +79,8 @@ func visible_choices() -> Array:
 		var ch: Dictionary = choices[i]
 		if not state.check(ch.get("if", {})):
 			continue
+		if ch.has("motivation") and not state.has_motivation(ch.motivation):
+			continue
 		if ch.get("once", false) and state.has_flag(_once_key(i)):
 			continue
 		out.append({"index": i, "text": choice_label(ch), "choice": ch})
@@ -88,6 +91,8 @@ func visible_choices() -> Array:
 
 func choice_label(ch: Dictionary) -> String:
 	var t: String = ch.get("text", "...")
+	if ch.has("motivation"):
+		t = "[%s] %s" % [state.motivation_name(ch.motivation), t]
 	if ch.has("check"):
 		var chk: Dictionary = ch.check
 		var name: String = Loc.t(str(Abilities.SKILL_NAMES.get(chk.get("skill", ""), Abilities.NAMES.get(chk.get("ability", ""), "?"))))
@@ -103,6 +108,8 @@ func choose(index: int) -> void:
 	var ch: Dictionary = node.choices[index]
 	if ch.get("once", false):
 		state.flags[_once_key(index)] = true
+	if ch.has("motivation"):
+		_reward_motivation(index, ch.motivation)
 	state.apply_effects(ch.get("effects", []))
 	if ch.has("check"):
 		var res := roll_check(ch.check)
@@ -160,4 +167,16 @@ static func check_band(res: Dictionary) -> String:
 static func natural_for_margin(pc: Creature, chk: Dictionary, margin: int) -> int:
 	var bonus := Checks.skill_bonus(pc, chk.skill) if chk.has("skill") else pc.mod(chk.ability)
 	return clampi(int(chk.dc) + margin - bonus, 1, 20)
+
+
+## Działanie zgodne z motywacją (także z wadą) daje Heroiczną inspirację, raz na opcję (ADR 0009).
+func _reward_motivation(index: int, m: String) -> void:
+	var key := "motiv_%s_%s_%d" % [dialogue_id, current_id, index]
+	if state.has_flag(key):
+		return
+	state.flags[key] = true
+	if state.player.heroic_inspiration:
+		return
+	state.player.heroic_inspiration = true
+	state.add_log(Loc.t("Działasz zgodnie z sobą (%s): Heroiczna inspiracja.") % state.motivation_name(m))
 

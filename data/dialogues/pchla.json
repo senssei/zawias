@@ -11,7 +11,9 @@
         {"text": "Gadaj, co wiesz, albo pożałujesz.", "once": true, "if": {"quest_any": ["key", ["started", "lead_warehouse"]], "not_flag": "pchla_told"},
          "check": {"skill": "intimidation", "dc": 11, "success": "paid", "fail": "snitch"}},
         {"text": "Co jest w tym zaułku?", "next": "alley"},
-        {"text": "Nic.", "end": true}
+        {"text": "Nic.", "end": true},
+        {"text": "Daję mu kilka monet, nawet jeśli nic nie wie.", "motivation": "strength:compassion", "if": {"gold": 2, "quest_any": ["key", ["started", "lead_warehouse"]], "not_flag": "pchla_told"}, "effects": [{"gold": -2}], "next": "paid"},
+        {"text": "Ktoś cię do czegoś zmusza, prawda? Nie będę stał i patrzył. Powiedz mi kto.", "motivation": "fear:helplessness", "once": true, "if": {"quest_any": ["key", ["started", "lead_warehouse"]], "not_flag": "pchla_told"}, "next": "scared"}
       ]
     },
     "paid": {

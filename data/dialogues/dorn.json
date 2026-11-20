@@ -1,13 +1,16 @@
 {
   "start": "start",
+  "starts": [{"if": {"not_flag": "dorn_grudge"}, "next": "grudge"}],
   "nodes": {
     "start": {
       "speaker": "Dorn",
       "text": "Barczysty karczmarz wyciera kufel szmatą, która widziała lepsze plany. „Gospoda Pod Krzywym Zawiasem. Łóżko, piwo, ciepła strawa. Jak ktoś chce dużo, to i plotki”.",
       "choices": [
-        {"text": "Potrzebuję łóżka. (2 sz., długi odpoczynek)", "if": {"gold": 2}, "next": "rested", "effects": [{"gold": -2}, {"long_rest": true}]},
+        {"text": "Potrzebuję łóżka. (2 sz., długi odpoczynek)", "if": {"gold": 2, "not_flag": "dorn_cold"}, "next": "rested", "effects": [{"gold": -2}, {"long_rest": true}]},
         {"text": "Jakie plotki krążą po targu?", "next": "rumors"},
-        {"text": "Bywaj.", "end": true}
+        {"text": "Bywaj.", "end": true},
+        {"text": "Potrzebuję łóżka. (4 sz., długi odpoczynek, Dorn liczy ci podwójnie)", "if": {"gold": 4, "flag": "dorn_cold"}, "next": "rested", "effects": [{"gold": -4}, {"long_rest": true}]},
+        {"text": "Dorn, ten strażnik z historii twojej babki… To byłem ja.", "if": {"quest_any": ["wanderer", ["revealed", "done_stayed"]], "flag": "dorn_grudge", "not_flag": "dorn_confessed"}, "next": "confess"}
       ]
     },
     "rested": {
@@ -20,6 +23,73 @@
       "text": "„Rozplatacze znowu się kręcą przy starym magazynie na wschodzie. Ostatnio płacą jakimś zbirom, żeby pilnowali zaułka. A Mirela od rana chodzi jak struta. Ja tam nic nie mówiłem”.",
       "effects": [{"set_flag": "heard_rumor"}],
       "choices": [{"text": "Dzięki.", "next": "start"}]
+    },
+    "grudge": {
+      "speaker": "Dorn",
+      "text": "Dorn sięga po kufel i nagle nieruchomieje. Patrzy na twoją dłoń, na trzy jasne kreski. Odstawia kufel tak ostrożnie, jakby był ze szkła. „Moja babka miała przejść przez bramę do męża. Strażnik z takim znakiem na dłoni powiedział jej: »Nie dziś«. Następnego dnia strażnika już nie było, a droga do świata jej męża zarosła mgłą. Czekała tu sześćdziesiąt lat. Z tego czekania jest ta gospoda”.",
+      "effects": [{"set_flag": "dorn_grudge"}],
+      "choices": [
+        {"text": "Jaki znak? Pokaż mi.", "if": {"not_quest": "wanderer"}, "next": "mark"},
+        {"text": "Nie pamiętam tego. Ale jeśli to byłem ja, przepraszam.", "next": "sorry"},
+        {"text": "Sześćdziesiąt lat temu nawet mnie tu nie było.", "next": "denial"},
+        {"text": "Daj spokój, Dorn. Przyszedłem tylko po łóżko.", "next": "start"},
+        {"text": "Strażnik nie mógł wpuścić każdego. Ktoś musiał mówić »nie«.", "motivation": "flaw:pride", "next": "proud"},
+        {"text": "Piękna historia. Ile ci zapłacili, żebyś opowiedział ją akurat mnie?", "motivation": "flaw:distrust", "next": "proof"},
+        {"text": "Co jeszcze mówiła o tym strażniku? Jaki był?", "motivation": "desire:truth", "next": "truth"},
+        {"text": "Jak miał na imię jej mąż? Jeśli przejdę przez Łuk, poszukam jego śladu.", "motivation": "strength:loyalty", "next": "promise"},
+        {"text": "Była tu sama przez te wszystkie lata?", "motivation": "fear:loneliness", "next": "lonely"}
+      ]
+    },
+    "mark": {
+      "speaker": "Dorn",
+      "text": "Dorn chwyta cię za nadgarstek i obraca dłoń do światła. Na skórze biegną trzy jasne kreski, których wcześniej nie zauważyłeś. „Babka rysowała je na każdym rachunku, na brzegu, jakby się bała, że zapomni. Takie same są podobno na bramie. Zapytaj Lis w Archiwum Echa, ona spisuje takie rzeczy”.",
+      "effects": [{"quest": ["wanderer", "trace"]}, {"journal": "Dorn rozpoznał trzy kreski na mojej dłoni. Taki znak miał strażnik bramy, który kiedyś zawrócił jego babkę. Podobno są też na bramie. Lis z Archiwum Echa może wiedzieć więcej."}],
+      "choices": [{"text": "Zapytam ją.", "next": "start"}]
+    },
+    "sorry": {
+      "speaker": "Dorn",
+      "text": "Dorn długo milczy. „Przeprosiny babce już nic nie dadzą”. Wraca do wycierania kufla. „Ale nikt jej nigdy nie przeprosił. Więc… dobrze, że ktoś to w końcu powiedział”.",
+      "choices": [{"text": "Wróćmy do interesów.", "next": "start"}]
+    },
+    "denial": {
+      "speaker": "Dorn",
+      "text": "„Może i nie”. Dorn mierzy cię wzrokiem. „Babka mówiła, że tamten strażnik też tak patrzył. Jakby go tu wcale nie było”.",
+      "choices": [{"text": "Wróćmy do interesów.", "next": "start"}]
+    },
+    "proud": {
+      "speaker": "Dorn",
+      "text": "„Ktoś musiał”. Dorn odstawia kufel z hukiem. „Babka mówiła, że on też tak uważał. Aż pewnego dnia przestał i po prostu zniknął. Łóżko kosztuje u mnie dwie sztuki złota. Dla ciebie cztery”.",
+      "effects": [{"set_flag": "dorn_cold"}, {"log": "Dorn liczy ci teraz za łóżko podwójnie."}],
+      "choices": [{"text": "Wróćmy do interesów.", "next": "start"}]
+    },
+    "proof": {
+      "speaker": "Dorn",
+      "text": "Dorn bez słowa wyciąga spod lady pożółkły rachunek z pierwszego dnia gospody. Na marginesie widać trzy kreski, wyrysowane drżącą ręką. „Nikt mi nie płaci, żebym pamiętał. Za łóżko płacisz teraz podwójnie”.",
+      "effects": [{"set_flag": "dorn_cold"}, {"journal": "Dorn pokazał mi rachunek z pierwszego dnia gospody. Jego babka narysowała na nim trzy kreski, takie same jak na mojej dłoni."}, {"log": "Dorn liczy ci teraz za łóżko podwójnie."}],
+      "choices": [{"text": "Wróćmy do interesów.", "next": "start"}]
+    },
+    "truth": {
+      "speaker": "Dorn",
+      "text": "„Że nie był okrutny, tylko zmęczony. Codziennie kolejka do bramy i każdy płakał inaczej, a decydował on jeden. Babka widziała raz, jak płakał, kiedy myślał, że nikt nie patrzy”. Dorn wzrusza ramionami. „Może dlatego zniknął”.",
+      "effects": [{"journal": "Babka Dorna pamiętała strażnika z trzema kreskami jako zmęczonego, nie okrutnego. Codziennie sam decydował, kto przejdzie przez bramę, aż zniknął."}],
+      "choices": [{"text": "Dziękuję, Dorn.", "next": "start"}]
+    },
+    "promise": {
+      "speaker": "Dorn",
+      "text": "Dorn patrzy na ciebie tak, jakby ważył monetę. „Ardan. Szkutnik spod Cynowej Zatoki”. Po chwili dodaje: „Nie obiecuj, jeśli nie dotrzymasz. W Zawiasie obietnic się nie zapomina”.",
+      "effects": [{"set_flag": "promise_dorn"}, {"journal": "Obiecałem Dornowi, że za Łukiem poszukam śladu Ardana, szkutnika spod Cynowej Zatoki, męża jego babki."}],
+      "choices": [{"text": "Dotrzymam.", "next": "start"}]
+    },
+    "lonely": {
+      "speaker": "Dorn",
+      "text": "„Sama? W gospodzie?” Dorn po raz pierwszy się uśmiecha. „Nigdy. Mówiła, że karczma to dom dla tych, którzy utknęli. Pełno obcych, ale nikt nie musi jeść sam”. Stawia przed tobą kufel. „Ten na koszt firmy”.",
+      "choices": [{"text": "Za twoją babkę.", "next": "start"}]
+    },
+    "confess": {
+      "speaker": "Dorn",
+      "text": "Dorn długo wyciera ten sam kufel. „Babka mówiła, że gdyby go jeszcze kiedyś spotkała, nie wiedziałaby, czy go uderzyć, czy mu podziękować. Po tamtym dniu nikt już nie musiał nikogo prosić o przejście”. Odstawia kufel. „Ja też nie wiem. Śpij tu, ile chcesz. Płać jak wszyscy”.",
+      "effects": [{"set_flag": "dorn_confessed"}, {"clear_flag": "dorn_cold"}, {"journal": "Powiedziałem Dornowi, że to ja byłem strażnikiem, który zawrócił jego babkę. Nie wie, czy mi wybaczyć, ale znów liczy mi za łóżko jak wszystkim."}],
+      "choices": [{"text": "Dziękuję, Dorn.", "next": "start"}]
     }
   }
 }

@@ -13,6 +13,40 @@
    }
   ]
  },
+ "arch/freedom": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The Arch does not answer, but the trembling beneath it quiets, as if it were listening. You remember the words of the oath:",
+    "file": "freedom_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 8.81,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "The road belongs to those who walk it.",
+    "file": "freedom_1.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.73,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "narrator",
+    "text": "It was not a cage, but a door you left open for others. Now you stand on this side, and nobody can tell you 'not today'.",
+    "file": "freedom_2.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 8.04,
+    "seed": 909,
+    "wer": 0.0
+   }
+  ]
+ },
  "arch/portal": {
   "segments": [
    {
@@ -795,6 +829,288 @@
    }
   ]
  },
+ "dorn/confess": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Dorn wipes the same tankard for a long time.",
+    "file": "confess_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 3.08,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Grandmother said that if she ever met him again, she wouldn't know whether to hit him or thank him. After that day, nobody ever had to ask anyone for passage again.",
+    "file": "confess_1.ogg",
+    "voice": "dorn",
+    "sig": "f5daac83fe12",
+    "seconds": 8.43,
+    "seed": 404,
+    "wer": 0.0
+   },
+   {
+    "who": "narrator",
+    "text": "He sets the tankard down.",
+    "file": "confess_2.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.01,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "I don't know either. Sleep here as long as you like. Pay like everyone else.",
+    "file": "confess_3.ogg",
+    "voice": "dorn",
+    "sig": "f5daac83fe12",
+    "seconds": 3.88,
+    "seed": 404,
+    "wer": 0.0
+   }
+  ]
+ },
+ "dorn/denial": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "Maybe not.",
+    "file": "denial_0.ogg",
+    "voice": "dorn",
+    "sig": "f5daac83fe12",
+    "seconds": 0.57,
+    "seed": 404,
+    "wer": 0.0
+   },
+   {
+    "who": "narrator",
+    "text": "Dorn sizes you up.",
+    "file": "denial_1.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 1.83,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Grandmother said that warden looked at people the same way. As if he wasn't really here.",
+    "file": "denial_2.ogg",
+    "voice": "dorn",
+    "sig": "f5daac83fe12",
+    "seconds": 4.6,
+    "seed": 404,
+    "wer": 0.0
+   }
+  ]
+ },
+ "dorn/grudge": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Dorn reaches for a tankard and suddenly goes still. He is looking at your hand, at the three pale lines. He sets the tankard down as carefully as if it were glass.",
+    "file": "grudge_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 11.5,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "My grandmother was supposed to cross the gate to her husband. A warden with that mark on his hand told her: 'Not today.' The next day the warden was gone, and the road to her husband's world had grown over with mist. She waited here sixty years. This inn is what that waiting built.",
+    "file": "grudge_1.ogg",
+    "voice": "dorn",
+    "sig": "f5daac83fe12",
+    "seconds": 15.32,
+    "seed": 404,
+    "wer": 0.019
+   }
+  ]
+ },
+ "dorn/lonely": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "Alone? In an inn?",
+    "file": "lonely_0.ogg",
+    "voice": "dorn",
+    "sig": "f5daac83fe12",
+    "seconds": 1.45,
+    "seed": 404,
+    "wer": 0.0
+   },
+   {
+    "who": "narrator",
+    "text": "For the first time, Dorn smiles.",
+    "file": "lonely_1.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.25,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Never. She said a tavern is a home for those who got stuck. Full of strangers, but nobody has to eat alone.",
+    "file": "lonely_2.ogg",
+    "voice": "dorn",
+    "sig": "f5daac83fe12",
+    "seconds": 5.69,
+    "seed": 404,
+    "wer": 0.0
+   },
+   {
+    "who": "narrator",
+    "text": "He sets a tankard in front of you.",
+    "file": "lonely_3.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.33,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "This one's on the house.",
+    "file": "lonely_4.ogg",
+    "voice": "dorn",
+    "sig": "f5daac83fe12",
+    "seconds": 1.24,
+    "seed": 404,
+    "wer": 0.0
+   }
+  ]
+ },
+ "dorn/mark": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Dorn grabs your wrist and turns your palm to the light. Three pale lines run across the skin, lines you never noticed before.",
+    "file": "mark_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 9.03,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Grandmother drew them on every bill, in the margin, as if she was afraid she'd forget. They say the same ones are on the gate. Ask Lis at the Echo Archive, she writes such things down.",
+    "file": "mark_1.ogg",
+    "voice": "dorn",
+    "sig": "f5daac83fe12",
+    "seconds": 9.96,
+    "seed": 404,
+    "wer": 0.0
+   }
+  ]
+ },
+ "dorn/promise": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Dorn looks at you as if weighing a coin.",
+    "file": "promise_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.82,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Ardan. A shipwright from Tin Bay.",
+    "file": "promise_1.ogg",
+    "voice": "dorn",
+    "sig": "f5daac83fe12",
+    "seconds": 1.93,
+    "seed": 404,
+    "wer": 0.0
+   },
+   {
+    "who": "narrator",
+    "text": "After a moment he adds:",
+    "file": "promise_2.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.06,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Don't promise if you won't keep it. In Zawias, promises aren't forgotten.",
+    "file": "promise_3.ogg",
+    "voice": "dorn",
+    "sig": "f5daac83fe12",
+    "seconds": 3.97,
+    "seed": 404,
+    "wer": 0.0
+   }
+  ]
+ },
+ "dorn/proof": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Without a word, Dorn pulls a yellowed bill from the inn's first day out from under the counter. In the margin are three lines, drawn by a shaking hand.",
+    "file": "proof_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 10.61,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Nobody pays me to remember. You pay double for a bed now.",
+    "file": "proof_1.ogg",
+    "voice": "dorn",
+    "sig": "f5daac83fe12",
+    "seconds": 3.06,
+    "seed": 404,
+    "wer": 0.0
+   }
+  ]
+ },
+ "dorn/proud": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "Someone had to.",
+    "file": "proud_0.ogg",
+    "voice": "dorn",
+    "sig": "f5daac83fe12",
+    "seconds": 1.12,
+    "seed": 404,
+    "wer": 0.0
+   },
+   {
+    "who": "narrator",
+    "text": "Dorn slams the tankard down.",
+    "file": "proud_1.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.14,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Grandmother said he thought so too. Until one day he stopped, and simply vanished. A bed here costs two gold. For you, four.",
+    "file": "proud_2.ogg",
+    "voice": "dorn",
+    "sig": "f5daac83fe12",
+    "seconds": 6.75,
+    "seed": 404,
+    "wer": 0.0
+   }
+  ]
+ },
  "dorn/rested": {
   "segments": [
    {
@@ -821,6 +1137,50 @@
    }
   ]
  },
+ "dorn/sorry": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Dorn is silent for a long time.",
+    "file": "sorry_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.24,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "An apology won't do grandmother any good now.",
+    "file": "sorry_1.ogg",
+    "voice": "dorn",
+    "sig": "f5daac83fe12",
+    "seconds": 2.47,
+    "seed": 404,
+    "wer": 0.0
+   },
+   {
+    "who": "narrator",
+    "text": "He goes back to wiping the tankard.",
+    "file": "sorry_2.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.49,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "But nobody ever apologised to her. So... it's good someone finally said it.",
+    "file": "sorry_3.ogg",
+    "voice": "dorn",
+    "sig": "f5daac83fe12",
+    "seconds": 3.95,
+    "seed": 404,
+    "wer": 0.077
+   }
+  ]
+ },
  "dorn/start": {
   "segments": [
    {
@@ -840,6 +1200,40 @@
     "voice": "dorn",
     "sig": "f5daac83fe12",
     "seconds": 3.82
+   }
+  ]
+ },
+ "dorn/truth": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "That he wasn't cruel, just tired. Every day a queue at the gate, everyone weeping in their own way, and he alone decided. Grandmother once saw him cry when he thought nobody was looking.",
+    "file": "truth_0.ogg",
+    "voice": "dorn",
+    "sig": "f5daac83fe12",
+    "seconds": 10.17,
+    "seed": 404,
+    "wer": 0.0
+   },
+   {
+    "who": "narrator",
+    "text": "Dorn shrugs.",
+    "file": "truth_1.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 1.66,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Maybe that's why he vanished.",
+    "file": "truth_2.ogg",
+    "voice": "dorn",
+    "sig": "f5daac83fe12",
+    "seconds": 1.49,
+    "seed": 404,
+    "wer": 0.0
    }
   ]
  },
@@ -1021,6 +1415,50 @@
    }
   ]
  },
+ "hask/oblivion": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Hask falls silent for a moment.",
+    "file": "oblivion_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.3,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "They dissolve. First the name, then the face, last the shadow. I once saw someone stop being. He stood by the gate and asked if anyone knew him.",
+    "file": "oblivion_1.ogg",
+    "voice": "hask",
+    "sig": "d487def15cf2",
+    "seconds": 7.53,
+    "seed": 202,
+    "wer": 0.0
+   },
+   {
+    "who": "narrator",
+    "text": "He glances at your hand.",
+    "file": "oblivion_2.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.09,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "That's why I make sure people get written down here.",
+    "file": "oblivion_3.ogg",
+    "voice": "hask",
+    "sig": "d487def15cf2",
+    "seconds": 2.64,
+    "seed": 202,
+    "wer": 0.0
+   }
+  ]
+ },
  "hask/patrol_alley": {
   "segments": [
    {
@@ -1143,6 +1581,40 @@
    }
   ]
  },
+ "hidden_door/listen": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The stone is as cold as well water. On the other side something rustles softly, as if a draught were turning pages. Then you hear a whisper, tired and familiar:",
+    "file": "listen_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 11.22,
+    "seed": 909,
+    "wer": 0.036
+   },
+   {
+    "who": "speaker",
+    "text": "Not today.",
+    "file": "listen_1.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 1.55,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "narrator",
+    "text": "You recognise that voice. It is your own.",
+    "file": "listen_2.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.89,
+    "seed": 909,
+    "wer": 0.125
+   }
+  ]
+ },
  "hidden_door/opened": {
   "segments": [
    {
@@ -1234,6 +1706,50 @@
     "voice": "kwit",
     "sig": "d954463b5e38",
     "seconds": 8.39,
+    "seed": 303,
+    "wer": 0.0
+   }
+  ]
+ },
+ "kwit/cunning": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The quill stops mid-letter. Kwit stares at the blot for a long time.",
+    "file": "cunning_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 4.85,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "A sentence nobody has signed weighs nothing.",
+    "file": "cunning_1.ogg",
+    "voice": "kwit",
+    "sig": "d954463b5e38",
+    "seconds": 2.58,
+    "seed": 303,
+    "wer": 0.0
+   },
+   {
+    "who": "narrator",
+    "text": "He sets the quill down.",
+    "file": "cunning_2.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.02,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "But I won't test how many signers you'd find. The Unravelers. The old warehouse in the east. Their leader is called Sever. I'm not recording this conversation.",
+    "file": "cunning_3.ogg",
+    "voice": "kwit",
+    "sig": "d954463b5e38",
+    "seconds": 8.67,
     "seed": 303,
     "wer": 0.0
    }
@@ -1741,6 +2257,50 @@
    }
   ]
  },
+ "mirela/home": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Mirela looks at you longer than is polite.",
+    "file": "home_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 3.02,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "A home? In Zawias? Everyone here is passing through.",
+    "file": "home_1.ogg",
+    "voice": "mirela",
+    "sig": "fea5d511f18d",
+    "seconds": 3.21,
+    "seed": 101,
+    "wer": 0.0
+   },
+   {
+    "who": "narrator",
+    "text": "After a moment she adds, more quietly:",
+    "file": "home_2.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.82,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Bring the key back, and my door will be open to you. That's more than people usually promise here.",
+    "file": "home_3.ogg",
+    "voice": "mirela",
+    "sig": "fea5d511f18d",
+    "seconds": 5.71,
+    "seed": 101,
+    "wer": 0.053
+   }
+  ]
+ },
  "mirela/keep": {
   "segments": [
    {
@@ -1774,6 +2334,50 @@
     "seconds": 2.2,
     "seed": 909,
     "wer": 0.167
+   }
+  ]
+ },
+ "mirela/price": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Mirela gives a short snort of laughter.",
+    "file": "price_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.86,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "More than either of us will see in a lifetime. But a merchant won't give it back to me when the Custodian asks where it is.",
+    "file": "price_1.ogg",
+    "voice": "mirela",
+    "sig": "fea5d511f18d",
+    "seconds": 7.25,
+    "seed": 101,
+    "wer": 0.0
+   },
+   {
+    "who": "narrator",
+    "text": "She sighs.",
+    "file": "price_2.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 1.51,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Fine. You didn't sell it, so I won't be stingy either. A hundred and fifty, and not a word to anyone.",
+    "file": "price_3.ogg",
+    "voice": "mirela",
+    "sig": "fea5d511f18d",
+    "seconds": 5.81,
+    "seed": 101,
+    "wer": 0.0
    }
   ]
  },
@@ -2366,6 +2970,30 @@
     "voice": "sever",
     "sig": "964b12a55ef9",
     "seconds": 2.0,
+    "seed": 808,
+    "wer": 0.0
+   }
+  ]
+ },
+ "sever/curious": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Sever stops sifting the dust.",
+    "file": "curious_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.25,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "You're curious. Good. I fear this key will open a place where nothing ends. Eternity without decay. Do you understand now why it has to disappear?",
+    "file": "curious_1.ogg",
+    "voice": "sever",
+    "sig": "964b12a55ef9",
+    "seconds": 11.09,
     "seed": 808,
     "wer": 0.0
    }

@@ -1,0 +1,26 @@
+{
+  "strength": {"name": "Siła", "order": 0, "options": {
+    "loyalty":    {"name": "Lojalność",    "desc": "Danego słowa i swoich ludzi nie porzucasz, nawet gdy to kosztuje."},
+    "curiosity":  {"name": "Ciekawość",    "desc": "Każde drzwi to pytanie, a ty nie umiesz zostawić pytania bez odpowiedzi."},
+    "compassion": {"name": "Współczucie",  "desc": "Widzisz cudzą biedę i nie przechodzisz obok."},
+    "cunning":    {"name": "Przebiegłość", "desc": "Najkrótsza droga rzadko prowadzi przez frontowe drzwi."}
+  }},
+  "flaw": {"name": "Wada", "order": 1, "options": {
+    "pride":    {"name": "Pycha",      "desc": "Wiesz lepiej i trudno ci tego nie powiedzieć."},
+    "greed":    {"name": "Chciwość",   "desc": "Każda przysługa ma cenę, a twoja zawsze jest wyższa."},
+    "anger":    {"name": "Gniew",      "desc": "Cierpliwość kończy ci się szybciej niż innym."},
+    "distrust": {"name": "Nieufność",  "desc": "Za każdym uśmiechem szukasz noża."}
+  }},
+  "desire": {"name": "Pragnienie", "order": 2, "options": {
+    "truth":   {"name": "Prawda o sobie", "desc": "Chcesz wiedzieć, kim byłeś, zanim brama cię wypluła."},
+    "wealth":  {"name": "Bogactwo",       "desc": "Złoto otwiera więcej drzwi niż klucze."},
+    "freedom": {"name": "Wolność",        "desc": "Żadnej klatki, żadnej przysięgi, żadnego pana."},
+    "home":    {"name": "Dom",            "desc": "Szukasz miejsca, do którego można wracać."}
+  }},
+  "fear": {"name": "Lęk", "order": 3, "options": {
+    "oblivion":     {"name": "Zapomnienie",     "desc": "Boisz się, że znikniesz i nikt nie zauważy."},
+    "helplessness": {"name": "Bezradność",      "desc": "Najgorsze jest stać i patrzeć, nie mogąc nic zrobić."},
+    "loneliness":   {"name": "Samotność",       "desc": "Cisza pustego pokoju przeraża cię bardziej niż walka."},
+    "closed_doors": {"name": "Zamknięte drzwi", "desc": "Zamknięte drzwi znaczą dla ciebie, że po drugiej stronie coś czeka."}
+  }}
+}

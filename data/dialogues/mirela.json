@@ -102,7 +102,9 @@
       "success": "reward_plus",
       "fail": "reward_no"
      }
-    }
+    },
+    {"text": "Sto to jałmużna. Dwieście albo szukaj innego głupca.", "motivation": "flaw:greed", "next": "reward_no"},
+    {"text": "Nie chcę złota. Chcę wiedzieć, czy w Zawiasie znajdzie się dla mnie miejsce.", "motivation": "desire:home", "next": "home"}
    ]
   },
   "reward_plus": {
@@ -129,6 +131,12 @@
      "next": "accept"
     }
    ]
+  },
+  "home": {
+    "speaker": "Mirela",
+    "text": "Mirela patrzy na ciebie dłużej, niż wypada. „Dom? W Zawiasie? Tu wszyscy są przejazdem”. Po chwili dodaje ciszej: „Przynieś klucz, a moje drzwi będą dla ciebie otwarte. To więcej, niż się tu zwykle obiecuje”.",
+    "effects": [{"set_flag": "mirela_home"}],
+    "choices": [{"text": "Umowa stoi.", "next": "accept"}]
   },
   "accept": {
    "speaker": "Mirela",
@@ -286,8 +294,15 @@
     {
      "text": "Zatrzymam go. Sam zobaczę, co jest za tymi drzwiami.",
      "next": "keep"
-    }
+    },
+    {"text": "A ile dałby za niego ten, kto daje najwięcej?", "motivation": "desire:wealth", "if": {"not_flag": "reward_plus"}, "once": true, "next": "price"}
    ]
+  },
+  "price": {
+    "speaker": "Mirela",
+    "text": "Mirela parska krótkim śmiechem. „Więcej, niż oboje zobaczymy w życiu. Ale kupiec nie odda mi go, kiedy Kustoszka zapyta, gdzie jest”. Wzdycha. „Dobra. Ty go nie sprzedałeś, to i ja nie będę skąpić. Sto pięćdziesiąt i ani słowa nikomu”.",
+    "effects": [{"set_flag": "reward_plus"}, {"log": "Mirela podnosi nagrodę do 150 sz."}],
+    "choices": [{"text": "Wróćmy do klucza.", "next": "truth"}]
   },
   "truth_fail": {
    "speaker": "Mirela",

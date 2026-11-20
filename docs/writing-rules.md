@@ -27,7 +27,7 @@ mówi, co pilnuje zasady automatycznie, a „W Zawiasie” pokazuje, gdzie już 
 | # | Kontrola | W Zawiasie | Braki |
 |---|---|---|---|
 | 1 | `story check`: oś Wędrowca ma źródło dla każdego etapu | oś `wanderer`, ślady w mgle (`memories`) | kolejne rozdziały osi |
-| 2 | (planowana) `story lint`: NPC z odniesieniem do Wędrowca | Hask i Lis rozpoznają znak, szepty w mgle | NPC, który pamięta dawną decyzję Wędrowca ([todo](todo.md)) |
+| 2 | (planowana) `story lint`: NPC z odniesieniem do Wędrowca | Hask, Lis i Dorn rozpoznają znak, szepty w mgle; Dorn ma żal o zawróconą babkę | ktoś, kto Wędrowcowi coś zawdzięcza |
 | 3 | `story lint`: porażka z wyjściem; `story paths`: drogi bez walki do każdego finału | dyplomacja, skradanie, walka; obietnice frakcji | rejestr przysiąg i kłamstw ([todo](todo.md)) |
 | 4 | `story lint`: porażka testu zostawia drogę dalej | wskazówki w dzienniku po porażkach | przegrana walka prowadząca dalej ([todo](todo.md)) |
 | 5 | `story lint`: obietnice frakcji | trzy frakcje z opisem idei i skutkami ([ADR 0005](decisions/0005-visible-faction-consequences.md)) | spór o idee w dialogu, nie tylko reputacja |

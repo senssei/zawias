@@ -10,8 +10,15 @@
       "text": "Klucz bez drzwi szarpie się w twojej dłoni w stronę gładkiego muru między Kluczarnią a magazynami. Na kamieniu, jak szron, pojawia się zarys drzwi, których przed chwilą nie było.",
       "choices": [
         {"text": "Przyłóż klucz do zarysu.", "if": {"has_item": "key_without_door"}, "next": "opened"},
-        {"text": "[Odejdź]", "end": true}
+        {"text": "[Odejdź]", "end": true},
+        {"text": "Zanim cokolwiek zrobię, przykładam ucho do muru. Muszę wiedzieć, co jest po drugiej stronie.", "motivation": "fear:closed_doors", "if": {"has_item": "key_without_door"}, "once": true, "next": "listen"}
       ]
+    },
+    "listen": {
+      "speaker": "Drzwi, których nie ma",
+      "text": "Kamień jest zimny jak woda w studni. Po drugiej stronie coś cicho szeleści, jakby przeciąg przewracał kartki. Potem słyszysz szept, zmęczony i znajomy: „Nie dziś”. Rozpoznajesz ten głos. To twój własny głos.",
+      "effects": [{"journal": "Przez mur przy zarysie drzwi usłyszałem własny głos, który szeptał: „Nie dziś”. Za tymi drzwiami ktoś, albo coś, pamięta, kim byłem."}],
+      "choices": [{"text": "Przyłóż klucz do zarysu.", "next": "opened"}, {"text": "[Odejdź]", "end": true}]
     },
     "opened": {
       "speaker": "Drzwi, których nie ma",

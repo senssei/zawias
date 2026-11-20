@@ -17,7 +17,8 @@
         {"text": "Zejdź mi z drogi albo sam cię rozplotę.", "next": "threat"},
         {"text": "Nic. Już idę.", "end": true},
         {"text": "Mam wiadomość dla Severa od kogoś z góry. [Patrol Zapisanych łazi za tobą]", "if": {"reputation": ["inscribed", "wary"]}, "once": true,
-         "check": {"skill": "deception", "dc": 17, "success": "let_in", "fail": "fight_node"}}
+         "check": {"skill": "deception", "dc": 17, "success": "let_in", "fail": "fight_node"}},
+        {"text": "Łapię go za kołnierz i przyciskam do drzwi.", "motivation": "flaw:anger", "next": "threat"}
       ]
     },
     "let_in_token": {

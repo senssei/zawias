@@ -1,7 +1,7 @@
 {
   "wanderer": {
     "beats": [
-      {"stage": "trace", "sources": ["hask/wanderer_trace"]},
+      {"stage": "trace", "sources": ["hask/wanderer_trace", "dorn/mark"]},
       {"stage": "record", "sources": ["lis/wanderer_record"]},
       {"stage": "revealed", "sources": ["mirela/wanderer_memory", "arch/wanderer_memory"]},
       {"stage": "done_stayed", "sources": ["mirela/returned"]},

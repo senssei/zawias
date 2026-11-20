@@ -32,7 +32,7 @@ portrait is `assets/portraits/<id>.png` (a node can override it with `"portrait"
 
 - `starts`: the first entry whose `if` holds picks the opening node; otherwise `start`.
 - Choice keys: `text`, `next`, `end`, `if` (show only when the condition holds), `once`, `effects`, `redirect`,
-  `check`: `skill` or `ability`, `dc`, `success` / `fail` (next node), `success_effects` / `fail_effects`, optional `adv_if`, and optional degree-of-success bands `boon_effects` (success by 5+), `cost_effects` (success by 0–4), `gain_effects` (failure by 1–4); see [ADR 0008](decisions/0008-degree-of-success.md). The effect `log` adds a plain line to the log.
+  `check`: `skill` or `ability`, `dc`, `success` / `fail` (next node), `success_effects` / `fail_effects`, optional `adv_if`, and optional degree-of-success bands `boon_effects` (success by 5+), `cost_effects` (success by 0–4), `gain_effects` (failure by 1–4); see [ADR 0008](decisions/0008-degree-of-success.md). The effect `log` adds a plain line to the log. A choice may carry `"motivation": "category:option"` (see [ADR 0009](decisions/0009-motivations.md)): visible only for that motivation, grants Heroic Inspiration once; append such choices at the end of the list so translation keys keep their indices.
 - Node keys: `speaker`, `text`, `choices`, `effects` (applied when the node is shown), `portrait`.
 
 ### Conditions (`if`)

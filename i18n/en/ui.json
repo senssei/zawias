@@ -409,5 +409,8 @@
 "Kliknij miejsce na mapie, żeby tam pójść. Ciemne pola skrywa mgła ze Szczeliny: rzednieje tam, gdzie spojrzysz.": "Click a place on the map to go there. Dark areas are hidden by mist from the Rift: it thins wherever you look.",
 "SUKCES Z NADDATKIEM": "SUCCESS, AND MORE",
 "SUKCES, ALE…": "SUCCESS, BUT…",
-"PORAŻKA, ALE…": "FAILURE, BUT…"
+"PORAŻKA, ALE…": "FAILURE, BUT…",
+"Działasz zgodnie z sobą (%s): Heroiczna inspiracja.": "You act true to yourself (%s): Heroic Inspiration.",
+"Motywacje": "Motivations",
+"Opcje zgodne z motywacją pojawiają się w rozmowach; odegranie ich, także wady, daje Heroiczną inspirację.": "Options that fit your motivations appear in conversations; playing them out, flaws included, grants Heroic Inspiration."
 }

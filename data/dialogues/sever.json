@@ -16,8 +16,15 @@
         {"text": "Dość gadania.", "next": "angry"},
         {"text": "Wyjdę już.", "end": true},
         {"text": "[Lis] Pozwól mówić Lis. „Echo spisało ten klucz jako możliwość, która jeszcze nie zaistniała. Zniszczysz coś, co i tak się rozpada”.", "if": {"in_party": "lis"}, "once": true,
-         "check": {"skill": "persuasion", "dc": 15, "adv_if": {"in_party": "lis"}, "success": "convinced", "fail": "angry"}}
+         "check": {"skill": "persuasion", "dc": 15, "adv_if": {"in_party": "lis"}, "success": "convinced", "fail": "angry"}},
+        {"text": "Zanim zaczniemy: co według ciebie otworzyłby ten klucz, gdyby mu pozwolić?", "motivation": "strength:curiosity", "once": true, "next": "curious"}
       ]
+    },
+    "curious": {
+      "speaker": "Sever",
+      "text": "Sever przestaje przesypywać pył. „Ciekawy jesteś. Dobrze. Boję się, że ten klucz otworzy miejsce, w którym nic się nie kończy. Wieczność bez rozpadu. Rozumiesz teraz, czemu musi zniknąć?”",
+      "effects": [{"journal": "Sever boi się, że klucz otworzy miejsce, w którym nic się nie kończy. Może przekona go argument, że niespełniona możliwość to też rozpad."}],
+      "choices": [{"text": "Rozumiem.", "next": "start"}]
     },
     "why": {
       "speaker": "Sever",
