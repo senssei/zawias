@@ -4,5 +4,6 @@
   "dorn_ardan":     {"kind": "oath", "text": "Obiecałem Dornowi, że za Łukiem poszukam śladu Ardana."},
   "kwit_custodian": {"kind": "lie",  "text": "Powiedziałem Kwitowi, że przysyła mnie Kustoszka."},
   "doorkeeper_message": {"kind": "lie", "text": "Powiedziałem Odźwiernemu, że mam wiadomość dla Severa od kogoś z góry."},
-  "token_brothers": {"kind": "lie",  "text": "Pokazałem Odźwiernemu Żeton Rdzy i przekazałem pozdrowienia od braci z zaułka."}
+  "token_brothers": {"kind": "lie",  "text": "Pokazałem Odźwiernemu Żeton Rdzy i przekazałem pozdrowienia od braci z zaułka."},
+  "self_kept":      {"kind": "lie",  "text": "Powiedziałem samemu sobie, że dotrzymałem każdego słowa."}
 }

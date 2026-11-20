@@ -25,3 +25,5 @@ Template: copy [template.md](template.md).
 | [0008](0008-degree-of-success.md) | Degree of success: boon, cost and gain on dialogue checks | Accepted |
 | [0009](0009-motivations.md) | Character motivations: strength, flaw, desire, fear | Accepted |
 | [0010](0010-word-register.md) | Word register: oaths and lies | Accepted |
+| [0011](0011-finale-question.md) | The finale as a question: a conversation with your past self | Accepted |
+| [0012](0012-defeat-into-fog.md) | Defeat into the fog: losing a fight continues the story | Accepted |

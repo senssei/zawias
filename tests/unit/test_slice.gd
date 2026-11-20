@@ -127,7 +127,7 @@ func test_diplomacy_path_all_classes():
 		var ended := _ending()
 		var r := _talk("mirela", [])
 		assert_eq(r.current_id, "wanderer_memory", cls)
-		_choose(r, "Porozmawiajmy o kluczu")
+		_through_memory(r)
 		_choose(r, "Oto twój klucz")
 		assert_eq(gs.quest_stage("key"), "done_returned", cls)
 		assert_eq(ended.size(), 1, cls + ": zakończenie")
@@ -152,7 +152,7 @@ func test_stealth_path_all_classes():
 		var ended := _ending()
 		var r := _talk("arch", [])
 		assert_eq(r.current_id, "wanderer_memory", cls)
-		_choose(r, "Przyjrzyj się Łukowi")
+		_through_memory(r)
 		_choose(r, "przekręć")
 		assert_eq(gs.quest_stage("key"), "done_portal", cls)
 		assert_eq(ended.size(), 1, cls + ": zakończenie")
@@ -195,7 +195,7 @@ func test_combat_path_all_classes_with_save_load():
 		assert_true("key_without_door" in gs.player.inventory, cls)
 		var ended := _ending()
 		var r := _talk("mirela", [])
-		_choose(r, "Porozmawiajmy o kluczu")
+		_through_memory(r)
 		_choose(r, "Oto twój klucz")
 		assert_eq(ended.size(), 1, cls + ": zakończenie")
 		_take_levels()
@@ -298,3 +298,15 @@ func test_wizard_solo_normal_combat_rate():
 	assert_eq(gs.player.level, 2, "po zasadzce gracz wchodzi do magazynu na 2. poziomie")
 	assert_gte(wins.ambush, 9, "zasadzka solo do wygrania na Normalnym")
 	assert_gte(wins.warehouse, 6, "magazyn solo do wygrania na Normalnym")
+
+
+## Rozmowa z dawnym sobą (memory.json): pierwsza widoczna odpowiedź w każdym węźle, aż wróci do sceny.
+func _through_memory(r: DialogueRunner) -> void:
+	for ch in r.visible_choices():
+		if "wróć do wspomnienia" in ch.text:
+			r.choose(ch.index)
+			break
+	var guard := 0
+	while r.dialogue_id == "memory" and guard < 10:
+		guard += 1
+		r.choose(r.visible_choices()[0].index)

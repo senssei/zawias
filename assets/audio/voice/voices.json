@@ -54,6 +54,12 @@
    "ref_text": "Stars burn out. Planes unravel. Even gods forget their own names. This is not a tragedy, it is the honesty of the universe.",
    "seed": 808, "speed": 0.85,
    "tts_gender": "male", "tts_pitch": 0.75, "tts_rate": 0.85
+  },
+  "memory": {
+   "instruct": "male, middle-aged, low pitch, whisper",
+   "ref_text": "Tomorrow I give the gate my name. Every day someone weeps in a different way, and every day I am the one who says not today.",
+   "seed": 1001, "speed": 0.9,
+   "tts_gender": "male", "tts_pitch": 0.85, "tts_rate": 0.9
   }
  }
 }

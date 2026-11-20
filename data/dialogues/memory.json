@@ -1,0 +1,129 @@
+{
+  "start": "start",
+  "nodes": {
+    "start": {
+      "speaker": "Ty sprzed przysięgi",
+      "portrait": "pc",
+      "text": "Klucz znów parzy i wspomnienie wraca, wyraźniejsze niż przedtem. Przy bramie stoi strażnik z trzema świeżymi nacięciami na dłoni. Ma twoją twarz, tylko zmęczoną tak, jak ty jeszcze nie zdążyłeś się zmęczyć. Kolejka proszących rozpływa się we mgle. Strażnik patrzy prosto na ciebie. „Jutro oddam bramie imię. Ty wiesz, że to zrobiłem. Powiedz mi więc: dlaczego?”",
+      "effects": [{"set_flag": "memory_seen"}],
+      "choices": [
+        {"text": "Bo nikt nie powinien sam decydować, kto przejdzie.", "effects": [{"set_flag": "finale_why_power"}], "next": "why_power"},
+        {"text": "Bo byłeś zmęczony. Każde »nie« coś z ciebie zabierało.", "effects": [{"set_flag": "finale_why_tired"}], "next": "why_tired"},
+        {"text": "Nie wiem. Dlatego tu jestem.", "effects": [{"set_flag": "finale_why_unknown"}], "next": "why_unknown"},
+        {"text": "Bo obiecałeś ludziom drogę, a twoje imię stało jej na przeszkodzie.", "motivation": "strength:loyalty", "effects": [{"set_flag": "finale_why_strength"}], "next": "why_strength"},
+        {"text": "Bo chciałeś zobaczyć, co jest po drugiej stronie. Sam, nie jako strażnik.", "motivation": "strength:curiosity", "effects": [{"set_flag": "finale_why_strength"}], "next": "why_strength"},
+        {"text": "Bo nie mogłeś już patrzeć, jak płaczą w kolejce.", "motivation": "strength:compassion", "effects": [{"set_flag": "finale_why_strength"}], "next": "why_strength"},
+        {"text": "Bo tylko tak nikt już nie mógł cię zmusić do wyboru.", "motivation": "strength:cunning", "effects": [{"set_flag": "finale_why_strength"}], "next": "why_strength"},
+        {"text": "Bo wiedziałeś lepiej niż brama i chciałeś to udowodnić.", "motivation": "flaw:pride", "effects": [{"set_flag": "finale_why_flaw"}], "next": "why_flaw"},
+        {"text": "Bo za imię dostałeś coś cenniejszego: życie bez długów.", "motivation": "flaw:greed", "effects": [{"set_flag": "finale_why_flaw"}], "next": "why_flaw"},
+        {"text": "Bo miałeś dość. Wszystkich. Siebie też.", "motivation": "flaw:anger", "effects": [{"set_flag": "finale_why_flaw"}], "next": "why_flaw"},
+        {"text": "Bo nie ufałeś nikomu, kto przyjdzie po tobie. Lepiej, żeby nikt nie miał tej władzy.", "motivation": "flaw:distrust", "effects": [{"set_flag": "finale_why_flaw"}], "next": "why_flaw"},
+        {"text": "Bo chciałeś wiedzieć, kim jesteś bez tytułu.", "motivation": "desire:truth", "effects": [{"set_flag": "finale_why_desire"}], "next": "why_desire"},
+        {"text": "Bo strażnik nie ma nic, a ty chciałeś mieć wszystko.", "motivation": "desire:wealth", "effects": [{"set_flag": "finale_why_desire"}], "next": "why_desire"},
+        {"text": "Bo imię było łańcuchem, którym przykuto cię do bramy.", "motivation": "desire:freedom", "effects": [{"set_flag": "finale_why_desire"}], "next": "why_desire"},
+        {"text": "Bo strażnik nie ma domu, a ty chciałeś go mieć.", "motivation": "desire:home", "effects": [{"set_flag": "finale_why_desire"}], "next": "why_desire"},
+        {"text": "Bo bałeś się, że zostanie po tobie tylko tytuł, a człowieka nikt nie zapamięta.", "motivation": "fear:oblivion", "effects": [{"set_flag": "finale_why_fear"}], "next": "why_fear"},
+        {"text": "Bo każde »nie dziś« znaczyło, że stoisz i patrzysz, i nic nie robisz.", "motivation": "fear:helplessness", "effects": [{"set_flag": "finale_why_fear"}], "next": "why_fear"},
+        {"text": "Bo przy bramie zawsze stałeś sam.", "motivation": "fear:loneliness", "effects": [{"set_flag": "finale_why_fear"}], "next": "why_fear"},
+        {"text": "Bo sam stałeś się drzwiami, które zamykały się przed innymi.", "motivation": "fear:closed_doors", "effects": [{"set_flag": "finale_why_fear"}], "next": "why_fear"}
+      ]
+    },
+    "why_power": {
+      "speaker": "Ty sprzed przysięgi",
+      "portrait": "pc",
+      "text": "Strażnik kiwa głową powoli. „Tak to sobie powtarzam. Że władza nad drogą to za dużo dla jednej ręki. Dobrze słyszeć, że to nie była tylko wymówka”.",
+      "choices": [{"text": "[Milcz]", "next": "word"}]
+    },
+    "why_tired": {
+      "speaker": "Ty sprzed przysięgi",
+      "portrait": "pc",
+      "text": "Strażnik odwraca wzrok. „Każdego dnia ktoś płakał inaczej. Myślałem, że nikt tego nie widzi”. Po chwili dodaje: „Zmęczenie to uczciwy powód. Nie ładny, ale uczciwy”.",
+      "choices": [{"text": "[Milcz]", "next": "word"}]
+    },
+    "why_unknown": {
+      "speaker": "Ty sprzed przysięgi",
+      "portrait": "pc",
+      "text": "Strażnik uśmiecha się po raz pierwszy, krzywo, jak ktoś, kto rozpoznaje własny żart. „Ja też nie byłem pewien. Może dlatego oddałem imię, a nie pamięć”.",
+      "choices": [{"text": "[Milcz]", "next": "word"}]
+    },
+    "why_strength": {
+      "speaker": "Ty sprzed przysięgi",
+      "portrait": "pc",
+      "text": "„Więc oddałem imię, żeby zostać tym, kim byłem naprawdę”. Strażnik patrzy na swoją dłoń. „Dziwne. Myślałem, że to będzie strata”.",
+      "choices": [{"text": "[Milcz]", "next": "word"}]
+    },
+    "why_flaw": {
+      "speaker": "Ty sprzed przysięgi",
+      "portrait": "pc",
+      "text": "Strażnik parska cicho. „Więc to nie była szlachetność. Dobrze. W szlachetność bym nie uwierzył”.",
+      "choices": [{"text": "[Milcz]", "next": "word"}]
+    },
+    "why_desire": {
+      "speaker": "Ty sprzed przysięgi",
+      "portrait": "pc",
+      "text": "„Chciałem czegoś dla siebie. Pierwszy raz od lat”. Strażnik zaciska dłoń z nacięciami. „Mam nadzieję, że to znalazłeś”.",
+      "choices": [{"text": "[Milcz]", "next": "word"}]
+    },
+    "why_fear": {
+      "speaker": "Ty sprzed przysięgi",
+      "portrait": "pc",
+      "text": "Strażnik długo milczy. „Bałem się. Tak. Strażnik, który się boi, nie powinien trzymać bramy”.",
+      "choices": [{"text": "[Milcz]", "next": "word"}]
+    },
+    "word": {
+      "speaker": "Ty sprzed przysięgi",
+      "portrait": "pc",
+      "text": "„Przysięga to też słowo. Jutro dam je bramie i dotrzymam”. Strażnik pochyla się ku tobie. „A ty? Dotrzymałeś tu słowa?”",
+      "choices": [
+        {"text": "Tak. Każdego, które dałem.", "if": {"word_clean": true, "words_min": ["any", 1]}, "effects": [{"set_flag": "finale_word_clean"}, {"set_flag": "finale_honest"}], "next": "word_clean"},
+        {"text": "Nie. Złamałem słowo albo skłamałem.", "if": {"word_clean": false}, "effects": [{"set_flag": "finale_word_owned"}, {"set_flag": "finale_honest"}], "next": "word_owned"},
+        {"text": "Tak. Każdego.", "if": {"word_clean": false}, "effects": [{"lie": "self_kept"}, {"lie_exposed": "self_kept"}, {"set_flag": "finale_word_lied"}], "next": "word_lied"},
+        {"text": "Nikomu tu nie dałem słowa.", "if": {"words_max": ["any", 0]}, "effects": [{"set_flag": "finale_word_none"}, {"set_flag": "finale_honest"}], "next": "word_none"}
+      ]
+    },
+    "word_clean": {
+      "speaker": "Ty sprzed przysięgi",
+      "portrait": "pc",
+      "text": "Strażnik patrzy na ciebie tak, jakby czytał rejestr, którego nie widzisz. „Prawda. Niewielu przychodzi do bramy z czystymi rękami”.",
+      "choices": [{"text": "[Dalej]", "next": "now"}]
+    },
+    "word_owned": {
+      "speaker": "Ty sprzed przysięgi",
+      "portrait": "pc",
+      "text": "„Przynajmniej mnie nie okłamujesz”. Strażnik kiwa głową. „Słowo, które się złamało i do którego się przyznajesz, waży więcej niż takie, którego nikt nie sprawdził”.",
+      "choices": [{"text": "[Dalej]", "next": "now"}]
+    },
+    "word_lied": {
+      "speaker": "Ty sprzed przysięgi",
+      "portrait": "pc",
+      "text": "Strażnik patrzy na ciebie długo. „Kłamiesz. Wiem, bo kiedyś kłamałem tak samo”. Nie ma w tym gniewu, tylko zmęczenie. „Siebie oszukać najtrudniej. I najłatwiej”.",
+      "choices": [{"text": "[Dalej]", "next": "now"}]
+    },
+    "word_none": {
+      "speaker": "Ty sprzed przysięgi",
+      "portrait": "pc",
+      "text": "„Ostrożny”. Strażnik prawie się uśmiecha. „Ja też byłem ostrożny, dopóki nie dałem słowa bramie”.",
+      "choices": [{"text": "[Dalej]", "next": "now"}]
+    },
+    "now": {
+      "speaker": "Ty sprzed przysięgi",
+      "portrait": "pc",
+      "text": "Mgła podchodzi bliżej. „Jutro nie będę miał imienia. Ty masz już inne”. Strażnik przechyla głowę. „Kim jesteś teraz?”",
+      "choices": [
+        {"text": "Tym, kim mnie dziś nazywają. Tamto imię zostaw bramie.", "effects": [{"set_flag": "finale_self_new"}], "next": "fade"},
+        {"text": "Wędrowcem. Chcę odzyskać to, co oddałem.", "effects": [{"set_flag": "finale_self_old"}], "next": "fade"},
+        {"text": "Jeszcze nie wiem. Ale to ja o tym zdecyduję.", "effects": [{"set_flag": "finale_self_open"}], "next": "fade"}
+      ]
+    },
+    "fade": {
+      "speaker": "Ty sprzed przysięgi",
+      "portrait": "pc",
+      "text": "Strażnik kiwa głową, jakby usłyszał dokładnie to, czego się spodziewał. „W takim razie droga należy do ciebie”. Wspomnienie gaśnie. Zostaje ciepło w dłoni i klucz, który przestał drżeć.",
+      "effects": [{"set_flag": "memory_done"}, {"journal": "We wspomnieniu rozmawiałem z samym sobą sprzed przysięgi. Zapytał, dlaczego oddałem imię, czy dotrzymałem tu słowa i kim jestem teraz."}, {"remember": true}],
+      "choices": [
+        {"text": "[Wróć do Mireli]", "if": {"flag": "memory_at_mirela"}, "dialogue": "mirela", "next": "return"},
+        {"text": "[Wróć pod Łuk]", "if": {"flag": "memory_at_arch"}, "dialogue": "arch", "next": "with_key"}
+      ]
+    }
+  }
+}

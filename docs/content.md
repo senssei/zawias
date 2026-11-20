@@ -31,15 +31,16 @@ portrait is `assets/portraits/<id>.png` (a node can override it with `"portrait"
 ```
 
 - `starts`: the first entry whose `if` holds picks the opening node; otherwise `start`.
-- Choice keys: `text`, `next`, `end`, `if` (show only when the condition holds), `once`, `effects`, `redirect`,
+- Choice keys: `text`, `next`, `end`, `dialogue` (switch to another dialogue file; `next` is then a node there, see [ADR 0011](decisions/0011-finale-question.md)), `if` (show only when the condition holds), `once`, `effects`, `redirect`,
   `check`: `skill` or `ability`, `dc`, `success` / `fail` (next node), `success_effects` / `fail_effects`, optional `adv_if`, and optional degree-of-success bands `boon_effects` (success by 5+), `cost_effects` (success by 0–4), `gain_effects` (failure by 1–4); see [ADR 0008](decisions/0008-degree-of-success.md). The effect `log` adds a plain line to the log. A choice may carry `"motivation": "category:option"` (see [ADR 0009](decisions/0009-motivations.md)): visible only for that motivation, grants Heroic Inspiration once; append such choices at the end of the list so translation keys keep their indices.
-- Node keys: `speaker`, `text`, `choices`, `effects` (applied when the node is shown), `portrait`.
+- Node keys: `speaker`, `text`, `choices`, `effects` (applied when the node is shown), `portrait`, `scene` (semi-cutscene:
+  full-screen still `assets/cutscenes/<scene>.png` with fog, letterbox and subtitles, see [ADR 0012](decisions/0012-defeat-into-fog.md)).
 
 ### Conditions (`if`)
 
-All keys must hold: `flag`, `not_flag`, `flags` (all), `any_flag`, `class`, `species`, `has_item`, `not_item`,
+All keys must hold: `flag`, `not_flag`, `flags` (all), `not_flags` (none of them), `any_flag`, `class`, `species`, `has_item`, `not_item`,
 `gold` (at least), `quest: [id, stage]`, `quest_any: [id, [stages]]`, `not_quest`, `knows_spell`, `skill_prof`,
-`in_party: "<npc id>"`, `word: [id, state]`, `words_min: [state, n]`, `reputation_not: [faction, attitude]`, `near: [x, y, radius]` (the player stands within
+`in_party: "<npc id>"`, `word: [id, state]`, `words_min` / `words_max: [state, n]` (state may be `lie` or `any`), `word_clean: true|false`, `reputation_not: [faction, attitude]`, `near: [x, y, radius]` (the player stands within
 `radius` cells, e.g. for companion comments).
 
 Faction reputation uses `{"reputation": ["inscribed", "wary"]}` as a condition
@@ -54,7 +55,7 @@ sentence promises the player something.
 
 `set_flag`, `clear_flag`, `gold` (negative pays), `give_item`, `take_item`, `xp`, `heal`, `long_rest`,
 `journal` (adds a journal entry), `quest: [id, stage]`, word register `oath` / `oath_kept` / `oath_broken` / `lie` /
-`lie_exposed: "<id from data/words.json>"` ([ADR 0010](decisions/0010-word-register.md)), `join_party` / `leave_party: "<npc id>"` (companions,
+`lie_exposed: "<id from data/words.json>"`, `forget: n` / `remember: true` (max HP lost in the fog), `gold_fraction: 0.5` ([ADR 0010](decisions/0010-word-register.md)), `join_party` / `leave_party: "<npc id>"` (companions,
 see below), plus world requests `start_combat: "<encounter>"`,
 `end_game: "<ending>"`, `remove_npc: "<id>"`.
 

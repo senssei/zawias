@@ -29,11 +29,11 @@ mówi, co pilnuje zasady automatycznie, a „W Zawiasie” pokazuje, gdzie już 
 | 1 | `story check`: oś Wędrowca ma źródło dla każdego etapu | oś `wanderer`, ślady w mgle (`memories`) | kolejne rozdziały osi |
 | 2 | (planowana) `story lint`: NPC z odniesieniem do Wędrowca | Hask, Lis i Dorn rozpoznają znak, szepty w mgle; Dorn ma żal o zawróconą babkę | ktoś, kto Wędrowcowi coś zawdzięcza |
 | 3 | `story lint`: porażka z wyjściem; `story paths`: drogi bez walki do każdego finału | dyplomacja, skradanie, walka; obietnice frakcji; rejestr słowa (Kwit, Lis, ekran końca) | skutki liczbowe złamanego słowa (opcja 3 w [ADR 0010](decisions/0010-word-register.md)) |
-| 4 | `story lint`: porażka testu zostawia drogę dalej | wskazówki w dzienniku po porażkach | przegrana walka prowadząca dalej ([todo](todo.md)) |
+| 4 | `story lint`: porażka testu zostawia drogę dalej | wskazówki w dzienniku po porażkach; klęska w walce prowadzi w mgłę ([ADR 0012](decisions/0012-defeat-into-fog.md)) | fragmenty mgły po kolejnych rozdziałach |
 | 5 | `story lint`: obietnice frakcji | trzy frakcje z opisem idei i skutkami ([ADR 0005](decisions/0005-visible-faction-consequences.md)) | spór o idee w dialogu, nie tylko reputacja |
 | 6 | (planowana) towarzysz ma okrzyki `companion` i co najmniej jedną własną opcję | komentarze i opcja Lis u Severa | osobisty wątek Lis ([todo](todo.md)) |
 | 7 | redakcja | Rdzawy Targ, Łuk bez drzwi, Klucz bez drzwi | poboczne historie |
-| 8 | `story paths`: finał osiągalny bez walki | finał przy Mireli albo Łuku po wspomnieniu | finał jako pytanie ([todo](todo.md)) |
+| 8 | `story paths`: finał osiągalny bez walki | finał przy Mireli albo Łuku po rozmowie z dawnym sobą ([ADR 0011](decisions/0011-finale-question.md)) | finał całej gry (rozdział 3) |
 
 Przy przeglądzie sceny zapytaj, którą zasadę realizuje. Jeśli żadnej, scena prawdopodobnie jest tylko
 przekazaniem informacji. Wtedy warto ją połączyć z decyzją albo odkryciem.

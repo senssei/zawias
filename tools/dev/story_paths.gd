@@ -111,10 +111,10 @@ func _random_walk() -> void:
 			guard += 1
 			var choices := r.visible_choices()
 			# pokrycie: częściej wybór, którego jeszcze nie było (ale nie zawsze, żeby znane drogi też się mieszały)
-			var fresh := choices.filter(func(c): return not _seen_choices.has("%s/%s/%d" % [actor.dialogue, r.current_id, c.index]))
+			var fresh := choices.filter(func(c): return not _seen_choices.has("%s/%s/%d" % [r.dialogue_id, r.current_id, c.index]))
 			var pool: Array = fresh if not fresh.is_empty() and rng.randf() < 0.7 else choices
 			var ch: Dictionary = pool[rng.randi_range(0, pool.size() - 1)]
-			_seen_choices["%s/%s/%d" % [actor.dialogue, r.current_id, ch.index]] = true
+			_seen_choices["%s/%s/%d" % [r.dialogue_id, r.current_id, ch.index]] = true
 			var requests := []
 			var done := [false]
 			var on_req := func(e): requests.append(e)
@@ -254,6 +254,7 @@ func _walk(r: DialogueRunner, dlg: String, node: String, snap: Dictionary, steps
 		return
 	seen[key] = true
 	_restore(snap)
+	r.use_dialogue(dlg)
 	r.current_id = node
 	for ch in r.visible_choices():
 		var i: int = ch.index
@@ -261,6 +262,7 @@ func _walk(r: DialogueRunner, dlg: String, node: String, snap: Dictionary, steps
 		var variants: Array = _check_variants(ch.choice) if ch.choice.has("check") else [[]]
 		for dice in variants:
 			_restore(snap)
+			r.use_dialogue(dlg)
 			r.current_id = node
 			var requests := []
 			var done := [false]
@@ -286,7 +288,7 @@ func _walk(r: DialogueRunner, dlg: String, node: String, snap: Dictionary, steps
 			if done[0] or combat != "" or ending != "":
 				out.append({"snap": _snap(), "steps": steps + [step], "combat": combat, "ending": ending})
 			else:
-				_walk(r, dlg, r.current_id, _snap(), steps + [step], out, seen)
+				_walk(r, r.dialogue_id, r.current_id, _snap(), steps + [step], out, seen)
 
 
 # ------------------------------------------------------------------ walki i wyzwalacze

@@ -12,6 +12,11 @@
       {"set_flag": "ambush_done"}, {"xp": 250}, {"give_item": "rust_token"},
       {"journal": "Napastnicy z zaułka mieli przy sobie Żeton Rdzy. To znak Rozplataczy, którzy siedzą w starym magazynie."},
       {"quest": ["key", "lead_warehouse"]}
+    ],
+    "defeat_leave": true,
+    "on_defeat": [
+      {"set_flag": "ambush_done"}, {"gold_fraction": 0.5}, {"quest": ["key", "lead_warehouse"]},
+      {"journal": "Bandyci z zaułka zostawili mnie w mgle i zabrali połowę złota. Zanim odpłynąłem, usłyszałem, że wracają do magazynu Rozplataczy na wschodzie."}
     ]
   },
   "warehouse": {
@@ -23,6 +28,10 @@
     "on_victory": [
       {"set_flag": "warehouse_cleared"}, {"xp": 100}, {"set_reputation": ["unravelers", "wary"]},
       {"journal": "Rozplatacze z magazynu zostali pokonani, a Sever uciekł przez szparę w rzeczywistości. Klucz powinien leżeć w jego skrzyni."}
+    ],
+    "on_defeat": [
+      {"set_reputation": ["unravelers", "wary"]}, {"clear_flag": "front_open"}, {"clear_flag": "back_open"}, {"set_flag": "key_hidden"},
+      {"journal": "Rozplatacze rozpletli mnie na mgłę. Zamknęli drzwi magazynu, a Sever przeniósł klucz w głąb skrzyni. Wykraść go będzie trudniej."}
     ]
   }
 }

@@ -242,7 +242,8 @@
     {
      "text": "Jeszcze go zatrzymam.",
      "end": true
-    }
+    },
+    {"text": "[Zamknij oczy i wróć do wspomnienia]", "if": {"quest": ["wanderer", "revealed"], "not_flag": "memory_done"}, "effects": [{"set_flag": "memory_at_mirela"}, {"clear_flag": "memory_at_arch"}], "dialogue": "memory", "next": "start"}
    ]
   },
   "wanderer_memory": {
@@ -251,8 +252,8 @@
    "text": "Klucz parzy cię w dłoń. Przez chwilę widzisz pierwszą bramę Zawiasu. To twoja ręka nacina trzy kreski na zworniku. To ciebie nazywają Wędrowcem i proszą o pozwolenie na przejście. Własnym głosem wypowiadasz przysięgę: „Oddaję bramie imię. Droga należy do tych, którzy nią idą”. Wspomnienie gaśnie. Mirela widzi, że klucz przestał drżeć. „Możesz go oddać. Możesz też sprawdzić, na kogo dziś czeka Łuk”.",
    "effects": [{"quest": ["wanderer", "revealed"]}],
    "choices": [
-    {"text": "Porozmawiajmy o kluczu.", "next": "return"},
-    {"text": "Potrzebuję chwili.", "end": true}
+    {"text": "Potrzebuję chwili.", "end": true},
+    {"text": "[Zamknij oczy i wróć do wspomnienia]", "if": {"quest": ["wanderer", "revealed"], "not_flag": "memory_done"}, "effects": [{"set_flag": "memory_at_mirela"}, {"clear_flag": "memory_at_arch"}], "dialogue": "memory", "next": "start"}
    ]
   },
   "truth": {

@@ -19,9 +19,11 @@
       "text": "Zamek ustępuje z cichym kliknięciem. Uchylasz drzwi. W półmroku magazynu kultysta drzemie oparty o skrzynię, a pod sufitem krąży mały stwór z rdzy i pyłu. Skrzynia Severa stoi tuż przy wejściu.",
       "effects": [{"set_flag": "back_open"}],
       "choices": [
-        {"text": "Zakradnij się do skrzyni i wyjmij klucz.",
+        {"text": "Zakradnij się do skrzyni i wyjmij klucz.", "if": {"not_flag": "key_hidden"},
          "check": {"skill": "stealth", "dc": 13, "adv_if": {"flag": "overheard_guards"}, "success": "stolen", "fail": "caught"}},
-        {"text": "Wycofaj się po cichu i zostaw drzwi uchylone.", "end": true}
+        {"text": "Wycofaj się po cichu i zostaw drzwi uchylone.", "end": true},
+        {"text": "Zakradnij się do skrzyni. Sever schował klucz na samym dnie.", "if": {"flag": "key_hidden"},
+         "check": {"skill": "stealth", "dc": 15, "adv_if": {"flag": "overheard_guards"}, "success": "stolen", "fail": "caught"}}
       ]
     },
     "stolen": {

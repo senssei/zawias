@@ -426,5 +426,18 @@
 "Jeszcze niespłacone.": "Not yet repaid.",
 "Zawias pamięta złamane słowa dłużej niż imiona.": "Zawias remembers broken words longer than names.",
 "Dotrzymałeś słowa, ale nie wszystko, co powiedziałeś, było prawdą. Echo to zapamięta.": "You kept your word, but not everything you said was true. The Echo will remember.",
-"Nie złamałeś danego słowa i nikogo nie okłamałeś. Wędrowiec też kiedyś tak zaczynał.": "You broke no word and lied to no one. The Wanderer once started out the same way."
+"Nie złamałeś danego słowa i nikogo nie okłamałeś. Wędrowiec też kiedyś tak zaczynał.": "You broke no word and lied to no one. The Wanderer once started out the same way.",
+"Oddałeś imię, bo nikt nie powinien sam decydować, kto przejdzie.": "You gave up your name because no one should decide alone who crosses.",
+"Oddałeś imię, bo każde »nie« coś z ciebie zabierało.": "You gave up your name because every 'no' took something from you.",
+"Wciąż nie wiesz, dlaczego oddałeś imię. Może właśnie dlatego oddałeś imię, a nie pamięć.": "You still don't know why you gave up your name. Perhaps that's why you gave up your name and not your memory.",
+"Powód, który dziś nazywasz po imieniu: %s.": "The reason you can name today: %s.",
+"Imię, które nosisz dziś, jest twoje. Tamto zostało przy bramie.": "The name you carry today is yours. The other one stayed at the gate.",
+"Chcesz odzyskać imię Wędrowca. Gdzieś na pierścieniu ktoś je jeszcze pamięta.": "You want the Wanderer's name back. Somewhere on the ring, someone still remembers it.",
+"Kim jesteś, zdecydujesz po drodze. Tym razem nikt nie zdecyduje za ciebie.": "Who you are, you will decide along the way. This time nobody will decide for you.",
+"Byłeś szczery wobec samego siebie. Następny rozdział zaczniesz z Heroiczną inspiracją.": "You were honest with yourself. You will begin the next chapter with Heroic Inspiration.",
+"Okłamałeś samego siebie. Wspomnienie to zapamiętało.": "You lied to yourself. The memory will remember.",
+"Miasto pamięta cię słabiej: maksymalne PW −%d (razem −%d).": "The city remembers you less: maximum HP −%d (−%d in total).",
+"Pamiętasz, kim byłeś, i miasto pamięta ciebie: maksymalne PW +%d.": "You remember who you were, and the city remembers you: maximum HP +%d.",
+"Tracisz %d sz.": "You lose %d gp.",
+"BRAMA WYPLUWA CIĘ ZNOWU": "THE GATE SPITS YOU OUT AGAIN"
 }

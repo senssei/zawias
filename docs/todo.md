@@ -9,11 +9,13 @@ Otwarte prace. Zrobione przenosimy do ADR-ów albo dokumentacji, a stąd usuwamy
 - [x] **Przysięgi i kłamstwa.** Rejestr słowa ([ADR 0010](decisions/0010-word-register.md)): obietnice
   i kłamstwa w dzienniku, komentują je Kwit i Lis, a ekran końca je wylicza. Dalej: finał-pytanie czyta rejestr.
   (zasady 3, 8)
-- [ ] **Porażka z treścią.** Przegrana walka czasem przenosi gracza „za bramę” albo do wspomnienia zamiast na
-  ekran porażki. (zasada 4)
+- [x] **Porażka z treścią.** Klęska prowadzi w mgłę ze Szczeliny: półcutscenka z fragmentem przeszłości, brama
+  wypluwa drużynę znowu, cena w fabule i −1 maks. PW ([ADR 0012](decisions/0012-defeat-into-fog.md)). Dalej: gałąź
+  klęski w `story paths`. (zasada 4)
 - [ ] **Osobisty wątek Lis.** Jej własna sprawa, związana z zapisem Echa o Wędrowcu. (zasada 6)
-- [ ] **Finał jako pytanie zadane graczowi.** Na przykład „dlaczego oddałeś imię?”, z odpowiedziami zależnymi
-  od tego, co postać zrobiła na Targu. (zasada 8)
+- [x] **Finał jako pytanie zadane graczowi.** Rozmowa z dawnym sobą we wspomnieniu: dlaczego, słowo, kim jesteś
+  ([ADR 0011](decisions/0011-finale-question.md)). Dalej: inspiracja za szczerość na start rozdziału 2, wariant
+  głosu dawnego siebie dla postaci kobiecej. (zasada 8)
 
 ## Rozgrywka
 
@@ -56,7 +58,7 @@ Fantasy Flight / Edge. Wdrażamy pod własnymi nazwami (np. „cena” zamiast �
 - [x] Decyzje o 1. poziomie: magazyn jako skrót z ostrzeżeniem, Lis bez zmian, mefit bez zmian ([ADR 0007](decisions/0007-level-one-risks.md))
 - [x] `story report` (karty stanu, decyzje, mapa cieplna balansu, porażki bez wskazówki)
 - [ ] Brief i rozszerzona mapa odkryć dla rozdziału „Kto rozporządza przejściami?”
-- [ ] **Pipeline cutscenek.** Scenariusz sceny w danych: ujęcia, kamera, kto mówi i kwestie z dialogów,
+- [ ] **Pipeline cutscenek.** Pierwszy krok gotowy: półcutscenki (`scene` w węźle, kadr, najazd, napisy, głos). Scenariusz sceny w danych: ujęcia, kamera, kto mówi i kwestie z dialogów,
   ruch aktorów, efekty, muzyka i dźwięk. Z niego powstaje animatik (kadry jak w `storyboard review`, z głosami),
   podgląd do akceptacji i gotowa scena odtwarzana w silniku. Kontrole: odwołania do aktorów, węzłów i nagrań,
   długość względem nagrań, kadry przed i po. Kandydaci: wspomnienie Wędrowca, przejście przez Łuk, finał.

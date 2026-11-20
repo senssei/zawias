@@ -4,7 +4,7 @@
 
 Zbiera: story check, story lint, story keys, pokrycie nagrań, oś fabuły i ślady w mgle, macierz konsekwencji
 frakcji, porażki i ich wyjścia, story paths, story balance oraz listę decyzji wynikających z tych danych.
-Użycie: pipeline.sh story report --out work/story-report [--paths-json p.json] [--balance-json b.json]
+Użycie: pipeline.sh story report [--out tools/pipeline/work/story-report] [--paths-json p.json] [--balance-json b.json]
 """
 import html
 import json
@@ -134,7 +134,7 @@ def decisions(check, paths, balance_problems, lint, keys, voice):
 def main(args, check):
     import story
     import story_keys
-    out_dir = Path(args.out or ROOT / "work" / "story-report").resolve()
+    out_dir = Path(args.out or ROOT / "tools" / "pipeline" / "work" / "story-report").resolve()   # ignorowane w git
     out_dir.mkdir(parents=True, exist_ok=True)
     lint = check.lint()
     langs = sorted(p.parent.name for p in (ROOT / "i18n").glob("*/data.json"))

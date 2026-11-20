@@ -8,7 +8,7 @@ Wędrowiec to postać gracza. Była pierwszym strażnikiem przejść Zawiasu. Lu
 |---|---|---|
 | Ślad | Trzy kreski na dłoni odpowiadają nacięciom na bramie. | Pokazać znak Haskowi albo usłyszeć od Dorna o babce zawróconej spod bramy, potem pójść do Archiwum Echa. Po wspomnieniu można Dornowi wyznać prawdę. |
 | Zapis | Wędrowiec oddał bramie imię. Klucz pamięta, co się wtedy stało. | Zapytać Lis w Archiwum lub podczas podróży. Trop działa również po pominięciu Haska. |
-| Wspomnienie | Ręka, która nacięła znak, należy do gracza. Jego własny głos wypowiada przysięgę. | Obejrzeć wspomnienie u Mireli lub przy Łuku. Sceny mają ten sam skutek w dzienniku i występują bez testu umiejętności. Gracz może odłożyć decyzję i wrócić później. |
+| Wspomnienie | Ręka, która nacięła znak, należy do gracza. Jego własny głos wypowiada przysięgę. | Obejrzeć wspomnienie u Mireli lub przy Łuku. Sceny mają ten sam skutek w dzienniku i występują bez testu umiejętności. Potem rozmowa z dawnym sobą (`memory`): dlaczego oddał imię, czy dotrzymał słowa, kim jest teraz. Gracz może odłożyć decyzję i wrócić później. |
 | Decyzja | Wiedza o przeszłości nie odbiera prawa do obecnego imienia ani do wyboru. | Oddać klucz Mireli i zostać na Targu albo przekroczyć Łuk, żeby dowiedzieć się, kto dziś rozporządza drogami. |
 
 Wspomnienie jest dostępne po odzyskaniu klucza każdą z trzech dróg. Oba finały wymagają przejścia przez ten etap. Dodatkowe tropy nadają wspomnieniu kontekst, a sam finał pozostaje czytelny, jeśli gracz ich nie zobaczył.

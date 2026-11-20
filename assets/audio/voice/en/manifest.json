@@ -2421,6 +2421,486 @@
    }
   ]
  },
+ "memory/fade": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The warden nods, as if he heard exactly what he expected.",
+    "file": "fade_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 3.96,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Then the road belongs to you.",
+    "file": "fade_1.ogg",
+    "voice": "memory",
+    "sig": "07c85ee2aecc",
+    "seconds": 2.25,
+    "seed": 1001,
+    "wer": 0.0
+   },
+   {
+    "who": "narrator",
+    "text": "The memory fades. What remains is warmth in your palm and a key that has stopped trembling.",
+    "file": "fade_2.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 6.49,
+    "seed": 909,
+    "wer": 0.0
+   }
+  ]
+ },
+ "memory/now": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The mist creeps closer.",
+    "file": "now_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 1.97,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Tomorrow I won't have a name. You already have another.",
+    "file": "now_1.ogg",
+    "voice": "memory",
+    "sig": "07c85ee2aecc",
+    "seconds": 4.07,
+    "seed": 1001,
+    "wer": 0.0
+   },
+   {
+    "who": "narrator",
+    "text": "The warden tilts his head.",
+    "file": "now_2.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.01,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Who are you now?",
+    "file": "now_3.ogg",
+    "voice": "memory",
+    "sig": "07c85ee2aecc",
+    "seconds": 1.81,
+    "seed": 1001,
+    "wer": 0.0
+   }
+  ]
+ },
+ "memory/start": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The key burns again, and the memory returns, clearer than before. A warden stands at the gate with three fresh cuts on his palm. He has your face, only tired in a way you haven't had time to be. The queue of supplicants dissolves into the mist. The warden looks straight at you.",
+    "file": "start_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 19.6,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Tomorrow I give the gate my name. You know I did it. So tell me: why?",
+    "file": "start_1.ogg",
+    "voice": "memory",
+    "sig": "07c85ee2aecc",
+    "seconds": 4.87,
+    "seed": 1001,
+    "wer": 0.0
+   }
+  ]
+ },
+ "memory/why_desire": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "I wanted something for myself. For the first time in years.",
+    "file": "why_desire_0.ogg",
+    "voice": "memory",
+    "sig": "07c85ee2aecc",
+    "seconds": 4.35,
+    "seed": 1001,
+    "wer": 0.0
+   },
+   {
+    "who": "narrator",
+    "text": "The warden clenches his cut hand.",
+    "file": "why_desire_1.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.47,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "I hope you found it.",
+    "file": "why_desire_2.ogg",
+    "voice": "memory",
+    "sig": "07c85ee2aecc",
+    "seconds": 1.97,
+    "seed": 1001,
+    "wer": 0.0
+   }
+  ]
+ },
+ "memory/why_fear": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The warden is silent for a long time.",
+    "file": "why_fear_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.69,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "I was afraid. Yes. A warden who is afraid shouldn't hold the gate.",
+    "file": "why_fear_1.ogg",
+    "voice": "memory",
+    "sig": "07c85ee2aecc",
+    "seconds": 4.81,
+    "seed": 1001,
+    "wer": 0.0
+   }
+  ]
+ },
+ "memory/why_flaw": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The warden snorts softly.",
+    "file": "why_flaw_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 1.97,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "So it wasn't nobility. Good. I wouldn't have believed in nobility.",
+    "file": "why_flaw_1.ogg",
+    "voice": "memory",
+    "sig": "07c85ee2aecc",
+    "seconds": 4.94,
+    "seed": 1001,
+    "wer": 0.0
+   }
+  ]
+ },
+ "memory/why_power": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The warden nods slowly.",
+    "file": "why_power_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.08,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "That's what I keep telling myself. That power over the road is too much for one hand. It's good to hear it wasn't just an excuse.",
+    "file": "why_power_1.ogg",
+    "voice": "memory",
+    "sig": "07c85ee2aecc",
+    "seconds": 9.38,
+    "seed": 1001,
+    "wer": 0.0
+   }
+  ]
+ },
+ "memory/why_strength": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "So I gave up my name to stay who I really was.",
+    "file": "why_strength_0.ogg",
+    "voice": "memory",
+    "sig": "07c85ee2aecc",
+    "seconds": 3.18,
+    "seed": 1001,
+    "wer": 0.0
+   },
+   {
+    "who": "narrator",
+    "text": "The warden looks at his hand.",
+    "file": "why_strength_1.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.16,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Strange. I thought it would be a loss.",
+    "file": "why_strength_2.ogg",
+    "voice": "memory",
+    "sig": "07c85ee2aecc",
+    "seconds": 2.86,
+    "seed": 1001,
+    "wer": 0.0
+   }
+  ]
+ },
+ "memory/why_tired": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The warden looks away.",
+    "file": "why_tired_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 1.92,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Every day someone wept in a different way. I thought nobody saw it.",
+    "file": "why_tired_1.ogg",
+    "voice": "memory",
+    "sig": "07c85ee2aecc",
+    "seconds": 5.0,
+    "seed": 1001,
+    "wer": 0.0
+   },
+   {
+    "who": "narrator",
+    "text": "After a moment he adds:",
+    "file": "why_tired_2.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.06,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Tiredness is an honest reason. Not a pretty one, but honest.",
+    "file": "why_tired_3.ogg",
+    "voice": "memory",
+    "sig": "07c85ee2aecc",
+    "seconds": 4.46,
+    "seed": 1001,
+    "wer": 0.0
+   }
+  ]
+ },
+ "memory/why_unknown": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The warden smiles for the first time, crookedly, like someone recognising his own joke.",
+    "file": "why_unknown_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 6.31,
+    "seed": 909,
+    "wer": 0.071
+   },
+   {
+    "who": "speaker",
+    "text": "I wasn't sure either. Maybe that's why I gave up my name and not my memory.",
+    "file": "why_unknown_1.ogg",
+    "voice": "memory",
+    "sig": "07c85ee2aecc",
+    "seconds": 5.45,
+    "seed": 1001,
+    "wer": 0.0
+   }
+  ]
+ },
+ "memory/word": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "An oath is a word too. Tomorrow I give it to the gate, and I'll keep it.",
+    "file": "word_0.ogg",
+    "voice": "memory",
+    "sig": "07c85ee2aecc",
+    "seconds": 4.98,
+    "seed": 1001,
+    "wer": 0.0
+   },
+   {
+    "who": "narrator",
+    "text": "The warden leans towards you.",
+    "file": "word_1.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.26,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "And you? Did you keep your word here?",
+    "file": "word_2.ogg",
+    "voice": "memory",
+    "sig": "07c85ee2aecc",
+    "seconds": 2.74,
+    "seed": 1001,
+    "wer": 0.0
+   }
+  ]
+ },
+ "memory/word_clean": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The warden looks at you as if reading a register you cannot see.",
+    "file": "word_clean_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 4.5,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "True. Few come to the gate with clean hands.",
+    "file": "word_clean_1.ogg",
+    "voice": "memory",
+    "sig": "07c85ee2aecc",
+    "seconds": 3.26,
+    "seed": 1001,
+    "wer": 0.0
+   }
+  ]
+ },
+ "memory/word_lied": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The warden looks at you for a long time.",
+    "file": "word_lied_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.73,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "You're lying. I know, because I once lied the same way.",
+    "file": "word_lied_1.ogg",
+    "voice": "memory",
+    "sig": "07c85ee2aecc",
+    "seconds": 3.98,
+    "seed": 1001,
+    "wer": 0.0
+   },
+   {
+    "who": "narrator",
+    "text": "There is no anger in it, only weariness.",
+    "file": "word_lied_2.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.81,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Fooling yourself is the hardest thing. And the easiest.",
+    "file": "word_lied_3.ogg",
+    "voice": "memory",
+    "sig": "07c85ee2aecc",
+    "seconds": 4.19,
+    "seed": 1001,
+    "wer": 0.0
+   }
+  ]
+ },
+ "memory/word_none": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "Careful.",
+    "file": "word_none_0.ogg",
+    "voice": "memory",
+    "sig": "07c85ee2aecc",
+    "seconds": 1.44,
+    "seed": 1001,
+    "wer": 0.0
+   },
+   {
+    "who": "narrator",
+    "text": "The warden almost smiles.",
+    "file": "word_none_1.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 1.99,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "I was careful too, until I gave my word to the gate.",
+    "file": "word_none_2.ogg",
+    "voice": "memory",
+    "sig": "07c85ee2aecc",
+    "seconds": 3.72,
+    "seed": 1001,
+    "wer": 0.0
+   }
+  ]
+ },
+ "memory/word_owned": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "At least you're not lying to me.",
+    "file": "word_owned_0.ogg",
+    "voice": "memory",
+    "sig": "07c85ee2aecc",
+    "seconds": 2.32,
+    "seed": 1001,
+    "wer": 0.0
+   },
+   {
+    "who": "narrator",
+    "text": "The warden nods.",
+    "file": "word_owned_1.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 1.84,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "A word that broke, and that you own up to, weighs more than one nobody ever checked.",
+    "file": "word_owned_2.ogg",
+    "voice": "memory",
+    "sig": "07c85ee2aecc",
+    "seconds": 6.21,
+    "seed": 1001,
+    "wer": 0.0
+   }
+  ]
+ },
  "mirela/accept": {
   "segments": [
    {
@@ -3093,6 +3573,96 @@
     "sig": "de4fd9bada47",
     "seconds": 1.81,
     "seed": 606,
+    "wer": 0.0
+   }
+  ]
+ },
+ "rift/fall": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The pain fades and the city stops remembering you. You unravel into mist, thread by thread, and the Rusty Market drifts away like a distant shore. Something moves in the void. Someone has been waiting for you here.",
+    "file": "fall_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 15.33,
+    "seed": 909,
+    "wer": 0.0
+   }
+  ]
+ },
+ "rift/fall_again": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The pain fades and the city forgets you again. This time the void knows the way. It leads you through the mist until the mist thickens into walls of stone.",
+    "file": "fall_again_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 10.94,
+    "seed": 909,
+    "wer": 0.0
+   }
+  ]
+ },
+ "rift/ledger": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "It is the warden's room. You are writing in the ledger of crossings, and your hand trembles. You count one day's refusals: forty-three. You close the ledger and for the first time you think of giving the gate your name. Then the gate draws breath.",
+    "file": "ledger_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 17.44,
+    "seed": 909,
+    "wer": 0.0
+   }
+  ]
+ },
+ "rift/queue": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "You hear the queue at the gate. A woman with a child in her arms begs to cross. Your own voice, tired and strange, answers:",
+    "file": "queue_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 8.5,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Not today.",
+    "file": "queue_1.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 1.55,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "narrator",
+    "text": "The child looks at you as if learning your face by heart. Then the gate draws breath.",
+    "file": "queue_2.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 5.91,
+    "seed": 909,
+    "wer": 0.0
+   }
+  ]
+ },
+ "rift/start": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "The pain fades, and your name fades with it. The void is quiet and warm as forgetting. Somewhere very far away someone speaks a word that might have been you, but you don't catch the end of it. Then the gate draws breath.",
+    "file": "start_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 15.48,
+    "seed": 909,
     "wer": 0.0
    }
   ]

@@ -1547,15 +1547,18 @@ func _interact(a: Actor) -> void:
 
 
 ## Dialog -> portret (assets/portraits/<id>.png); domyślnie id dialogu. Węzeł może nadpisać polem "portrait".
-const DIALOGUE_PORTRAITS := {"backdoor": "door", "hidden_door": "door"}   # hidden_door: tymczasowo, docs/todo.md
+const DIALOGUE_PORTRAITS := {"backdoor": "door", "hidden_door": "door", "memory": "pc", "rift": "pc"}   # hidden_door: tymczasowo, docs/todo.md; pc = twarz gracza
 
 
 func _open_dialogue(id_: String) -> void:
 	dialogue = DialogueRunner.new(GameState)
-	var pid: String = DIALOGUE_PORTRAITS.get(id_, id_)
 	dialogue.node_shown.connect(func(node, choices):
-		hud.show_dialogue(node.get("speaker", ""), node.get("text", ""), choices, node.get("portrait", pid))
-		Audio.voice_line(id_, dialogue.current_id, node))
+		var did: String = dialogue.dialogue_id   # wybór z "dialogue" może przenieść rozmowę do innego pliku
+		if node.has("scene"):   # półcutscenka: kadr na pełnym ekranie, napis w tempie głosu
+			hud.show_cutscene(str(node.scene), node.get("text", ""), choices, _voice_secs(did, dialogue.current_id, str(node.get("text", ""))))
+		else:
+			hud.show_dialogue(node.get("speaker", ""), node.get("text", ""), choices, _portrait_id(node.get("portrait", DIALOGUE_PORTRAITS.get(did, did))))
+		Audio.voice_line(did, dialogue.current_id, node))
 	dialogue.check_rolled.connect(func(text, ok, natural, band):
 		Audio.sfx("dice")
 		GameState.add_log(text)
@@ -1573,6 +1576,21 @@ func _open_dialogue(id_: String) -> void:
 	hud.show_tooltip("", Vector2.ZERO)
 	if not dialogue.start(id_):
 		_on_dialogue_finished()
+
+
+## Długość nagrań węzła w sekundach (bez nagrań: tempo czytania, ok. 15 znaków na sekundę).
+func _voice_secs(did: String, node_id: String, text: String) -> float:
+	var total := 0.0
+	for c in VoiceLines.clips(Audio.voice_lang, did, node_id):
+		var s: AudioStream = load(c.path)
+		if s:
+			total += s.get_length()
+	return total if total > 0.0 else text.length() / 15.0
+
+
+## "pc" w portrecie węzła to twarz gracza (wspomnienie: dawny ty), reszta bez zmian.
+static func _portrait_id(pid: String) -> String:
+	return "pc_" + GameState.player.class_id if pid == "pc" and GameState.player else pid
 
 
 ## Napis po teście; pas pokazujemy tylko wtedy, gdy coś robi (docs/decisions/0008).
@@ -1661,9 +1679,39 @@ func _show_ending(kind: String) -> void:
 		path = Loc.t("słowem")
 	elif GameState.has_flag("key_stolen"):
 		path = "cieniem"
+	text += _finale_summary()
 	text += _words_summary()
 	text += Loc.t("[color=#d9a85b]Klucz zdobyty %s.[/color]\n%s, poziom %d, %d PD, %d sztuk złota.\n\n[color=#a89584]Koniec wersji demonstracyjnej. Dziękujemy za grę.[/color]") % [path, pc.name, pc.level, pc.xp, pc.gold]
 	hud.open_end_screen(title, text, [["continue", Loc.t("Zwiedzaj dalej")], ["menu", Loc.t("Menu główne")]])
+
+
+## Epilog z rozmowy z dawnym sobą (memory.json): dlaczego, słowo, kim jesteś teraz.
+func _finale_summary() -> String:
+	if not GameState.has_flag("memory_done"):
+		return ""
+	var out := ""
+	var why := {"finale_why_power": "Oddałeś imię, bo nikt nie powinien sam decydować, kto przejdzie.",
+		"finale_why_tired": "Oddałeś imię, bo każde »nie« coś z ciebie zabierało.",
+		"finale_why_unknown": "Wciąż nie wiesz, dlaczego oddałeś imię. Może właśnie dlatego oddałeś imię, a nie pamięć."}
+	for f in why:
+		if GameState.has_flag(f):
+			out += Loc.t(why[f]) + " "
+	for cat in ["strength", "flaw", "desire", "fear"]:
+		if GameState.has_flag("finale_why_" + cat):
+			var m := "%s:%s" % [cat, GameState.player.motivations.get(cat, "")]
+			out += Loc.t("Powód, który dziś nazywasz po imieniu: %s.") % GameState.motivation_name(m) + " "
+	var self_lines := {"finale_self_new": "Imię, które nosisz dziś, jest twoje. Tamto zostało przy bramie.",
+		"finale_self_old": "Chcesz odzyskać imię Wędrowca. Gdzieś na pierścieniu ktoś je jeszcze pamięta.",
+		"finale_self_open": "Kim jesteś, zdecydujesz po drodze. Tym razem nikt nie zdecyduje za ciebie."}
+	for f in self_lines:
+		if GameState.has_flag(f):
+			out += Loc.t(self_lines[f])
+	out += "\n"
+	if GameState.has_flag("finale_honest"):
+		out += "[color=#b9a4e0]%s[/color]\n" % Loc.t("Byłeś szczery wobec samego siebie. Następny rozdział zaczniesz z Heroiczną inspiracją.")
+	elif GameState.has_flag("finale_word_lied"):
+		out += "[color=#a89584]%s[/color]\n" % Loc.t("Okłamałeś samego siebie. Wspomnienie to zapamiętało.")
+	return out + "\n"
 
 
 ## Rachunek słowa na ekranie końca (ADR 0010): każda obietnica i kłamstwo oraz jedno zdanie oceny.
@@ -2128,7 +2176,15 @@ func _finish_combat(victory: bool, xp: int) -> void:
 	player_actor.show_hp(false)
 	var enc := DB.entry("encounters", encounter_id)
 	var pc := GameState.player
+	if victory and pc.dead:
+		victory = false          # towarzysze wygrali, ale gracz nie przeżył
 	for e in combat.combatants:
+		if e.team == "enemy" and not victory and not enc.get("defeat_leave", false):
+			# klęska (ADR 0012): wrogowie zostają na miejscu, walkę można powtórzyć
+			var a0 := _actor_for(e.id)
+			if a0 and a0.npc_data.has("pos"):
+				a0.place(Vector2i(int(a0.npc_data.pos[0]), int(a0.npc_data.pos[1])))
+			continue
 		if e.team == "enemy":
 			var a := _actor_for(e.id)
 			if a and not e.dead:
@@ -2144,8 +2200,6 @@ func _finish_combat(victory: bool, xp: int) -> void:
 	pc.concentration = ""
 	for k in ["prone", "blinded"]:
 		pc.conditions.erase(k)
-	if victory and pc.dead:
-		victory = false          # towarzysze wygrali, ale gracz nie przeżył
 	for c in [pc] + GameState.companions:
 		var fa := _actor_for(c.id)
 		if fa and fa != player_actor:
@@ -2173,8 +2227,47 @@ func _finish_combat(victory: bool, xp: int) -> void:
 		GameState.apply_effects(effects)
 		cam.follow = player_actor
 	else:
-		mode = "ended"
-		player_actor.set_downed(true)
-		hud.open_end_screen(Loc.t("Porażka"), Loc.t("Ciemność. Rdza. Cisza.\n\nZawias nie wybacza, ale pamięta, gdzie byłeś chwilę temu."),
-			[["load_auto", Loc.t("Wczytaj autozapis")], ["menu", Loc.t("Menu główne")]])
+		_defeat_into_fog(enc)
 	_on_state_changed()
+
+
+## Klęska nie kończy gry (ADR 0012): mgła ze Szczeliny, skutek spotkania, zapomnienie (−1 maks. PW),
+## scena wspomnienia w mgle (rift.json) i brama wypluwa drużynę znowu przy wejściu na targ.
+func _defeat_into_fog(enc: Dictionary) -> void:
+	mode = "cutscene"
+	hud.fog_transition(true, 1.2)   # ekran zalewa mgła, zanim brama zabierze drużynę
+	Audio.sfx("portal", -4.0)
+	await get_tree().create_timer(1.4).timeout
+	var effects: Array = enc.get("on_defeat", []).duplicate()
+	effects.append({"forget": 1})
+	GameState.apply_effects(effects)
+	var start := Vector2i(int(map.player_start[0]), int(map.player_start[1]))
+	for c in [GameState.player] + GameState.companions:
+		c.dead = false
+		c.stable = false
+		c.death_saves = {"success": 0, "fail": 0}
+		for k in ["unconscious", "prone", "blinded"]:
+			c.conditions.erase(k)
+		c.effects.clear()
+		c.concentration = ""
+		c.hp = c.max_hp
+		var fa := _actor_for(c.id)
+		if fa:
+			fa.set_downed(false)
+	player_actor.place(start)
+	GameState.player.grid_pos = start
+	for f in _followers():
+		var cell := _free_cell_near(start)
+		f.place(cell)
+		f.creature.grid_pos = cell
+	walking = false
+	walk_queue.clear()
+	cam.snap_to(player_actor.position)
+	cam.follow = player_actor
+	_reveal_around(start)
+	mode = "explore"
+	_open_dialogue("rift")
+	dialogue.finished.connect(func():   # wyjście z mgły: błysk bramy
+		hud.fog_transition(false, 1.1)
+		Audio.sfx("portal")
+		hud.show_toast(Loc.t("BRAMA WYPLUWA CIĘ ZNOWU"), UI.PLANAR), CONNECT_ONE_SHOT)

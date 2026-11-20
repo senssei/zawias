@@ -1,0 +1,41 @@
+{
+  "start": "start",
+  "starts": [
+    {"if": {"not_flag": "rift_1"}, "next": "fall"},
+    {"if": {"not_flag": "rift_2"}, "next": "fall_again"}
+  ],
+  "nodes": {
+    "start": {
+      "speaker": "Mgła ze Szczeliny",
+      "scene": "rift_void",
+      "text": "Ból gaśnie, a razem z nim twoje imię. Pustka jest cicha i ciepła jak zapomnienie. Gdzieś bardzo daleko ktoś wymawia słowo, które mogło być tobą, ale nie dosłyszysz go do końca. Potem brama wciąga powietrze.",
+      "choices": [{"text": "[Idź w stronę światła]", "end": true}]
+    },
+    "fall": {
+      "speaker": "Mgła ze Szczeliny",
+      "scene": "rift_void",
+      "text": "Ból gaśnie i miasto przestaje cię pamiętać. Rozplatasz się w opar, nitka po nitce, a Rdzawy Targ odpływa jak daleki brzeg. W pustce coś się porusza. Ktoś tu na ciebie czekał.",
+      "choices": [{"text": "[Patrz]", "next": "queue"}]
+    },
+    "queue": {
+      "speaker": "Mgła ze Szczeliny",
+      "scene": "rift_queue",
+      "text": "Słyszysz kolejkę przy bramie. Kobieta z dzieckiem na ręku prosi o przejście. Twój własny głos, zmęczony i obcy, odpowiada: „Nie dziś”. Dziecko patrzy na ciebie tak, jakby uczyło się twojej twarzy na pamięć. Potem brama wciąga powietrze.",
+      "effects": [{"set_flag": "rift_1"}, {"journal": "W mgle ze Szczeliny zobaczyłem kolejkę przy bramie. Odmówiłem przejścia kobiecie z dzieckiem. Dziecko patrzyło na mnie, jakby chciało mnie zapamiętać."}],
+      "choices": [{"text": "[Idź w stronę światła]", "end": true}]
+    },
+    "fall_again": {
+      "speaker": "Mgła ze Szczeliny",
+      "scene": "rift_void",
+      "text": "Ból gaśnie i miasto znowu o tobie zapomina. Tym razem pustka zna drogę. Prowadzi cię przez opar, aż mgła zgęstnieje w ściany z kamienia.",
+      "choices": [{"text": "[Patrz]", "next": "ledger"}]
+    },
+    "ledger": {
+      "speaker": "Mgła ze Szczeliny",
+      "scene": "rift_ledger",
+      "text": "To izba strażnicy. Piszesz w księdze przejść, a ręka ci drży. Liczysz odmowy z jednego dnia: czterdzieści trzy. Zamykasz księgę i pierwszy raz myślisz o tym, żeby oddać bramie imię. Potem brama wciąga powietrze.",
+      "effects": [{"set_flag": "rift_2"}, {"journal": "W mgle zobaczyłem strażnicę i księgę przejść. Jednego dnia odmówiłem czterdzieści trzy razy. Wtedy pierwszy raz pomyślałem, żeby oddać imię."}],
+      "choices": [{"text": "[Idź w stronę światła]", "end": true}]
+    }
+  }
+}

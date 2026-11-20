@@ -122,7 +122,7 @@ func test_diplomacy_path():
 	r.start("mirela")
 	assert_eq(r.current_id, "wanderer_memory")
 	assert_eq(gs.quest_stage("wanderer"), "revealed")
-	_choose_text(r, "Porozmawiajmy o kluczu")
+	_through_memory(r)
 	_choose_text(r, "Oto twój klucz")
 	assert_eq(gs.quest_stage("key"), "done_returned")
 	assert_eq(gs.quest_stage("wanderer"), "done_stayed")
@@ -181,7 +181,7 @@ func test_stealth_path():
 	r.start("arch")
 	assert_eq(r.current_id, "wanderer_memory")
 	assert_eq(gs.quest_stage("wanderer"), "revealed")
-	_choose_text(r, "Przyjrzyj się Łukowi")
+	_through_memory(r)
 	_choose_text(r, "przekręć")
 	assert_eq(gs.quest_stage("key"), "done_portal")
 	assert_eq(gs.quest_stage("wanderer"), "done_crossed")
@@ -382,6 +382,55 @@ func test_word_register():
 	assert_eq(gs.word_state("pchla_silence"), "kept", "milczenie dotrzymane na koniec")
 
 
+func test_memory_conversation():
+	gs.player.motivations = {"strength": "compassion", "flaw": "anger", "desire": "home", "fear": "loneliness"}
+	gs.player.inventory.append("key_without_door")
+	gs.quests["key"] = "has_key"
+	gs.apply_effects([{"oath": "mirela_key"}, {"lie": "kwit_custodian"}])
+	var r := DialogueRunner.new(gs)
+	r.start("arch")
+	assert_eq(r.current_id, "wanderer_memory")
+	assert_false(r.visible_choices().any(func(c): return "Przyjrzyj się Łukowi" in c.text), "decyzja dopiero po rozmowie")
+	_choose_text(r, "wróć do wspomnienia")
+	assert_eq(r.dialogue_id, "memory")
+	assert_eq(r.current_id, "start")
+	var texts: Array = r.visible_choices().map(func(c): return c.text)
+	assert_eq(texts.size(), 7, "3 ogólne + 4 motywacje")
+	assert_true(texts.any(func(t): return t.begins_with("[Samotność]")))
+	assert_false(texts.any(func(t): return t.begins_with("[Pycha]")))
+	_choose_text(r, "[Samotność]")
+	assert_eq(r.current_id, "why_fear")
+	assert_true(gs.has_flag("finale_why_fear"))
+	_choose_text(r, "Milcz")
+	texts = r.visible_choices().map(func(c): return c.text)
+	assert_false(texts.any(func(t): return t == "Tak. Każdego, które dałem."), "kłamstwo: brak czystej odpowiedzi")
+	_choose_text(r, "Tak. Każdego.")
+	assert_eq(gs.word_state("self_kept"), "exposed", "okłamanie siebie trafia do rejestru")
+	assert_false(gs.has_flag("finale_honest"))
+	_choose_text(r, "Dalej")
+	_choose_text(r, "Wędrowcem")
+	assert_true(gs.has_flag("memory_done"))
+	_choose_text(r, "Wróć pod Łuk")
+	assert_eq(r.dialogue_id, "arch")
+	assert_eq(r.current_id, "with_key")
+	assert_false(r.visible_choices().any(func(c): return "wróć do wspomnienia" in c.text), "rozmowa tylko raz")
+	# czyste słowo i szczerość
+	gs.words = {"mirela_key": "open"}
+	gs.flags.erase("memory_done")
+	r.start("mirela")
+	r.goto("return")
+	_choose_text(r, "wróć do wspomnienia")
+	_choose_text(r, "Nie wiem")
+	_choose_text(r, "Milcz")
+	_choose_text(r, "Tak. Każdego, które dałem.")
+	assert_true(gs.has_flag("finale_honest"), "szczerość: inspiracja na kolejny rozdział")
+	_choose_text(r, "Dalej")
+	_choose_text(r, "Jeszcze nie wiem")
+	_choose_text(r, "Wróć do Mireli")
+	assert_eq(r.dialogue_id, "mirela")
+	assert_eq(r.current_id, "return")
+
+
 func test_heroic_inspiration_reroll():
 	gs.player.heroic_inspiration = true
 	var r := DialogueRunner.new(gs)
@@ -403,3 +452,15 @@ func test_save_load_roundtrip():
 	assert_eq(gs.quest_stage("key"), "has_key")
 	assert_eq(gs.player.class_id, "rogue")
 	assert_true("key_without_door" in gs.player.inventory)
+
+
+## Rozmowa z dawnym sobą (memory.json): pierwsza widoczna odpowiedź w każdym węźle, aż wróci do sceny.
+func _through_memory(r: DialogueRunner) -> void:
+	for ch in r.visible_choices():
+		if "wróć do wspomnienia" in ch.text:
+			r.choose(ch.index)
+			break
+	var guard := 0
+	while r.dialogue_id == "memory" and guard < 10:
+		guard += 1
+		r.choose(r.visible_choices()[0].index)

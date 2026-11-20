@@ -14,6 +14,9 @@ END_NODES = {"", "end"}
 ATTITUDES = {"wary", "neutral", "friendly"}
 
 
+CONDITION_KEYS = {"any_flag", "class", "flag", "flags", "gold", "has_item", "in_party", "knows_spell", "motivation",
+                  "near", "not_flag", "not_flags", "not_item", "not_quest", "quest", "quest_any", "reputation",
+                  "reputation_not", "skill_prof", "species", "word", "word_clean", "words_max", "words_min"}
 WORD_STATES = {"oath": ["open", "kept", "broken"], "lie": ["hidden", "exposed"]}
 
 class StoryCheck:
@@ -97,6 +100,8 @@ class StoryCheck:
     def condition(self, location, value):
         if value is None:
             return
+        for key in sorted(set(value) - CONDITION_KEYS):   # literówka w kluczu warunku = warunek zawsze spełniony
+            self.errors.append(f"{location}/{key}: nieznany klucz warunku")
         for key in ("has_item", "not_item"):
             if key in value:
                 self.reference(f"{location}/{key}", value[key], self.items, "przedmiot")
@@ -119,12 +124,14 @@ class StoryCheck:
             elif self.reference(f"{location}/word/0", word[0], self.words, "słowo z data/words.json"):
                 states = WORD_STATES[self.words[word[0]].get("kind")]
                 self.reference(f"{location}/word/1", word[1], states, "stan słowa")
-        if "words_min" in value:
-            pair = value["words_min"]
+        for key in ("words_min", "words_max"):
+            if key not in value:
+                continue
+            pair = value[key]
             if not isinstance(pair, list) or len(pair) != 2 or not isinstance(pair[1], int):
-                self.errors.append(f"{location}/words_min: oczekiwano [stan, liczba]")
+                self.errors.append(f"{location}/{key}: oczekiwano [stan, liczba]")
             else:
-                self.reference(f"{location}/words_min/0", pair[0], WORD_STATES["oath"] + WORD_STATES["lie"] + ["lie"], "stan słowa")
+                self.reference(f"{location}/{key}/0", pair[0], WORD_STATES["oath"] + WORD_STATES["lie"] + ["lie", "any"], "stan słowa")
         if "near" in value and (not isinstance(value["near"], list) or len(value["near"]) != 3):
             self.errors.append(f"{location}/near: oczekiwano [x, y, promień]")
 
@@ -194,7 +201,14 @@ class StoryCheck:
                 entry = f"{location}/choices/{index}"
                 self.condition(f"{entry}/if", choice.get("if"))
                 self.effects(f"{entry}/effects", choice.get("effects"))
-                if "next" in choice:
+                if "dialogue" in choice:   # przejście do innego dialogu: "next" to węzeł w nim
+                    other = self.dialogues.get(choice["dialogue"])
+                    if other is None:
+                        self.errors.append(f"{entry}/dialogue: nieznany dialog {choice['dialogue']!r}")
+                    else:
+                        self.reference(f"{entry}/next", choice.get("next", other.get("start", "start")),
+                                       other.get("nodes", {}), f"węzeł dialogu {choice['dialogue']!r}")
+                elif "next" in choice:
                     destinations = set() if choice.get("end") or "check" in choice else outgoing
                     transition(f"{entry}/next", choice["next"], destinations)
                 if "motivation" in choice:
@@ -352,6 +366,7 @@ class StoryCheck:
                             out.extend(value)
         for encounter in self.encounters.values():
             out.extend(encounter.get("on_victory", []))
+            out.extend(encounter.get("on_defeat", []))
         for data in self.maps.values():
             for entry in data.get("memories", []) + data.get("loot", []):
                 out.extend(entry.get("effects", []))
@@ -419,6 +434,7 @@ class StoryCheck:
             self.map_content(name, data)
         for name, encounter in self.encounters.items():
             self.effects(f"data/encounters.json/{name}/on_victory", encounter.get("on_victory"))
+            self.effects(f"data/encounters.json/{name}/on_defeat", encounter.get("on_defeat"))
         for npc, lines in self.barks.items():
             self.reference(f"data/barks.json/{npc}", npc, self.npcs, "NPC")
             for index, line in enumerate(lines):

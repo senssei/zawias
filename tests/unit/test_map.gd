@@ -216,3 +216,59 @@ func test_d20_badge_does_not_cover_open_window():
 	w.hud.close_window()
 	w.hud.show_d20(1, "T")
 	assert_eq(w.hud.d20_badge.position.y, 78.0, "bez okna: pod paskiem menu")
+
+
+func test_defeat_leads_into_fog_and_back_to_the_gate():
+	var w := _world()
+	await wait_frames(3)
+	var gs := _gs()
+	gs.player.gold = 21
+	var hp0: int = gs.player.max_hp
+	w.start_combat("ambush")
+	await wait_frames(2)
+	gs.player.hp = 0
+	gs.player.dead = true
+	w._finish_combat(false, 0)
+	assert_eq(w.mode, "cutscene", "przejście w mgłę")
+	await wait_seconds(1.7)
+	assert_eq(w.mode, "dialogue", "zamiast ekranu porażki: scena w mgle")
+	assert_eq(w.dialogue.dialogue_id, "rift")
+	assert_eq(w.dialogue.current_id, "fall", "pierwsza klęska: rozpad w pustce")
+	assert_true(w.hud.cutscene.visible, "półcutscenka na pełnym ekranie")
+	w.dialogue.choose(0)
+	assert_eq(w.dialogue.current_id, "queue", "potem pierwszy fragment")
+	assert_eq(gs.player.gold, 11, "bandyci zabrali połowę złota")
+	assert_true(gs.has_flag("ambush_done"), "zasadzka rozstrzygnięta")
+	assert_false("rust_token" in gs.player.inventory, "bez nagrody")
+	assert_eq(gs.quest_stage("key"), "lead_warehouse", "trop do magazynu")
+	assert_eq(gs.player.max_hp, hp0 - 1, "zapomnienie: -1 maks. PW")
+	assert_eq(gs.player.hp, gs.player.max_hp, "pełne PW po bramie")
+	assert_false(gs.player.dead)
+	assert_eq(w.player_actor.cell, Vector2i(int(w.map.player_start[0]), int(w.map.player_start[1])), "brama przy wejściu")
+	assert_false(w.actors.has("bandyta1"), "bandyci odeszli")
+	w.dialogue.choose(0)
+	await wait_frames(1)
+	assert_eq(w.mode, "explore")
+	assert_false(w.hud.cutscene.visible, "półcutscenka schowana")
+	# magazyn: wrogowie zostają, front zamknięty, klucz głębiej
+	gs.flags["front_open"] = true
+	w.start_combat("warehouse")
+	await wait_frames(2)
+	w._finish_combat(false, 0)
+	await wait_seconds(1.7)
+	assert_eq(w.dialogue.current_id, "fall_again", "druga klęska")
+	w.dialogue.choose(0)
+	assert_eq(w.dialogue.current_id, "ledger", "drugi fragment")
+	assert_false(gs.has_flag("front_open"))
+	assert_true(gs.has_flag("key_hidden"))
+	assert_eq(gs.faction_attitude("unravelers"), "wary")
+	assert_true(w.actors.has("kultysta") or w.actors.keys().any(func(k): return w.actors[k].npc_data.get("encounter", "") == "warehouse"), "Rozplatacze zostali")
+	assert_eq(gs.player.max_hp, hp0 - 2)
+	w.dialogue.choose(0)
+	for i in 3:
+		gs.apply_effects([{"forget": 1}])
+	assert_eq(gs.forgotten, 3, "najwyżej -3")
+	gs.apply_effects([{"remember": true}])
+	assert_eq(gs.player.max_hp, hp0, "rozmowa z dawnym sobą przywraca PW")
+	assert_eq(gs.forgotten, 0)
+

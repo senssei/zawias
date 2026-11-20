@@ -88,6 +88,8 @@ func test_portraits_exist():
 			continue
 		var id_ := f.get_basename()
 		var pid: String = mapping.get(id_, id_)   # np. backdoor -> door
+		if pid == "pc":   # twarz gracza (pc_<klasa>), sprawdzana niżej
+			continue
 		assert_not_null(HUD.portrait_texture(pid), "dialog %s: brak portretu assets/portraits/%s.png" % [id_, pid])
 	for cls in DB.table("classes").keys():
 		assert_not_null(HUD.portrait_texture("pc_" + cls), "brak portretu pc_" + cls)

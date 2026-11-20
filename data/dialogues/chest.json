@@ -9,9 +9,11 @@
       "speaker": "Skrzynia Severa",
       "text": "Okuta skrzynia pokryta rdzawym pyłem. Rozplatacze są tuż obok.",
       "choices": [
-        {"text": "Otwórz ją po cichu.", "if": {"not_flag": "key_obtained"},
+        {"text": "Otwórz ją po cichu.", "if": {"not_flags": ["key_obtained", "key_hidden"]},
          "check": {"skill": "stealth", "dc": 14, "success": "stolen", "fail": "caught"}},
-        {"text": "[Odejdź]", "end": true}
+        {"text": "[Odejdź]", "end": true},
+        {"text": "Otwórz ją po cichu. Sever schował klucz na samym dnie.", "if": {"not_flag": "key_obtained", "flag": "key_hidden"},
+         "check": {"skill": "stealth", "dc": 16, "success": "stolen", "fail": "caught"}}
       ]
     },
     "stolen": {

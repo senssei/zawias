@@ -21,6 +21,7 @@ var log_lines: Array = []
 var ending := ""
 var explored := {}           # map_id -> String "0"/"1" na pole (wiersz po wierszu); mgła na mapie
 var companions: Array = []   # towarzysze w drużynie (Creature, team "party", sterowani przez AI w walce)
+var forgotten := 0           # klęski w mgle (ADR 0012): o tyle mniej maks. PW, do 3; rozmowa z dawnym sobą przywraca
 var words := {}              # rejestr słowa (ADR 0010): id z data/words.json -> stan (open/kept/broken, hidden/exposed)
 
 
@@ -38,6 +39,7 @@ func new_game(pc: Creature) -> void:
 	explored = {}
 	companions = []
 	words = {}
+	forgotten = 0
 	state_changed.emit()
 
 
@@ -149,12 +151,17 @@ static func motivation_name(m: String) -> String:
 # ------------------------------------------------------------------ rejestr słowa (ADR 0010)
 
 ## Stan słowa: "" (nie padło), obietnica open/kept/broken, kłamstwo hidden/exposed.
+const FORGET_CAP := 3
+
+
 func word_state(id_: String) -> String:
 	return words.get(id_, "")
 
 
 ## Ile słów jest w danym stanie (np. "broken", "exposed", "kept"); "lie" liczy wszystkie kłamstwa.
 func words_count(state: String) -> int:
+	if state == "any":
+		return words.size()
 	if state == "lie":
 		return words.values().filter(func(s): return s in ["hidden", "exposed"]).size()
 	return words.values().filter(func(s): return s == state).size()
@@ -208,6 +215,10 @@ func check(cond) -> bool:
 		for f in d.flags:
 			if not has_flag(f):
 				return false
+	if d.has("not_flags"):
+		for f in d.not_flags:
+			if has_flag(f):
+				return false
 	if d.has("motivation") and not has_motivation(d.motivation):
 		return false
 	if d.has("any_flag"):
@@ -243,6 +254,11 @@ func check(cond) -> bool:
 	if d.has("word") and word_state(d.word[0]) != d.word[1]:
 		return false
 	if d.has("words_min") and words_count(d.words_min[0]) < int(d.words_min[1]):
+		return false
+	if d.has("words_max") and words_count(d.words_max[0]) > int(d.words_max[1]):
+		return false
+	# czyste słowo: żadnej złamanej obietnicy i żadnego kłamstwa (także nieprzyłapanego)
+	if d.has("word_clean") and bool(d.word_clean) != (words_count("broken") == 0 and words_count("lie") == 0):
 		return false
 	# gracz w promieniu r pól od [x, y] (okrzyki towarzyszy zależne od miejsca)
 	if d.has("near") and Vector2(player_pos - Vector2i(int(d.near[0]), int(d.near[1]))).length() > float(d.near[2]):
@@ -318,6 +334,22 @@ func apply_effect(e: Dictionary) -> void:
 		add_log(Loc.t("Oddajesz: %s") % DB.entry("items", e.take_item).get("name", e.take_item))
 	if e.has("log"):
 		add_log(e.log)
+	if e.has("forget") and forgotten < FORGET_CAP:
+		var n := mini(int(e.forget), FORGET_CAP - forgotten)
+		forgotten += n
+		player.max_hp = maxi(1, player.max_hp - n)
+		player.hp = mini(player.hp, player.max_hp)
+		add_log(Loc.t("Miasto pamięta cię słabiej: maksymalne PW −%d (razem −%d).") % [n, forgotten])
+	if e.has("remember") and forgotten > 0:
+		player.max_hp += forgotten
+		player.hp += forgotten
+		add_log(Loc.t("Pamiętasz, kim byłeś, i miasto pamięta ciebie: maksymalne PW +%d.") % forgotten)
+		forgotten = 0
+	if e.has("gold_fraction"):   # np. 0.5: rabunek połowy złota
+		var lost := int(floor(player.gold * float(e.gold_fraction)))
+		if lost > 0:
+			player.gold -= lost
+			add_log(Loc.t("Tracisz %d sz.") % lost)
 	if e.has("oath") and word_state(e.oath) == "":
 		words[e.oath] = "open"
 		_word_log(e.oath, Loc.t("[Dane słowo]"))
@@ -370,7 +402,7 @@ func to_dict() -> Dictionary:
 		"player_pos": [player_pos.x, player_pos.y],
 		"log": log_lines.slice(-50), "ending": ending, "explored": explored,
 		"companions": companions.map(func(c): return c.to_dict()),
-		"words": words,
+		"words": words, "forgotten": forgotten,
 		"time": Time.get_datetime_string_from_system(),
 	}
 
@@ -390,6 +422,7 @@ func from_dict(d: Dictionary) -> void:
 	explored = d.get("explored", {})
 	companions = d.get("companions", []).map(func(cd): return Creature.from_dict(cd))
 	words = d.get("words", {})
+	forgotten = int(d.get("forgotten", 0))
 	state_changed.emit()
 
 

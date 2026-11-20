@@ -37,7 +37,8 @@
       "choices": [
         {"text": "Unieś klucz i przekręć go w powietrzu pod łukiem.", "next": "portal"},
         {"text": "Jeszcze nie.", "end": true},
-        {"text": "Żadna przysięga mnie już nie trzyma. Tamta też nie.", "motivation": "desire:freedom", "once": true, "next": "freedom"}
+        {"text": "Żadna przysięga mnie już nie trzyma. Tamta też nie.", "motivation": "desire:freedom", "once": true, "next": "freedom"},
+        {"text": "[Zamknij oczy i wróć do wspomnienia]", "if": {"quest": ["wanderer", "revealed"], "not_flag": "memory_done"}, "effects": [{"set_flag": "memory_at_arch"}, {"clear_flag": "memory_at_mirela"}], "dialogue": "memory", "next": "start"}
       ]
     },
     "freedom": {
@@ -50,8 +51,8 @@
       "text": "Kiedy zbliżasz klucz do kamienia, Łuk przywołuje pierwszą bramę Zawiasu. To twoja dłoń kreśli trzy znaki na zworniku. To ciebie nazywają Wędrowcem i proszą o pozwolenie na przejście. Słyszysz własny głos: „Oddaję bramie imię. Droga należy do tych, którzy nią idą”. Klucz zachował to wspomnienie. Teraz Łuk czeka, aż zdecydujesz, czy go otworzyć.",
       "effects": [{"quest": ["wanderer", "revealed"]}],
       "choices": [
-        {"text": "Przyjrzyj się Łukowi z kluczem w dłoni.", "next": "with_key"},
-        {"text": "Potrzebuję chwili.", "end": true}
+        {"text": "Potrzebuję chwili.", "end": true},
+        {"text": "[Zamknij oczy i wróć do wspomnienia]", "if": {"quest": ["wanderer", "revealed"], "not_flag": "memory_done"}, "effects": [{"set_flag": "memory_at_arch"}, {"clear_flag": "memory_at_mirela"}], "dialogue": "memory", "next": "start"}
       ]
     },
     "portal": {

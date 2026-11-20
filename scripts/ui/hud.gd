@@ -45,6 +45,16 @@ var d20_caption: Label
 var d20_animation: Tween
 var menu_box: HBoxContainer
 var _dlg_choice_count := 0
+# półcutscenka (ADR 0012): pełny ekran, malowany kadr z najazdem, mgła, pasy kinowe, napisy
+var cutscene: Control
+var cut_image: TextureRect
+var cut_fog: ColorRect
+var cut_text: RichTextLabel
+var cut_choices: VBoxContainer
+var _cut_tween: Tween
+var _cut_reveal: Tween
+var _fog_layers: Array = []
+const CUTSCENE_DIR := "res://assets/cutscenes/"
 var selected_key := ""
 var minimap_panel: PanelContainer
 var minimap: MapView
@@ -250,6 +260,7 @@ func _ready() -> void:
 	dlg_choices = UI.vbox(4)
 	dv.add_child(dlg_choices)
 	dialogue_panel.visible = false
+	_build_cutscene()
 
 	# Okno (karta, ekwipunek, dziennik, zakończenie)
 	window = UI.panel(Color(UI.PANEL, 0.98))
@@ -569,6 +580,125 @@ func show_dialogue(speaker: String, text: String, choices: Array, portrait_id :=
 	_fit_dialogue.call_deferred()
 
 
+func _build_cutscene() -> void:
+	cutscene = Control.new()
+	cutscene.set_anchors_preset(Control.PRESET_FULL_RECT)
+	cutscene.mouse_filter = Control.MOUSE_FILTER_STOP
+	cutscene.visible = false
+	root.add_child(cutscene)
+	var black := ColorRect.new()
+	black.color = Color(0.02, 0.01, 0.03)
+	black.set_anchors_preset(Control.PRESET_FULL_RECT)
+	cutscene.add_child(black)
+	cut_image = TextureRect.new()
+	cut_image.set_anchors_preset(Control.PRESET_FULL_RECT)
+	cut_image.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	cut_image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	cutscene.add_child(cut_image)
+	cut_fog = ColorRect.new()
+	cut_fog.set_anchors_preset(Control.PRESET_FULL_RECT)
+	cut_fog.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	var mat := ShaderMaterial.new()
+	mat.shader = load("res://shaders/rift_fog.gdshader")
+	cut_fog.material = mat
+	cutscene.add_child(cut_fog)
+	for top in [true, false]:   # pasy kinowe
+		var bar := ColorRect.new()
+		bar.color = Color(0, 0, 0, 0.92)
+		bar.set_anchors_preset(Control.PRESET_TOP_WIDE if top else Control.PRESET_BOTTOM_WIDE)
+		bar.custom_minimum_size.y = 64 if top else 180
+		bar.offset_top = 0 if top else -180
+		bar.offset_bottom = 64 if top else 0
+		bar.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		cutscene.add_child(bar)
+	var box := UI.vbox(10)
+	box.set_anchors_preset(Control.PRESET_CENTER_BOTTOM)
+	box.custom_minimum_size = Vector2(960, 0)
+	box.position = Vector2(-480, -172)
+	cutscene.add_child(box)
+	cut_text = RichTextLabel.new()
+	cut_text.bbcode_enabled = true
+	cut_text.fit_content = true
+	cut_text.scroll_active = false
+	cut_text.add_theme_font_size_override("normal_font_size", 19)
+	cut_text.add_theme_color_override("default_color", Color("#eadbc8"))
+	cut_text.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	box.add_child(cut_text)
+	cut_choices = UI.vbox(4)
+	cut_choices.alignment = BoxContainer.ALIGNMENT_CENTER
+	box.add_child(cut_choices)
+	cutscene.gui_input.connect(func(ev):   # klik w kadr dopisuje napis od razu
+		if ev is InputEventMouseButton and ev.pressed and _cut_reveal and _cut_reveal.is_running():
+			_cut_reveal.kill()
+			cut_text.visible_ratio = 1.0
+			cut_choices.modulate.a = 1.0)
+
+
+## Węzeł z "scene": kadr assets/cutscenes/<scene>.png z wolnym najazdem, napis pisany w tempie głosu (secs),
+## wybory pod spodem. Bez obrazu zostaje sama mgła.
+func show_cutscene(scene_id: String, text: String, choices: Array, secs: float) -> void:
+	dialogue_panel.visible = false
+	var first := not cutscene.visible
+	cutscene.visible = true
+	cutscene.move_to_front()   # nad banerem lokacji i oknami
+	for r in _fog_layers:      # przejście w mgłę zostaje na wierzchu, aż się rozwieje
+		if is_instance_valid(r):
+			r.move_to_front()
+	var path := CUTSCENE_DIR + scene_id + ".png"
+	var tex: Texture2D = load(path) if scene_id != "" and ResourceLoader.exists(path) else null
+	if tex != cut_image.texture or first:
+		cut_image.texture = tex
+		cut_image.pivot_offset = get_viewport().get_visible_rect().size * 0.5
+		if _cut_tween:
+			_cut_tween.kill()
+		cut_image.scale = Vector2.ONE * 1.02
+		cut_image.position = Vector2.ZERO
+		cut_image.modulate.a = 0.0
+		_cut_tween = create_tween().set_parallel(true)
+		_cut_tween.tween_property(cut_image, "modulate:a", 1.0, 1.6)
+		_cut_tween.tween_property(cut_image, "scale", Vector2.ONE * 1.12, maxf(secs, 8.0) + 6.0).set_trans(Tween.TRANS_SINE)
+		_cut_tween.tween_property(cut_image, "position", Vector2(-28, -12), maxf(secs, 8.0) + 6.0).set_trans(Tween.TRANS_SINE)
+	(cut_fog.material as ShaderMaterial).set_shader_parameter("density", 0.42 if tex else 0.8)
+	cut_text.text = "[center]%s[/center]" % text
+	cut_text.visible_ratio = 0.0
+	UI.clear(cut_choices)
+	_dlg_choice_count = choices.size()
+	for i in choices.size():
+		var ch: Dictionary = choices[i]
+		var b := UI.button(ch.text)
+		b.custom_minimum_size.x = 320
+		b.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
+		var idx: int = ch.index
+		b.pressed.connect(func(): dialogue_choice.emit(idx))
+		cut_choices.add_child(b)
+	cut_choices.modulate.a = 0.0
+	if _cut_reveal:
+		_cut_reveal.kill()
+	_cut_reveal = create_tween()
+	_cut_reveal.tween_interval(0.8 if first else 0.2)
+	_cut_reveal.tween_property(cut_text, "visible_ratio", 1.0, clampf(secs, 2.0, 30.0))
+	_cut_reveal.tween_property(cut_choices, "modulate:a", 1.0, 0.5)
+
+
+## Przejście w mgłę (fade_in) albo z mgły z błyskiem bramy (fade_out); secs = czas trwania.
+func fog_transition(fade_in: bool, secs := 1.2) -> void:
+	var r := ColorRect.new()
+	r.set_anchors_preset(Control.PRESET_FULL_RECT)
+	r.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	r.color = Color(0.38, 0.22, 0.55, 0.0) if fade_in else Color(0.95, 0.82, 0.55, 1.0)
+	root.add_child(r)
+	_fog_layers.append(r)
+	_fog_layers = _fog_layers.filter(func(x): return is_instance_valid(x))
+	var t := create_tween()
+	if fade_in:
+		t.tween_property(r, "color:a", 1.0, secs).set_trans(Tween.TRANS_SINE)
+		t.tween_property(r, "color", Color(0.02, 0.01, 0.03, 1.0), 0.4)
+		t.tween_property(r, "color:a", 0.0, 0.6)
+	else:
+		t.tween_property(r, "color:a", 0.0, secs).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
+	t.tween_callback(r.queue_free)
+
+
 func dialogue_append(text: String, success: bool) -> void:
 	dlg_text.append_text("\n\n[color=%s]%s[/color]" % ["#8fcf7a" if success else "#e0634f", text])
 	_fit_dialogue.call_deferred()
@@ -584,6 +714,12 @@ func _fit_dialogue() -> void:
 
 func hide_dialogue() -> void:
 	dialogue_panel.visible = false
+	if cutscene and cutscene.visible:
+		cutscene.visible = false
+		if _cut_tween:
+			_cut_tween.kill()
+		if _cut_reveal:
+			_cut_reveal.kill()
 	set_voice_speaker("")
 
 
@@ -672,9 +808,10 @@ func _process(delta: float) -> void:
 
 
 func dialogue_key(n: int) -> bool:
-	if not dialogue_panel.visible or n < 1 or n > _dlg_choice_count:
+	var box := cut_choices if cutscene and cutscene.visible else dlg_choices
+	if not (dialogue_panel.visible or cutscene.visible) or n < 1 or n > _dlg_choice_count:
 		return false
-	var b: Button = dlg_choices.get_child(n - 1)
+	var b: Button = box.get_child(n - 1)
 	b.pressed.emit()
 	return true
 

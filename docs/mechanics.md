@@ -20,6 +20,23 @@ How the game plays, with pointers to the code and data that implement each rule.
 - A natural 1 or 20 shows a badge with the roller's name (`HUD.show_d20`), in dialogue and in combat. With a window
   open (map, journal) the badge moves below or above it.
 
+## Defeat into the fog
+
+A lost fight no longer ends the game ([ADR 0012](decisions/0012-defeat-into-fog.md)). The party dissolves into the
+Rift fog and sees a fragment of the Wanderer's past as a semi-cutscene (`rift.json`). The gate then spits it out at
+the Market entrance at full HP. The cost:
+- −1 maximum HP per defeat, at most −3, restored by the conversation with your past self;
+- the encounter's `on_defeat`: the bandits rob half the gold; the warehouse shuts its doors and the key is hidden
+  deeper (+2 DC).
+
+## The finale question
+
+After the memory (at Mirela's or the Arch) the player can talk to their past self ([ADR 0011](decisions/0011-finale-question.md),
+`data/dialogues/memory.json`). It has three questions: why did you give up your name (general answers plus one per
+motivation), did you keep your word here (read from the word register; lying to yourself is recorded), and who are
+you now. The answers make up the epilogue on the ending screen. Honest answers promise Heroic Inspiration at the
+start of the next chapter (`finale_honest`).
+
 ## Word register
 
 Promises and lies are tracked in `GameState.words` ([ADR 0010](decisions/0010-word-register.md)), defined in

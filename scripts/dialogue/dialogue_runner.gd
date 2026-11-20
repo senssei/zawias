@@ -31,9 +31,7 @@ func _init(gs: Node = null) -> void:
 func start(id: String, gs: Node = null) -> bool:
 	if gs:
 		state = gs
-	dialogue_id = id
-	data = DB.dialogue(id)
-	if data.is_empty():
+	if not use_dialogue(id):
 		return false
 	var start_id: String = data.get("start", "start")
 	for alt in data.get("starts", []):
@@ -42,6 +40,13 @@ func start(id: String, gs: Node = null) -> bool:
 			break
 	goto(start_id)
 	return true
+
+
+## Przełącza dane na inny dialog bez wybierania węzła (wybór z "dialogue", narzędzia).
+func use_dialogue(id: String) -> bool:
+	dialogue_id = id
+	data = DB.dialogue(id)
+	return not data.is_empty()
 
 
 func goto(node_id: String) -> void:
@@ -119,6 +124,15 @@ func choose(index: int) -> void:
 		state.apply_effects(ch.check.get("success_effects" if res.success else "fail_effects", []))
 		state.apply_effects(extra)
 		goto(ch.check.success if res.success else ch.check.fail)
+		return
+	# "dialogue": "<id>" przechodzi do innego dialogu ("next" to węzeł w nim, domyślnie jego start),
+	# np. wspomnienie u Mireli i przy Łuku prowadzi do wspólnej rozmowy w memory.json
+	if ch.has("dialogue"):
+		if not use_dialogue(ch.dialogue):
+			push_error("Dialog: brak dialogu %s" % ch.dialogue)
+			finished.emit()
+			return
+		goto(ch.get("next", data.get("start", "start")))
 		return
 	if ch.get("end", false) or not ch.has("next"):
 		finished.emit()
