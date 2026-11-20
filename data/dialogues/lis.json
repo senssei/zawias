@@ -13,7 +13,8 @@
         {"text": "Chcesz opowieści? Opowiem ci, skąd przybyłem.", "once": true, "next": "story"},
         {"text": "Pójdziesz ze mną? Ta opowieść jeszcze się nie skończyła.", "if": {"quest_any": ["key", ["started", "lead_warehouse", "has_key"]]}, "next": "join"},
         {"text": "Do zobaczenia.", "end": true},
-        {"text": "Znasz znak z bramy? Mam taki na dłoni.", "if": {"quest_any": ["wanderer", ["", "trace"]], "not_flag": "key_obtained"}, "next": "wanderer_record"}
+        {"text": "Znasz znak z bramy? Mam taki na dłoni.", "if": {"quest_any": ["wanderer", ["", "trace"]], "not_flag": "key_obtained"}, "next": "wanderer_record"},
+        {"text": "Co Echo zapisze o mnie?", "next": "words"}
       ]
     },
     "echo": {
@@ -60,7 +61,19 @@
       "speaker": "Lis",
       "text": "Lis idzie obok ciebie i notuje coś w biegu. „Opowieść biegnie dalej. Dokąd teraz?”",
       "choices": [{"text": "Idziemy dalej.", "end": true}, {"text": "Wracaj do Archiwum. Dalej pójdę sam.", "effects": [{"leave_party": "lis"}], "next": "leave"},
-        {"text": "Znasz znak z bramy? Mam taki na dłoni.", "if": {"quest_any": ["wanderer", ["", "trace"]], "not_flag": "key_obtained"}, "next": "wanderer_record"}]
+        {"text": "Znasz znak z bramy? Mam taki na dłoni.", "if": {"quest_any": ["wanderer", ["", "trace"]], "not_flag": "key_obtained"}, "next": "wanderer_record"},
+        {"text": "Co Echo zapisze o mnie?", "next": "words"}]
+    },
+    "words": {
+      "speaker": "Lis",
+      "redirect": [{"if": {"words_min": ["lie", 1]}, "next": "words_lies"}],
+      "text": "Lis przesuwa palcem po księdze, a litery układają się pod nim jak posłuszne psy. „Na razie twoje słowa zgadzają się z tym, co robisz. W Archiwum to rzadkość. Większość opowieści kłamie już w pierwszym zdaniu”.",
+      "choices": [{"text": "Oby tak zostało.", "end": true}]
+    },
+    "words_lies": {
+      "speaker": "Lis",
+      "text": "Lis długo patrzy w księgę. „Echo zapisuje to, co zostało powiedziane, a nie to, co było prawdą. Twoje kłamstwa też tu są, tak samo wyraźne jak reszta, nawet jeśli nikt ich nie przyłapał”. Zamyka księgę. „Zapisani znają tylko te, które wyszły na jaw. My pamiętamy wszystkie”.",
+      "choices": [{"text": "Rozumiem.", "end": true}]
     },
     "leave": {
       "speaker": "Lis",

@@ -336,6 +336,52 @@ func test_remaining_motivations():
 	assert_eq(r.current_id, "freedom")
 
 
+func test_word_register():
+	gs.player.gold = 50
+	var r := DialogueRunner.new(gs)
+	r.start("kwit")
+	_choose_text(r, "rejestr wszystkiego")
+	assert_eq(r.current_id, "ledger", "pusty rejestr")
+	r.start("mirela")
+	_choose_text(r, "Co się stało")
+	_choose_text(r, "Pomogę ci go")
+	assert_eq(gs.word_state("mirela_key"), "open", "obietnica Mireli")
+	r.start("kwit")
+	_choose_text(r, "rejestr wszystkiego")
+	assert_eq(r.current_id, "ledger_open")
+	r.start("lis")
+	_choose_text(r, "Co Echo zapisze")
+	assert_eq(r.current_id, "words", "bez kłamstw")
+	r.start("kwit")
+	_choose_text(r, "Mirelę okradziono")
+	Dice.force([20])
+	_choose_text(r, "Przysyła mnie Kustoszka")
+	assert_eq(gs.word_state("kwit_custodian"), "hidden", "kłamstwo nieprzyłapane")
+	r.start("lis")
+	_choose_text(r, "Co Echo zapisze")
+	assert_eq(r.current_id, "words_lies", "Echo pamięta ukryte kłamstwa")
+	r.start("kwit")
+	_choose_text(r, "rejestr wszystkiego")
+	assert_eq(r.current_id, "ledger_open", "Zapisani znają tylko jawne")
+	gs.apply_effects([{"oath_kept": "kwit_custodian"}, {"lie_exposed": "kwit_custodian"}])
+	assert_eq(gs.word_state("kwit_custodian"), "exposed")
+	gs.apply_effects([{"oath_kept": "dorn_ardan"}])
+	assert_eq(gs.word_state("dorn_ardan"), "", "nie można dotrzymać słowa, które nie padło")
+	gs.apply_effects([{"oath": "pchla_silence"}, {"oath_broken": "mirela_key"}, {"oath": "mirela_key"}])
+	assert_eq(gs.word_state("mirela_key"), "broken", "złamanego nie da się dać od nowa")
+	assert_true(gs.check({"words_min": ["broken", 1]}))
+	assert_true(gs.check({"word": ["pchla_silence", "open"]}))
+	r.start("kwit")
+	_choose_text(r, "rejestr wszystkiego")
+	assert_eq(r.current_id, "ledger_bad")
+	var d: Dictionary = JSON.parse_string(JSON.stringify(gs.to_dict()))
+	gs.words = {}
+	gs.from_dict(d)
+	assert_eq(gs.word_state("mirela_key"), "broken", "rejestr w zapisie")
+	gs.close_words_at_end()
+	assert_eq(gs.word_state("pchla_silence"), "kept", "milczenie dotrzymane na koniec")
+
+
 func test_heroic_inspiration_reroll():
 	gs.player.heroic_inspiration = true
 	var r := DialogueRunner.new(gs)

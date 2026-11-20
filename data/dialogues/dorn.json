@@ -77,7 +77,7 @@
     "promise": {
       "speaker": "Dorn",
       "text": "Dorn patrzy na ciebie tak, jakby ważył monetę. „Ardan. Szkutnik spod Cynowej Zatoki”. Po chwili dodaje: „Nie obiecuj, jeśli nie dotrzymasz. W Zawiasie obietnic się nie zapomina”.",
-      "effects": [{"set_flag": "promise_dorn"}, {"journal": "Obiecałem Dornowi, że za Łukiem poszukam śladu Ardana, szkutnika spod Cynowej Zatoki, męża jego babki."}],
+      "effects": [{"oath": "dorn_ardan"}, {"journal": "Obiecałem Dornowi, że za Łukiem poszukam śladu Ardana, szkutnika spod Cynowej Zatoki, męża jego babki."}],
       "choices": [{"text": "Dotrzymam.", "next": "start"}]
     },
     "lonely": {

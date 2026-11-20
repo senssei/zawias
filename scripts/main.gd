@@ -174,6 +174,16 @@ func _quickstart_flags() -> void:
 		if a.begins_with("--join="):   # debug: towarzysz w drużynie od startu (np. --join=lis)
 			await get_tree().process_frame
 			GameState.join_party(a.substr(7))
+		if a.begins_with("--words="):   # debug: rejestr słowa, np. --words=mirela_key:broken,kwit_custodian:hidden
+			for w in a.substr(8).split(","):
+				var kv := w.split(":")
+				GameState.words[kv[0]] = kv[1]
+		if a == "--journal":
+			await get_tree().process_frame
+			screen._on_menu("journal")
+		if a.begins_with("--ending="):
+			await get_tree().process_frame
+			screen._show_ending(a.substr(9))
 		if a == "--openmap":
 			await get_tree().process_frame
 			screen._on_menu("map")

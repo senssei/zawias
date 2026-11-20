@@ -57,7 +57,7 @@
     "portal": {
       "speaker": "Łuk bez drzwi",
       "text": "Klucz obraca się w pustce i coś się zatrzaskuje. Pod łukiem pojawiają się drzwi, które jeszcze przed chwilą nie istniały. Są zrobione z twojej opowieści. Uchylają się, a zza nich wieje wiatr pachnący miejscem, którego nie zna żaden atlas planów.",
-      "effects": [{"quest": ["key", "done_portal"]}, {"xp": 300}, {"journal": "Otworzyłem drzwi, które nie istniały. Zawias nigdy już nie będzie taki sam."}, {"quest": ["wanderer", "done_crossed"]}, {"end_game": "portal"}],
+      "effects": [{"quest": ["key", "done_portal"]}, {"xp": 300}, {"journal": "Otworzyłem drzwi, które nie istniały. Zawias nigdy już nie będzie taki sam."}, {"quest": ["wanderer", "done_crossed"]}, {"oath_broken": "mirela_key"}, {"end_game": "portal"}],
       "choices": [{"text": "[Przekrocz próg]", "end": true}]
     }
   }

@@ -21,6 +21,7 @@ var log_lines: Array = []
 var ending := ""
 var explored := {}           # map_id -> String "0"/"1" na pole (wiersz po wierszu); mgła na mapie
 var companions: Array = []   # towarzysze w drużynie (Creature, team "party", sterowani przez AI w walce)
+var words := {}              # rejestr słowa (ADR 0010): id z data/words.json -> stan (open/kept/broken, hidden/exposed)
 
 
 func new_game(pc: Creature) -> void:
@@ -36,6 +37,7 @@ func new_game(pc: Creature) -> void:
 	ending = ""
 	explored = {}
 	companions = []
+	words = {}
 	state_changed.emit()
 
 
@@ -144,6 +146,32 @@ static func motivation_name(m: String) -> String:
 	return str(DB.table("motivations").get(parts[0], {}).get("options", {}).get(parts[1], {}).get("name", parts[1]))
 
 
+# ------------------------------------------------------------------ rejestr słowa (ADR 0010)
+
+## Stan słowa: "" (nie padło), obietnica open/kept/broken, kłamstwo hidden/exposed.
+func word_state(id_: String) -> String:
+	return words.get(id_, "")
+
+
+## Ile słów jest w danym stanie (np. "broken", "exposed", "kept"); "lie" liczy wszystkie kłamstwa.
+func words_count(state: String) -> int:
+	if state == "lie":
+		return words.values().filter(func(s): return s in ["hidden", "exposed"]).size()
+	return words.values().filter(func(s): return s == state).size()
+
+
+func _word_log(id_: String, label: String) -> void:
+	var w: Dictionary = DB.table("words").get(id_, {})
+	add_log("%s %s" % [label, w.get("text", id_)])
+
+
+## Na koniec rozdziału obietnice z "kept_at_end" (np. milczenie) uznajemy za dotrzymane.
+func close_words_at_end() -> void:
+	for id_ in words.keys():
+		if words[id_] == "open" and DB.table("words").get(id_, {}).get("kept_at_end", false):
+			words[id_] = "kept"
+
+
 func quest_stage(q: String) -> String:
 	return quests.get(q, "")
 
@@ -211,6 +239,10 @@ func check(cond) -> bool:
 	if d.has("reputation") and faction_attitude(d.reputation[0]) != d.reputation[1]:
 		return false
 	if d.has("reputation_not") and faction_attitude(d.reputation_not[0]) == d.reputation_not[1]:
+		return false
+	if d.has("word") and word_state(d.word[0]) != d.word[1]:
+		return false
+	if d.has("words_min") and words_count(d.words_min[0]) < int(d.words_min[1]):
 		return false
 	# gracz w promieniu r pól od [x, y] (okrzyki towarzyszy zależne od miejsca)
 	if d.has("near") and Vector2(player_pos - Vector2i(int(d.near[0]), int(d.near[1]))).length() > float(d.near[2]):
@@ -286,6 +318,21 @@ func apply_effect(e: Dictionary) -> void:
 		add_log(Loc.t("Oddajesz: %s") % DB.entry("items", e.take_item).get("name", e.take_item))
 	if e.has("log"):
 		add_log(e.log)
+	if e.has("oath") and word_state(e.oath) == "":
+		words[e.oath] = "open"
+		_word_log(e.oath, Loc.t("[Dane słowo]"))
+	if e.has("oath_kept") and word_state(e.oath_kept) == "open":
+		words[e.oath_kept] = "kept"
+		_word_log(e.oath_kept, Loc.t("[Słowo dotrzymane]"))
+	if e.has("oath_broken") and word_state(e.oath_broken) == "open":
+		words[e.oath_broken] = "broken"
+		_word_log(e.oath_broken, Loc.t("[Słowo złamane]"))
+	if e.has("lie") and word_state(e.lie) == "":
+		words[e.lie] = "hidden"
+		_word_log(e.lie, Loc.t("[Kłamstwo]"))
+	if e.has("lie_exposed") and word_state(e.lie_exposed) == "hidden":
+		words[e.lie_exposed] = "exposed"
+		_word_log(e.lie_exposed, Loc.t("[Kłamstwo wyszło na jaw]"))
 	if e.has("journal") and not e.journal in journal:   # ta sama porażka drugi raz nie dubluje wpisu
 		journal.append(e.journal)
 		add_log(Loc.t("[Dziennik]") + " " + e.journal)
@@ -323,6 +370,7 @@ func to_dict() -> Dictionary:
 		"player_pos": [player_pos.x, player_pos.y],
 		"log": log_lines.slice(-50), "ending": ending, "explored": explored,
 		"companions": companions.map(func(c): return c.to_dict()),
+		"words": words,
 		"time": Time.get_datetime_string_from_system(),
 	}
 
@@ -341,6 +389,7 @@ func from_dict(d: Dictionary) -> void:
 	ending = d.get("ending", "")
 	explored = d.get("explored", {})
 	companions = d.get("companions", []).map(func(cd): return Creature.from_dict(cd))
+	words = d.get("words", {})
 	state_changed.emit()
 
 

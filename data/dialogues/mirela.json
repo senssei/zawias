@@ -153,6 +153,9 @@
     },
     {
      "journal": "Mirela poprosiła mnie o odzyskanie Klucza bez drzwi. Mam popytać Kwita, Pchłę i Lis."
+    },
+    {
+     "oath": "mirela_key"
     }
    ],
    "choices": [
@@ -353,6 +356,9 @@
      "set_flag": "kept_key"
     },
     {
+     "oath_broken": "mirela_key"
+    },
+    {
      "journal": "Zatrzymałem Klucz bez drzwi. Mirela mówi, że pasuje do Łuku na środku targu."
     }
    ],
@@ -367,6 +373,9 @@
    "speaker": "Mirela",
    "text": "Mirela przyciska klucz do piersi, jakby trzymała dziecko. „Dziękuję. Zawias zapamięta ci tę przysługę. Ja na pewno”.",
    "effects": [
+    {
+     "oath_kept": "mirela_key"
+    },
     {
      "quest": [
       "key",

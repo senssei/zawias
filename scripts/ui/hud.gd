@@ -923,9 +923,32 @@ func open_journal() -> void:
 		if eff != "":
 			window_body.add_child(UI.label_w("→ " + eff, 14))
 	window_body.add_child(HSeparator.new())
+	# rejestr słowa (ADR 0010): obietnice i kłamstwa w kolejności, w jakiej padły
+	if not GameState.words.is_empty():
+		window_body.add_child(UI.label_w(Loc.t("Dane słowo"), 18, UI.BRASS))
+		for id_ in GameState.words:
+			var line := word_line(id_, GameState.words[id_])
+			window_body.add_child(UI.label_w(line[0], 15, line[1]))
+		window_body.add_child(HSeparator.new())
 	window_body.add_child(UI.label_w(Loc.t("Zapiski"), 18, UI.BRASS))
 	for i in range(GameState.journal.size() - 1, -1, -1):
 		window_body.add_child(UI.label_w("• " + GameState.journal[i], 15))
+
+
+## Wiersz rejestru słowa: [tekst, kolor] (dziennik i ekran końca).
+static func word_line(id_: String, state: String) -> Array:
+	var text := str(DB.table("words").get(id_, {}).get("text", id_))
+	match state:
+		"kept":
+			return ["✔ %s %s" % [text, Loc.t("Dotrzymane.")], UI.GOOD]
+		"broken":
+			return ["✘ %s %s" % [text, Loc.t("Złamane.")], UI.BAD]
+		"hidden":
+			return ["◇ %s %s" % [text, Loc.t("Nikt się nie dowiedział.")], UI.MUTED]
+		"exposed":
+			return ["✘ %s %s" % [text, Loc.t("Wyszło na jaw.")], UI.BAD]
+		_:
+			return ["◆ %s %s" % [text, Loc.t("Jeszcze niespłacone.")], UI.TEXT]
 
 
 ## Mapa: dane siatki, źródło znaczników i mgły (świat podaje funkcje, HUD nic nie wie o aktorach).

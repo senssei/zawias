@@ -12,7 +12,8 @@
         {"text": "Na czym polega wasza filozofia?", "next": "philosophy"},
         {"text": "Co to za łuk na środku targu?", "next": "arch"},
         {"text": "Nic. Do widzenia.", "end": true},
-        {"text": "Masz na sprzedaż miksturę leczenia?", "if": {"quest_any": ["key", ["started", "lead_warehouse"]], "not_flag": "kwit_sold_potion"}, "next": "supplies"}
+        {"text": "Masz na sprzedaż miksturę leczenia?", "if": {"quest_any": ["key", ["started", "lead_warehouse"]], "not_flag": "kwit_sold_potion"}, "next": "supplies"},
+        {"text": "Zapisani prowadzą rejestr wszystkiego. Co w nim jest o mnie?", "next": "ledger"}
       ]
     },
     "info": {
@@ -22,7 +23,7 @@
       "choices": [
         {"text": "Proszę, dziesięć sztuk.", "if": {"gold": 10}, "next": "lead", "effects": [{"gold": -10}, {"set_reputation": ["inscribed", "friendly"]}]},
         {"text": "Zaproponuję inną umowę: powiem ci, kto zadaje pytania o ciebie.", "once": true, "check": {"skill": "persuasion", "dc": 13, "success": "lead", "fail": "no_deal", "cost_effects": [{"log": "Kwit przystaje na wymianę, ale i tak dolicza „opłatę manipulacyjną”."}, {"gold": -5}]}},
-        {"text": "Przysyła mnie Kustoszka. Nie każ jej czekać.", "once": true, "check": {"skill": "deception", "dc": 15, "success": "lead_scared", "fail": "no_deal"}},
+        {"text": "Przysyła mnie Kustoszka. Nie każ jej czekać.", "once": true, "check": {"skill": "deception", "dc": 15, "success": "lead_scared", "fail": "no_deal", "success_effects": [{"lie": "kwit_custodian"}], "fail_effects": [{"lie": "kwit_custodian"}, {"lie_exposed": "kwit_custodian"}]}},
         {"text": "Może później.", "next": "start"},
         {"text": "Zapisz to sobie, Kwit: „Zapisani wiedzieli o kradzieży i milczeli”. Ciekawe, ile takie zdanie waży w waszym rejestrze.", "motivation": "strength:cunning", "once": true, "next": "cunning"}
       ]
@@ -59,9 +60,26 @@
       "text": "Kwit kładzie przed tobą pokwitowanie patrolu. „Hask zwrócił mi kontrakt. Sprawdziłem w rejestrze. Kustoszka nikogo nie przysyłała. Wpisałem twoje nazwisko. Od dziś każdą cenę dla ciebie liczę z dopłatą za ryzyko”.",
       "effects": [
         {"set_flag": "kwit_bluff_exposed"},
+        {"lie_exposed": "kwit_custodian"},
         {"set_reputation": ["inscribed", "wary"]},
         {"journal": "Po zwrocie kontraktu przez patrol Kwit sprawdził rejestr i odkrył moje kłamstwo. Zapisani mi nie ufają. Kwit żąda teraz wyższej ceny za miksturę."}
       ],
+      "choices": [{"text": "Rozumiem.", "next": "start"}]
+    },
+    "ledger": {
+      "speaker": "Kwit",
+      "redirect": [{"if": {"words_min": ["broken", 1]}, "next": "ledger_bad"}, {"if": {"words_min": ["exposed", 1]}, "next": "ledger_bad"}, {"if": {"words_min": ["open", 1]}, "next": "ledger_open"}],
+      "text": "Kwit przewraca kartę rejestru, potem drugą. „Nic. Ani jednego danego słowa, ani jednego złamanego. Albo jesteś bardzo ostrożny, albo jeszcze nikt cię tu nie potrzebował”.",
+      "choices": [{"text": "Rozumiem.", "next": "start"}]
+    },
+    "ledger_open": {
+      "speaker": "Kwit",
+      "text": "Kwit stuka piórem w rubrykę. „Dane słowo, jeszcze niespłacone. Zapisani lubią ludzi z długami, bo wiadomo, gdzie ich szukać”. Uśmiecha się wąsko. „Rzeczywistość to kontrakt. Ty swój właśnie podpisujesz”.",
+      "choices": [{"text": "Rozumiem.", "next": "start"}]
+    },
+    "ledger_bad": {
+      "speaker": "Kwit",
+      "text": "Kwit nie musi nawet otwierać rejestru. „Złamane słowo albo kłamstwo, które wyszło na jaw. W rejestrze to dziura w umowie i od razu przez nią wieje”. Pióro skrzypi. „Każde następne twoje słowo będzie ważyło mniej”.",
       "choices": [{"text": "Rozumiem.", "next": "start"}]
     },
     "supplies": {

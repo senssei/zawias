@@ -52,7 +52,7 @@ First uses in the Rusty Market:
 | Dorn, his grandmother's grudge: "Someone had to say no." | flaw: pride | Dorn charges double for a bed (`dorn_cold`) |
 | Dorn: "How much did they pay you to tell me this?" | flaw: distrust | the bill with three lines (journal), double price |
 | Dorn: "What was the warden like?" | desire: truth | tired, not cruel: a journal clue to why the Wanderer gave up the name |
-| Dorn: "What was her husband's name? I'll look for him." | strength: loyalty | a promise, flag `promise_dorn` (for the oaths register) |
+| Dorn: "What was her husband's name? I'll look for him." | strength: loyalty | a promise, the word `dorn_ardan` (ADR 0010) |
 | Dorn: "Was she alone all those years?" | fear: loneliness | the inn as a home for the stranded, a free beer |
 | Kwit: "The Inscribed knew about the theft and kept quiet" | strength: cunning | the warehouse lead for free (`kwit/cunning`) |
 | Mirela, truth: "How much would the highest bidder pay?" | desire: wealth | `mirela/price`, reward raised to 150 (`reward_plus`) |

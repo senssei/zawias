@@ -14,6 +14,8 @@ END_NODES = {"", "end"}
 ATTITUDES = {"wary", "neutral", "friendly"}
 
 
+WORD_STATES = {"oath": ["open", "kept", "broken"], "lie": ["hidden", "exposed"]}
+
 class StoryCheck:
     def __init__(self, root):
         self.root = root
@@ -27,6 +29,7 @@ class StoryCheck:
         self.arcs = self.load("data/story_arcs.json")
         self.barks = self.load("data/barks.json")
         self.motivations = self.load("data/motivations.json")
+        self.words = self.load("data/words.json")
         self.stages = self.quest_stages()
         self.npcs = {
             npc["id"] for map_data in self.maps.values()
@@ -109,8 +112,25 @@ class StoryCheck:
                 self.reputation(f"{location}/{key}", value[key])
         if "motivation" in value:
             self.motivation(f"{location}/motivation", value["motivation"])
+        if "word" in value:
+            word = value["word"]
+            if not isinstance(word, list) or len(word) != 2:
+                self.errors.append(f"{location}/word: oczekiwano [id, stan]")
+            elif self.reference(f"{location}/word/0", word[0], self.words, "słowo z data/words.json"):
+                states = WORD_STATES[self.words[word[0]].get("kind")]
+                self.reference(f"{location}/word/1", word[1], states, "stan słowa")
+        if "words_min" in value:
+            pair = value["words_min"]
+            if not isinstance(pair, list) or len(pair) != 2 or not isinstance(pair[1], int):
+                self.errors.append(f"{location}/words_min: oczekiwano [stan, liczba]")
+            else:
+                self.reference(f"{location}/words_min/0", pair[0], WORD_STATES["oath"] + WORD_STATES["lie"] + ["lie"], "stan słowa")
         if "near" in value and (not isinstance(value["near"], list) or len(value["near"]) != 3):
             self.errors.append(f"{location}/near: oczekiwano [x, y, promień]")
+
+    def word_ids(self, kind):
+        """Identyfikatory rejestru słowa danego rodzaju (ADR 0010)."""
+        return {key for key, word in self.words.items() if word.get("kind") == kind}
 
     def motivation(self, location, value):
         """„kategoria:opcja” z data/motivations.json (ADR 0009)."""
@@ -126,6 +146,11 @@ class StoryCheck:
                 ("start_combat", self.encounters, "identyfikator spotkania"),
                 ("join_party", self.npcs, "NPC"), ("leave_party", self.npcs, "NPC"),
                 ("remove_npc", self.npcs, "NPC"),
+                ("oath", self.word_ids("oath"), "obietnica z data/words.json"),
+                ("oath_kept", self.word_ids("oath"), "obietnica z data/words.json"),
+                ("oath_broken", self.word_ids("oath"), "obietnica z data/words.json"),
+                ("lie", self.word_ids("lie"), "kłamstwo z data/words.json"),
+                ("lie_exposed", self.word_ids("lie"), "kłamstwo z data/words.json"),
             ):
                 if key in effect:
                     self.reference(f"{path}/{key}", effect[key], entries, kind)

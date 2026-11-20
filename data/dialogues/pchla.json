@@ -26,7 +26,7 @@
       "speaker": "Pchła",
       "text": "Pchła blednie. „Dobra, dobra. Rozplatacze dali mi miedziaka, żebym im mówił, kto węszy. Ale ty jesteś w porządku. W zaułku czekają dwaj. Magazyn jest dalej, za nimi. Nie mów, że to ja”.",
       "effects": [{"set_flag": "pchla_told"}, {"set_flag": "asked_about_key"}, {"set_flag": "ambush_warned"}, {"quest": ["key", "lead_warehouse"]}, {"xp": 50}, {"journal": "Pchła ostrzegł mnie przed zasadzką w zaułku. Rozplatacze siedzą w magazynie za nim."}],
-      "choices": [{"text": "Nie powiem.", "end": true}]
+      "choices": [{"text": "Nie powiem.", "effects": [{"oath": "pchla_silence"}], "end": true}]
     },
     "snitch": {
       "speaker": "Pchła",

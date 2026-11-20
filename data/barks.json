@@ -29,6 +29,15 @@
      "wary"
     ]
    }
+  },
+  {
+   "text": "Mirela pyta przy bramie o kogoś, kto obiecał wrócić. Ładnie to tak?",
+   "if": {
+    "word": [
+     "mirela_key",
+     "broken"
+    ]
+   }
   }
  ],
  "kwit": [
@@ -84,6 +93,16 @@
      "done_returned"
     ]
    }
+  },
+  {
+   "text": "Obiecałeś, że wrócisz z kluczem. Czekam.",
+   "if": {
+    "word": [
+     "mirela_key",
+     "open"
+    ],
+    "not_item": "key_without_door"
+   }
   }
  ],
  "dorn": [
@@ -92,6 +111,15 @@
   },
   {
    "text": "Kto nie śpi pod Krzywym Zawiasem, ten śpi w rynsztoku."
+  },
+  {
+   "text": "Ardan. Szkutnik spod Cynowej Zatoki. Pamiętasz?",
+   "if": {
+    "word": [
+     "dorn_ardan",
+     "open"
+    ]
+   }
   }
  ],
  "lis": [

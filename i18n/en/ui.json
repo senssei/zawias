@@ -412,5 +412,19 @@
 "PORAŻKA, ALE…": "FAILURE, BUT…",
 "Działasz zgodnie z sobą (%s): Heroiczna inspiracja.": "You act true to yourself (%s): Heroic Inspiration.",
 "Motywacje": "Motivations",
-"Opcje zgodne z motywacją pojawiają się w rozmowach; odegranie ich, także wady, daje Heroiczną inspirację.": "Options that fit your motivations appear in conversations; playing them out, flaws included, grants Heroic Inspiration."
+"Opcje zgodne z motywacją pojawiają się w rozmowach; odegranie ich, także wady, daje Heroiczną inspirację.": "Options that fit your motivations appear in conversations; playing them out, flaws included, grants Heroic Inspiration.",
+"[Dane słowo]": "[Word given]",
+"[Słowo dotrzymane]": "[Word kept]",
+"[Słowo złamane]": "[Word broken]",
+"[Kłamstwo]": "[Lie]",
+"[Kłamstwo wyszło na jaw]": "[Lie exposed]",
+"Dane słowo": "Word Given",
+"Dotrzymane.": "Kept.",
+"Złamane.": "Broken.",
+"Nikt się nie dowiedział.": "Nobody found out.",
+"Wyszło na jaw.": "Exposed.",
+"Jeszcze niespłacone.": "Not yet repaid.",
+"Zawias pamięta złamane słowa dłużej niż imiona.": "Zawias remembers broken words longer than names.",
+"Dotrzymałeś słowa, ale nie wszystko, co powiedziałeś, było prawdą. Echo to zapamięta.": "You kept your word, but not everything you said was true. The Echo will remember.",
+"Nie złamałeś danego słowa i nikogo nie okłamałeś. Wędrowiec też kiedyś tak zaczynał.": "You broke no word and lied to no one. The Wanderer once started out the same way."
 }

@@ -315,6 +315,20 @@
    }
   ]
  },
+ "barks/dorn_2": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "Ardan. A shipwright from Tin Bay. Remember?",
+    "file": "dorn_2_0.ogg",
+    "voice": "dorn",
+    "sig": "f5daac83fe12",
+    "seconds": 2.33,
+    "seed": 404,
+    "wer": 0.0
+   }
+  ]
+ },
  "barks/hask_0": {
   "segments": [
    {
@@ -382,6 +396,20 @@
     "seconds": 2.66,
     "seed": 202,
     "wer": 0.0
+   }
+  ]
+ },
+ "barks/hask_5": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "Mirela's asking at the gate about someone who promised to come back. Is that nice?",
+    "file": "hask_5_0.ogg",
+    "voice": "hask",
+    "sig": "d487def15cf2",
+    "seconds": 4.37,
+    "seed": 202,
+    "wer": 0.067
    }
   ]
  },
@@ -632,6 +660,20 @@
     "voice": "mirela",
     "sig": "fea5d511f18d",
     "seconds": 2.49,
+    "seed": 101,
+    "wer": 0.0
+   }
+  ]
+ },
+ "barks/mirela_3": {
+  "segments": [
+   {
+    "who": "speaker",
+    "text": "You promised you'd come back with the key. I'm waiting.",
+    "file": "mirela_3_0.ogg",
+    "voice": "mirela",
+    "sig": "fea5d511f18d",
+    "seconds": 3.33,
     "seed": 101,
     "wer": 0.0
    }
@@ -1817,6 +1859,118 @@
    }
   ]
  },
+ "kwit/ledger": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Kwit turns a page of the register, then another.",
+    "file": "ledger_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 3.41,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Nothing. Not a single word given, not a single word broken. Either you're very careful, or nobody here has needed you yet.",
+    "file": "ledger_1.ogg",
+    "voice": "kwit",
+    "sig": "d954463b5e38",
+    "seconds": 6.6,
+    "seed": 303,
+    "wer": 0.0
+   }
+  ]
+ },
+ "kwit/ledger_bad": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Kwit doesn't even need to open the register.",
+    "file": "ledger_bad_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 3.14,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "A broken word, or a lie that came to light. In the register that's a hole in the contract, and the wind blows straight through it.",
+    "file": "ledger_bad_1.ogg",
+    "voice": "kwit",
+    "sig": "d954463b5e38",
+    "seconds": 6.9,
+    "seed": 303,
+    "wer": 0.0
+   },
+   {
+    "who": "narrator",
+    "text": "The quill scratches.",
+    "file": "ledger_bad_2.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 1.98,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Every word you say from now on will weigh less.",
+    "file": "ledger_bad_3.ogg",
+    "voice": "kwit",
+    "sig": "d954463b5e38",
+    "seconds": 2.58,
+    "seed": 303,
+    "wer": 0.0
+   }
+  ]
+ },
+ "kwit/ledger_open": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Kwit taps his quill on a column.",
+    "file": "ledger_open_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.3,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "A word given, not yet repaid. The Inscribed like people with debts: you always know where to find them.",
+    "file": "ledger_open_1.ogg",
+    "voice": "kwit",
+    "sig": "d954463b5e38",
+    "seconds": 5.67,
+    "seed": 303,
+    "wer": 0.0
+   },
+   {
+    "who": "narrator",
+    "text": "He smiles thinly.",
+    "file": "ledger_open_2.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 1.81,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "Reality is a contract. You are signing yours right now.",
+    "file": "ledger_open_3.ogg",
+    "voice": "kwit",
+    "sig": "d954463b5e38",
+    "seconds": 3.1,
+    "seed": 303,
+    "wer": 0.0
+   }
+  ]
+ },
  "kwit/no_deal": {
   "segments": [
    {
@@ -2194,6 +2348,74 @@
     "voice": "lis",
     "sig": "c6b6c8a225b5",
     "seconds": 3.28,
+    "seed": 505,
+    "wer": 0.0
+   }
+  ]
+ },
+ "lis/words": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Lis runs a finger down the book, and the letters line up beneath it like obedient dogs.",
+    "file": "words_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 6.1,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "So far your words match what you do. That's rare in the Archive. Most stories lie in their very first sentence.",
+    "file": "words_1.ogg",
+    "voice": "lis",
+    "sig": "c6b6c8a225b5",
+    "seconds": 7.91,
+    "seed": 505,
+    "wer": 0.0
+   }
+  ]
+ },
+ "lis/words_lies": {
+  "segments": [
+   {
+    "who": "narrator",
+    "text": "Lis looks into the book for a long time.",
+    "file": "words_lies_0.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 2.73,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "The Echo records what was said, not what was true. Your lies are here too, as clear as the rest, even if nobody caught them.",
+    "file": "words_lies_1.ogg",
+    "voice": "lis",
+    "sig": "c6b6c8a225b5",
+    "seconds": 8.8,
+    "seed": 505,
+    "wer": 0.0
+   },
+   {
+    "who": "narrator",
+    "text": "She closes the book.",
+    "file": "words_lies_2.ogg",
+    "voice": "_narrator",
+    "sig": "73acb1c8a904",
+    "seconds": 1.75,
+    "seed": 909,
+    "wer": 0.0
+   },
+   {
+    "who": "speaker",
+    "text": "The Inscribed only know the ones that came to light. We remember them all.",
+    "file": "words_lies_3.ogg",
+    "voice": "lis",
+    "sig": "c6b6c8a225b5",
+    "seconds": 5.38,
     "seed": 505,
     "wer": 0.0
    }

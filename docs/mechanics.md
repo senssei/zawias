@@ -20,6 +20,13 @@ How the game plays, with pointers to the code and data that implement each rule.
 - A natural 1 or 20 shows a badge with the roller's name (`HUD.show_d20`), in dialogue and in combat. With a window
   open (map, journal) the badge moves below or above it.
 
+## Word register
+
+Promises and lies are tracked in `GameState.words` ([ADR 0010](decisions/0010-word-register.md)), defined in
+`data/words.json`. An oath is open, kept or broken; a lie is hidden or exposed. The journal shows them under
+"Dane słowo", and the ending screen lists them with one closing sentence. Kwit (the Inscribed) reads out only public
+facts: debts, broken words and exposed lies. Lis (the Echo) also knows lies nobody caught. There is no numeric cost.
+
 ## Motivations
 
 Character creation adds four picks from `data/motivations.json`: a strength, a flaw, a desire and a fear

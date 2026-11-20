@@ -1,0 +1,8 @@
+{
+  "mirela_key":     {"kind": "oath", "text": "Obiecałem Mireli, że wrócę z Kluczem bez drzwi."},
+  "pchla_silence":  {"kind": "oath", "text": "Obiecałem Pchle, że nie powiem, kto mnie ostrzegł.", "kept_at_end": true},
+  "dorn_ardan":     {"kind": "oath", "text": "Obiecałem Dornowi, że za Łukiem poszukam śladu Ardana."},
+  "kwit_custodian": {"kind": "lie",  "text": "Powiedziałem Kwitowi, że przysyła mnie Kustoszka."},
+  "doorkeeper_message": {"kind": "lie", "text": "Powiedziałem Odźwiernemu, że mam wiadomość dla Severa od kogoś z góry."},
+  "token_brothers": {"kind": "lie",  "text": "Pokazałem Odźwiernemu Żeton Rdzy i przekazałem pozdrowienia od braci z zaułka."}
+}

@@ -1646,6 +1646,7 @@ func _show_ending(kind: String) -> void:
 	if kind == "portal":
 		Audio.sfx("portal")
 	GameState.ending = kind
+	GameState.close_words_at_end()
 	var pc := GameState.player
 	var title := Loc.t("Koniec rozdziału")
 	var text := ""
@@ -1660,8 +1661,27 @@ func _show_ending(kind: String) -> void:
 		path = Loc.t("słowem")
 	elif GameState.has_flag("key_stolen"):
 		path = "cieniem"
+	text += _words_summary()
 	text += Loc.t("[color=#d9a85b]Klucz zdobyty %s.[/color]\n%s, poziom %d, %d PD, %d sztuk złota.\n\n[color=#a89584]Koniec wersji demonstracyjnej. Dziękujemy za grę.[/color]") % [path, pc.name, pc.level, pc.xp, pc.gold]
 	hud.open_end_screen(title, text, [["continue", Loc.t("Zwiedzaj dalej")], ["menu", Loc.t("Menu główne")]])
+
+
+## Rachunek słowa na ekranie końca (ADR 0010): każda obietnica i kłamstwo oraz jedno zdanie oceny.
+func _words_summary() -> String:
+	if GameState.words.is_empty():
+		return ""
+	var out := "[color=#d9a85b]%s[/color]\n" % Loc.t("Dane słowo")
+	for id_ in GameState.words:
+		var line: Array = HUD.word_line(id_, GameState.words[id_])
+		out += "[color=#%s]%s[/color]\n" % [(line[1] as Color).to_html(false), line[0]]
+	var broken := GameState.words_count("broken") + GameState.words_count("exposed")
+	if broken > 0:
+		out += Loc.t("Zawias pamięta złamane słowa dłużej niż imiona.")
+	elif GameState.words_count("hidden") > 0:
+		out += Loc.t("Dotrzymałeś słowa, ale nie wszystko, co powiedziałeś, było prawdą. Echo to zapamięta.")
+	else:
+		out += Loc.t("Nie złamałeś danego słowa i nikogo nie okłamałeś. Wędrowiec też kiedyś tak zaczynał.")
+	return out + "\n\n"
 
 
 func _update_hover(screen: Vector2) -> void:

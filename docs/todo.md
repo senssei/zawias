@@ -6,8 +6,9 @@ Otwarte prace. Zrobione przenosimy do ADR-ów albo dokumentacji, a stąd usuwamy
 
 - [x] **NPC, którzy znali Wędrowca.** Dorn pamięta przez babkę, którą strażnik zawrócił spod bramy (`dorn/grudge`,
   wyznanie w `dorn/confess`). Dalej: ktoś, kto Wędrowcowi zawdzięcza przejście, w kolejnym rozdziale. (zasada 2)
-- [ ] **Przysięgi i kłamstwa.** Gra zapisuje, czy postać dotrzymuje słowa (Mireli, Kwitowi, Dornowi: `promise_dorn`), i wraca do tego
-  w finale, który i tak dotyczy przysięgi. (zasady 3, 8)
+- [x] **Przysięgi i kłamstwa.** Rejestr słowa ([ADR 0010](decisions/0010-word-register.md)): obietnice
+  i kłamstwa w dzienniku, komentują je Kwit i Lis, a ekran końca je wylicza. Dalej: finał-pytanie czyta rejestr.
+  (zasady 3, 8)
 - [ ] **Porażka z treścią.** Przegrana walka czasem przenosi gracza „za bramę” albo do wspomnienia zamiast na
   ekran porażki. (zasada 4)
 - [ ] **Osobisty wątek Lis.** Jej własna sprawa, związana z zapisem Echa o Wędrowcu. (zasada 6)
